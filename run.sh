@@ -1,7 +1,3 @@
-docker run --rm -it -v $(pwd)/tileserver-data:/data -p 8080:8080 maptiler/tileserver-gl:latest &
-
-npm run dev &
-
 cd osm
 
 if [ -e "polycampus.geojson" ]; then
@@ -9,3 +5,9 @@ if [ -e "polycampus.geojson" ]; then
 else
     echo "You didn't export polycampus.geojson from JOSM!"
 fi
+
+cd ..
+
+docker run --rm -it -v $(pwd)/tileserver-data:/data -p 8080:8080 maptiler/tileserver-gl:latest &
+
+npm run dev &
