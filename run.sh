@@ -4,6 +4,7 @@ if [ -e "polycampus.geojson" ]; then
     node filter-search-queries.js > output.geojson
 else
     echo "You didn't export polycampus.geojson from JOSM!"
+    exit 1
 fi
 
 cd ..

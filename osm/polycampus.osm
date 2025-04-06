@@ -1,6 +1,10 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <osm version='0.6' generator='JOSM'>
   <bounds minlat='28.143638' minlon='-81.8532085' maxlat='28.1522654' maxlon='-81.8441963' origin='openstreetmap-cgimap 2.0.1 (2270266 spike-07.openstreetmap.org)' />
+  <node id='-25356' action='modify' visible='true' lat='28.14926085972' lon='-81.85207697584'>
+    <tag k='name' v='IEEE Student Branch Office' />
+    <tag k='polynav' v='true' />
+  </node>
   <node id='100037364' timestamp='2022-09-16T17:34:29Z' uid='14864469' user='duckman56' visible='true' version='12' changeset='126272983' lat='28.1524305' lon='-81.8532983'>
     <tag k='highway' v='motorway_junction' />
     <tag k='old_ref' v='20A' />
@@ -5050,7 +5054,7 @@
     <tag k='name' v='Innovation, Science &amp; Technology building' />
     <tag k='short_name' v='IST' />
   </way>
-  <way id='467810554' timestamp='2018-04-04T01:42:27Z' uid='2716442' user='pete404' visible='true' version='6' changeset='57788791'>
+  <way id='467810554' action='modify' timestamp='2018-04-04T01:42:27Z' uid='2716442' user='pete404' visible='true' version='6' changeset='57788791'>
     <nd ref='4624136009' />
     <nd ref='4624136010' />
     <nd ref='4624136011' />
@@ -5080,8 +5084,9 @@
     <tag k='building' v='university' />
     <tag k='building:levels' v='5' />
     <tag k='name' v='Phase I Residence Hall' />
+    <tag k='polynav' v='true' />
   </way>
-  <way id='467810963' timestamp='2019-09-17T19:01:01Z' uid='2716442' user='pete404' visible='true' version='11' changeset='74595806'>
+  <way id='467810963' action='modify' timestamp='2019-09-17T19:01:01Z' uid='2716442' user='pete404' visible='true' version='11' changeset='74595806'>
     <nd ref='4624139070' />
     <nd ref='5033202866' />
     <nd ref='5033202868' />
@@ -5101,6 +5106,7 @@
     <tag k='building' v='university' />
     <tag k='building:levels' v='1' />
     <tag k='name' v='Wellness Center' />
+    <tag k='polynav' v='true' />
     <tag k='roof:levels' v='0' />
   </way>
   <way id='467810964' timestamp='2018-08-30T01:59:29Z' uid='2716442' user='pete404' visible='true' version='6' changeset='62123829'>
