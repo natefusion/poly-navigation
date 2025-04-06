@@ -1,0 +1,40 @@
+{
+  "options": {
+    "paths": {
+      "fonts": "fonts",
+      "styles": "styles"
+    }
+  },
+    "styles": {
+        "osm-liberty": {
+            "style": "osm-liberty/style.json",
+            "tilejson": {
+                "type": "overlay"
+            }     
+        },
+        "osm-real": {
+            "style": "osm-real/style.json",
+            "tilejson": {
+                "type": "overlay"
+            }     
+        },
+        "test-style": {
+            "style": "osm-bright/style.json",
+            "tilejson": {
+                "type": "overlay",
+                "bounds": [27.147438,-80.84766,28.147438,-81.84766]
+            }
+        },
+        "klokantech-basic": {
+            "style": "klokantech-basic/style.json",
+            "tilejson": {
+                "type": "overlay"
+            }
+        }
+    },
+    "data": {
+        "openmaptiles": {
+            "mbtiles": "polycampus.mbtiles"
+        }
+    }
+}
