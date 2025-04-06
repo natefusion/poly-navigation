@@ -131,7 +131,7 @@ function reRoute() {
     const src = marker1.getLngLat();
     const dst = marker2.getLngLat();
 
-    const str = 'http://router.project-osrm.org/route/v1/foot/' + src.lng + ',' + src.lat + ';' + dst.lng + ',' + dst.lat + '?geometries=geojson';
+    const str = 'http://0.0.0.0:5000/route/v1/foot/' + src.lng + ',' + src.lat + ';' + dst.lng + ',' + dst.lat + '?geometries=geojson';
     const route = httpGet(str);
     const json_route = JSON.parse(route);
 

@@ -1,7 +1,8 @@
 {
   "dependencies": {
     "fuse.js": "^7.1.0",
-    "maplibre-gl": "^5.2.0"
+    "maplibre-gl": "^5.2.0",
+    "osrm-text-instructions": "^0.15.0"
   },
   "devDependencies": {
     "vite": "^6.2.3"
