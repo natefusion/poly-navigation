@@ -109,7 +109,7 @@ searchbox.addEventListener("input", function(e){
 // Initialize the map
 const map = new maplibregl.Map({
     container: 'map', // ID of the div where the map will be rendered
-    style: 'http://localhost:8080/styles/osm-liberty/style.json',
+    style: 'http://localhost:8080/styles/osm-real/style.json',
     center: [-81.848914, 28.148263], // Longitude, Latitude
     zoom: 13 // Zoom level
 });

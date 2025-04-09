@@ -136,3 +136,8 @@ dist
 .pnp.*
 
 *~
+
+*.osrm.*
+*.geojson
+*.osm.pbf
+*.mbtiles

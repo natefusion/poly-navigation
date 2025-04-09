@@ -1,10 +1,11 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <osm version='0.6' generator='JOSM'>
   <bounds minlat='28.143638' minlon='-81.8532085' maxlat='28.1522654' maxlon='-81.8441963' origin='openstreetmap-cgimap 2.0.1 (2270266 spike-07.openstreetmap.org)' />
-  <node id='-25356' action='modify' visible='true' lat='28.14926085972' lon='-81.85207697584'>
+  <node id='-101752' action='modify' visible='true' lat='28.14926085972' lon='-81.85207697584'>
     <tag k='name' v='IEEE Student Branch Office' />
     <tag k='polynav' v='true' />
   </node>
+  <node id='-101781' action='modify' visible='true' lat='28.150253482' lon='-81.85081146786' />
   <node id='100037364' timestamp='2022-09-16T17:34:29Z' uid='14864469' user='duckman56' visible='true' version='12' changeset='126272983' lat='28.1524305' lon='-81.8532983'>
     <tag k='highway' v='motorway_junction' />
     <tag k='old_ref' v='20A' />
@@ -730,9 +731,9 @@
   <node id='4154667008' timestamp='2024-09-14T04:52:50Z' uid='13929699' user='Gamer2000' visible='true' version='3' changeset='156596213' lat='28.1247683' lon='-81.9196604'>
     <tag k='power' v='tower' />
   </node>
-  <node id='4624135993' timestamp='2018-08-30T01:59:05Z' uid='2716442' user='pete404' visible='true' version='2' changeset='62123829' lat='28.1501558' lon='-81.8506992'>
-    <tag k='access' v='private' />
-    <tag k='entrance' v='yes' />
+  <node id='4624135993' action='modify' timestamp='2018-08-30T01:59:05Z' uid='2716442' user='pete404' visible='true' version='2' changeset='62123829' lat='28.1501558' lon='-81.8506992'>
+    <tag k='access' v='yes' />
+    <tag k='entrance' v='main' />
     <tag k='wheelchair' v='limited' />
   </node>
   <node id='4624135994' timestamp='2017-01-22T20:22:19Z' uid='1723055' user='Johnny Mapperseed' visible='true' version='1' changeset='45378182' lat='28.1503309' lon='-81.8506295' />
@@ -3912,6 +3913,18 @@
   <node id='12176046429' timestamp='2024-09-14T04:52:50Z' uid='13929699' user='Gamer2000' visible='true' version='1' changeset='156596213' lat='28.1441731' lon='-81.8812446'>
     <tag k='power' v='tower' />
   </node>
+  <way id='-102461' action='modify' visible='true'>
+    <nd ref='4624135993' />
+    <nd ref='-101781' />
+    <tag k='highway' v='footway' />
+    <tag k='tunnel' v='building_passage' />
+  </way>
+  <way id='-102524' action='modify' visible='true'>
+    <nd ref='4630836573' />
+    <nd ref='4744105314' />
+    <tag k='highway' v='footway' />
+    <tag k='tunnel' v='building_passage' />
+  </way>
   <way id='11265248' timestamp='2022-10-07T09:22:28Z' uid='11904280' user='vrynkevich_lyft' visible='true' version='17' changeset='127141254'>
     <nd ref='100037364' />
     <nd ref='9059529147' />
@@ -6054,10 +6067,11 @@
     <tag k='surface' v='concrete' />
     <tag k='tunnel' v='building_passage' />
   </way>
-  <way id='481476618' timestamp='2017-03-20T00:13:23Z' uid='2716442' user='pete404' visible='true' version='1' changeset='46997226'>
+  <way id='481476618' action='modify' timestamp='2017-03-20T00:13:23Z' uid='2716442' user='pete404' visible='true' version='1' changeset='46997226'>
     <nd ref='4744107926' />
     <nd ref='4744107925' />
     <nd ref='4744107924' />
+    <nd ref='-101781' />
     <nd ref='4744107923' />
     <nd ref='4744107922' />
     <nd ref='4744105273' />
