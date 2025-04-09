@@ -1,0 +1,18 @@
+services:
+  tileserver:
+    image: maptiler/tileserver-gl:latest
+    volumes:
+      - ./tileserver-data:/data
+    ports:
+      - "8080:8080"
+    # Optional: if the container needs to be re-run from scratch each time
+    restart: "no"  
+
+  osrm:
+    image: ghcr.io/project-osrm/osrm-backend
+    command: osrm-routed --algorithm mld /data/polycampus.osrm
+    volumes:
+      - ./osm:/data
+    ports:
+      - "5000:5000"
+    restart: "no"
