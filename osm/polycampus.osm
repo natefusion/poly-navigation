@@ -4155,6 +4155,7 @@
     <nd ref='-103935' />
     <nd ref='-103928' />
     <tag k='indoor' v='corridor' />
+    <tag k='level' v='2' />
   </way>
   <way id='-105544' action='modify' visible='true'>
     <nd ref='-103934' />

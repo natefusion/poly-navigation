@@ -9,7 +9,7 @@ cd osm
 
 # Create data for tileserver-gl
 osmium renumber -o polycampus.osm.pbf polycampus.osm --overwrite
-docker run -it --rm -v $(pwd):/data ghcr.io/systemed/tilemaker:master /data/polycampus.osm.pbf /data/polycampus.mbtiles
+docker run -it --rm -v $(pwd):/data ghcr.io/systemed/tilemaker:master --input /data/polycampus.osm.pbf --output /data/polycampus.mbtiles --config /data/tilemaker-config.json --process /data/tilemaker-process.lua
 mv -f polycampus.mbtiles ../tileserver-data/
 
 
