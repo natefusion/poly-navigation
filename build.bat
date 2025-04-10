@@ -11,7 +11,7 @@ cd osm
 
 REM Create data for tileserver-gl
 osmium renumber -o polycampus.osm.pbf polycampus.osm --overwrite
-docker run -it --rm -v "%cd%":/data ghcr.io/systemed/tilemaker:master /data/polycampus.osm.pbf /data/polycampus.mbtiles
+docker run -it --rm -v "%cd%":/data ghcr.io/systemed/tilemaker:master --input /data/polycampus.osm.pbf --output /data/polycampus.mbtiles --config /data/tilemaker-config.json --process /data/tilemaker-process.lua
 move /Y polycampus.mbtiles ..\tileserver-data\
 
 REM Create search query data
