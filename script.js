@@ -93,11 +93,10 @@ searchbox.addEventListener("input", function(e){
         let names = items.map((function (x) {
             return x.item.properties.name;
         }));
-        let list = '<ul>';
+        let list = '';
         for (name of names) {
-            list += '<li>' + name + "</li>";
+            list += `<button onclick="load_content('${name}')" class="button" popovertarget="my_popover">${name}</button>`
         }
-        list += '</ul>';
 
         searchresults.innerHTML = list;
     } else {
