@@ -19,6 +19,6 @@ osmium export -o polycampus.geojson polycampus.osm --overwrite
 node filter-search-queries.js > output.geojson
 
 REM Create data for routing server
-docker run -t -v "%cd%":/data ghcr.io/project-osrm/osrm-backend osrm-extract -p /opt/foot.lua /data/polycampus.osm.pbf
+docker run -t -v "%cd%":/data ghcr.io/project-osrm/osrm-backend osrm-extract -p /data/foot.lua /data/polycampus.osm.pbf
 docker run -t -v "%cd%":/data ghcr.io/project-osrm/osrm-backend osrm-partition /data/polycampus.osrm
 docker run -t -v "%cd%":/data ghcr.io/project-osrm/osrm-backend osrm-customize /data/polycampus.osrm

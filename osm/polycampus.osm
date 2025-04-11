@@ -67,8 +67,10 @@
   <node id='-103741' action='modify' visible='true' lat='28.14842005848' lon='-81.85168773204' />
   <node id='-103742' action='modify' visible='true' lat='28.14904204645' lon='-81.85088306934' />
   <node id='-103787' action='modify' visible='true' lat='28.15118793427' lon='-81.85168236528' />
-  <node id='-103800' action='modify' visible='true' lat='28.14958775929' lon='-81.8515167392'>
+  <node id='-103800' action='modify' visible='true' lat='28.14959131792' lon='-81.85152287395'>
+    <tag k='access' v='yes' />
     <tag k='entrance' v='main' />
+    <tag k='foot' v='designated' />
   </node>
   <node id='-103822' action='modify' visible='true' lat='28.14964594929' lon='-81.85127338866' />
   <node id='-103833' action='modify' visible='true' lat='28.14934352598' lon='-81.85162259876'>
@@ -95,8 +97,7 @@
   <node id='-103931' action='modify' visible='true' lat='28.14955819735' lon='-81.8515757478' />
   <node id='-103934' action='modify' visible='true' lat='28.14946447015' lon='-81.85218945216' />
   <node id='-103935' action='modify' visible='true' lat='28.14913828466' lon='-81.85212462239' />
-  <node id='-103937' action='modify' visible='true' lat='28.14958657681' lon='-81.85152411528' />
-  <node id='-103938' action='modify' visible='true' lat='28.14926671625' lon='-81.85204848714' />
+  <node id='-103938' action='modify' visible='true' lat='28.14926628921' lon='-81.85205042443' />
   <node id='-103950' action='modify' visible='true' lat='28.14921588657' lon='-81.85214004584' />
   <node id='-103952' action='modify' visible='true' lat='28.14943876706' lon='-81.85219265588' />
   <node id='-103953' action='modify' visible='true' lat='28.14918394257' lon='-81.8521262712' />
@@ -830,6 +831,7 @@
   <node id='4624135993' action='modify' timestamp='2018-08-30T01:59:05Z' uid='2716442' user='pete404' visible='true' version='2' changeset='62123829' lat='28.150226157' lon='-81.85078838345'>
     <tag k='access' v='yes' />
     <tag k='entrance' v='main' />
+    <tag k='foot' v='designated' />
     <tag k='wheelchair' v='limited' />
   </node>
   <node id='4624135994' timestamp='2017-01-22T20:22:19Z' uid='1723055' user='Johnny Mapperseed' visible='true' version='1' changeset='45378182' lat='28.1503309' lon='-81.8506295' />
@@ -993,6 +995,7 @@
   <node id='4630836573' action='modify' timestamp='2018-08-30T01:59:05Z' uid='2716442' user='pete404' visible='true' version='3' changeset='62123829' lat='28.1511898595' lon='-81.85177291655'>
     <tag k='access' v='yes' />
     <tag k='entrance' v='main' />
+    <tag k='foot' v='designated' />
     <tag k='wheelchair' v='yes' />
   </node>
   <node id='4630836574' timestamp='2017-03-20T00:13:26Z' uid='2716442' user='pete404' visible='true' version='2' changeset='46997226' lat='28.1513356' lon='-81.8516787' />
@@ -4117,13 +4120,6 @@
     <tag k='indoor' v='corridor' />
     <tag k='level' v='1' />
   </way>
-  <way id='-105288' action='modify' visible='true'>
-    <nd ref='-103822' />
-    <nd ref='-103800' />
-    <tag k='highway' v='footway' />
-    <tag k='lit' v='yes' />
-    <tag k='surface' v='concrete' />
-  </way>
   <way id='-105342' action='modify' visible='true'>
     <nd ref='-103833' />
     <nd ref='-103845' />
@@ -4164,12 +4160,6 @@
     <tag k='indoor' v='corridor' />
     <tag k='level' v='2' />
   </way>
-  <way id='-105568' action='modify' visible='true'>
-    <nd ref='-103937' />
-    <nd ref='-103938' />
-    <tag k='indoor' v='corridor' />
-    <tag k='level' v='1' />
-  </way>
   <way id='-105606' action='modify' visible='true'>
     <nd ref='-103950' />
     <nd ref='-103938' />
@@ -4185,6 +4175,17 @@
     <tag k='indoor' v='area' />
     <tag k='level' v='1' />
     <tag k='name' v='BARC Atrium' />
+  </way>
+  <way id='-105750' action='modify' visible='true'>
+    <nd ref='-103800' />
+    <nd ref='-103938' />
+    <tag k='indoor' v='corridor' />
+    <tag k='level' v='1' />
+  </way>
+  <way id='-105751' action='modify' visible='true'>
+    <nd ref='-103822' />
+    <nd ref='-103800' />
+    <tag k='highway' v='footway' />
   </way>
   <way id='11265248' action='delete' timestamp='2022-10-07T09:22:28Z' uid='11904280' user='vrynkevich_lyft' visible='true' version='17' changeset='127141254'>
     <tag k='bicycle' v='no' />
