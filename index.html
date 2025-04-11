@@ -8,66 +8,33 @@
     
   </head>
   <body>
-    <style>
-      .coordinates {
-          background: rgba(0, 0, 0, 0.5);
-          color: #fff;
-          position: absolute;
-          bottom: 40px;
-          left: 10px;
-          padding: 5px 10px;
-          margin: 0;
-          font-size: 11px;
-          line-height: 18px;
-          border-radius: 3px;
-          display: none;
-      }
-
-      #searchbox {
-          background: rgba(0, 0, 0, 0.5);
-          color: #fff;
-          position: absolute;
-          top: 10px;
-          left: 10px;
-          padding: 5px 10px;
-          margin: 0;
-          font-size: 11px;
-          line-height: 18px;
-          border-radius: 3px;
-      }
-
-      #searchresults {
-          background: rgba(0, 0, 0, 0.5);
-          color: #fff;
-          position: absolute;
-          top: 50px;
-          left: 10px;
-          padding: 5px 10px;
-          margin: 0;
-          font-size: 11px;
-          line-height: 18px;
-          border-radius: 3px;
-      }
-
-      .button {
-          background: rgba(0, 0, 0, 0.5);
-          color: #fff;
-          /* position: absolute; */
-          /* top: 10px; */
-          /* left: 10px; */
-      }
-    </style>
     <script>
       function load_content(name) {
-          my_popover.innerHTML = `<p>Here is some information for ${name}</p><button class="button" popovertarget="my_popover">Close info</button>`;
+          item_name.innerHTML = name;
       }
     </script>
-    <div id="map"></div>
-    <input type="text" id="searchbox" name="Search for location ..." list="" />
-    <div id="searchresults"></div>
-    <pre id="coordinates" class="coordinates"></pre>
-    
-    <div popover id="my_popover"></div>
+    <div class="wrapper">
+      <div id="map"></div>
+      <div id="ui">
+        <input id="searchbox" type="search" placeholder="Search for location ..." />
+        <div id="searchui">
+          <div id="searchresults"></div>
+        </div>
+        <pre id="coordinates" class="coordinates"></pre>
+        <div id="item_details" popover="manual">
+          <button class="button" popovertarget="item_details">Back</button>
+          <button class="button" popovertarget="item_details">Navigate</button>
+          <h1>Name</h1>
+          <p id="item_name"></p>
+          <h1>Location</h1>
+          <p id="item_location"></p>
+          <h1>Tags</h1>
+          <p id="item_tags"></p>
+          <h1>Description</h1>
+          <p id="item_description"></p>
+        </div>
+      </div>
+    </div>
     <script type="module" src="script.js"></script>
   </body>
 </html>

@@ -36,6 +36,8 @@ const fuseOptions = {
 };
 
 
+
+
 const geo = JSON.parse(httpGet('http://localhost:5173/osm/output.geojson'));
 const fuse = new Fuse(geo, fuseOptions);
 
@@ -44,7 +46,6 @@ searchbox.addEventListener("input", function(e){
     let items = fuse.search(text);
     if (items.length > 0) {
         let geometry = items[0].item.geometry;
-        console.log(items[0])
 
         let source = map.getSource('outline');
         if (source) {
@@ -95,12 +96,12 @@ searchbox.addEventListener("input", function(e){
         }));
         let list = '';
         for (name of names) {
-            list += `<button onclick="load_content('${name}')" class="button" popovertarget="my_popover">${name}</button>`
+            list += `<button onclick="load_content('${name}')" class="button" popovertarget="item_details">${name}</button>`
         }
 
         searchresults.innerHTML = list;
     } else {
-        searchresults.innerHTML = '<p>nothing to see here</p>';
+        searchresults.innerHTML = '';
     }
 });
 
@@ -110,7 +111,7 @@ const map = new maplibregl.Map({
     container: 'map', // ID of the div where the map will be rendered
     style: 'http://localhost:8080/styles/osm-real/style.json',
     center: [-81.848914, 28.148263], // Longitude, Latitude
-    zoom: 13 // Zoom level
+    zoom: 17 // Zoom level
 });
 
 // Add navigation controls
@@ -202,4 +203,18 @@ function onDragEnd2() {
 marker1.on('dragend', onDragEnd1);
 
 marker2.on('dragend', onDragEnd2);
+
+
+
+ui.addEventListener('focusin', () => {
+    searchui.style.visibility = 'visible';
+});
+
+
+document.addEventListener("focusin", function (event) {
+    const isClickInside = ui.contains(event.target);
+    if (!isClickInside) {
+        searchui.style.visibility = 'hidden';
+    }
+});
 
