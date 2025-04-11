@@ -12,18 +12,26 @@
       function load_content(name) {
           item_name.innerHTML = name;
       }
+
+      function load_navigationui() {
+          searchui.style.visibility = 'hidden';
+      }
+
+      function load_searchui() {
+          searchui.style.visibility = 'visible';
+      }
     </script>
     <div class="wrapper">
       <div id="map"></div>
-      <div id="ui">
+      <div id="searchui">
         <input id="searchbox" type="search" placeholder="Search for location ..." />
-        <div id="searchui">
+        <div id="searchresults_wrapper">
           <div id="searchresults"></div>
         </div>
         <pre id="coordinates" class="coordinates"></pre>
         <div id="item_details" popover="manual">
           <button class="button" popovertarget="item_details">Back</button>
-          <button class="button" popovertarget="item_details">Navigate</button>
+          <button onclick="load_navigationui()" class="button" popovertarget="item_details">Navigate</button>
           <h1>Name</h1>
           <p id="item_name"></p>
           <h1>Location</h1>
@@ -33,6 +41,11 @@
           <h1>Description</h1>
           <p id="item_description"></p>
         </div>
+      </div>
+      <div id="navigationui">
+        <p>Current selected location</p>
+        <button class="button">Begin Navigation</button>
+        <button  onclick="load_searchui()" class="button">Exit Navigation</button>
       </div>
     </div>
     <script type="module" src="script.js"></script>

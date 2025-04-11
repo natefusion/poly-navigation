@@ -206,15 +206,15 @@ marker2.on('dragend', onDragEnd2);
 
 
 
-ui.addEventListener('focusin', () => {
-    searchui.style.visibility = 'visible';
+searchui.addEventListener('focusin', () => {
+    searchresults_wrapper.style.visibility = 'visible';
 });
 
 
 document.addEventListener("focusin", function (event) {
     const isClickInside = ui.contains(event.target);
     if (!isClickInside) {
-        searchui.style.visibility = 'hidden';
+        searchresults_wrapper.style.visibility = 'hidden';
     }
 });
 
