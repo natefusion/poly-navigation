@@ -30,8 +30,8 @@ const fuseOptions = {
 	// ignoreFieldNorm: false,
 	// fieldNormWeight: 1,
 	keys: [
-		"properties.name",
-		"properties.addr:unit"
+		"name",
+		"addr:unit"
 	]
 };
 
@@ -91,7 +91,7 @@ searchbox.addEventListener("input", function(e){
 
         
         let names = items.map((function (x) {
-            return x.item.properties.name;
+            return x.item.name;
         }));
         let list = '';
         for (name of names) {
