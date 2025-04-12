@@ -39,15 +39,15 @@ select_start_location.addEventListener("click", () => {
     searchui.style.display = 'flex';
     navigationui.style.display = 'none';
     selecting_end_location = false;
+    searchbox.value = '';
+    searchresults.innerHTML = '';
 });
 
 select_end_location.addEventListener("click", () => {
     searchui.style.display = 'flex';
     navigationui.style.display = 'none';
     selecting_end_location = true;
+    searchbox.value = '';
+    searchresults.innerHTML = '';
 });
 
-exit_navigation.addEventListener("click", () => {
-    searchui.style.display = 'flex';
-    navigationui.style.display = 'none';    
-});

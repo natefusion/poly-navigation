@@ -110,7 +110,6 @@ const marker2 = new maplibregl.Marker({draggable: true})
       .addTo(map);
 
 function reRoute() {
-
     const src = marker1.getLngLat();
     const dst = marker2.getLngLat();
 
@@ -131,7 +130,6 @@ function reRoute() {
             ]
         });
     } else {
-
         map.addSource('route', {
             'type': 'geojson',
             'data':{
@@ -145,7 +143,7 @@ function reRoute() {
                 ]
             }
         });
-
+        
         map.addLayer({
             'id': 'route',
             'type': 'line',
@@ -180,13 +178,29 @@ marker2.on('dragend', () => {
     reRoute();
 });
 
-navigate_button.addEventListener("click", () => {
+navigate_button.onclick = function() {
     searchui.style.display = 'none';
     navigationui.style.display = 'flex';
 
     if (selecting_end_location) {
+        marker2.setLngLat([geo[end_location_idx][0],geo[end_location_idx][1]]);
         end_location_name.innerHTML = item_name.innerHTML;
     } else {
+        marker1.setLngLat([geo[start_location_idx][0],geo[start_location_idx][1]]);
         start_location_name.innerHTML = item_name.innerHTML;
     }
-});
+};
+
+begin_navigation.onclick = reRoute;
+
+exit_navigation.onclick = function() {
+    searchui.style.display = 'flex';
+    navigationui.style.display = 'none';
+
+    map.removeLayer('route');
+    map.removeSource('route');
+
+    searchbox.value = '';
+    searchresults.innerHTML = '';
+};
+

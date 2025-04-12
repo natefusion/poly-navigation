@@ -71,6 +71,8 @@
     <tag k='access' v='yes' />
     <tag k='entrance' v='main' />
     <tag k='foot' v='designated' />
+    <tag k='name' v='BARC Main Entrance' />
+    <tag k='polynav' v='true' />
   </node>
   <node id='-103822' action='modify' visible='true' lat='28.14964594929' lon='-81.85127338866' />
   <node id='-103833' action='modify' visible='true' lat='28.14934352598' lon='-81.85162259876'>
@@ -832,6 +834,8 @@
     <tag k='access' v='yes' />
     <tag k='entrance' v='main' />
     <tag k='foot' v='designated' />
+    <tag k='name' v='IST South Entrance' />
+    <tag k='polynav' v='true' />
     <tag k='wheelchair' v='limited' />
   </node>
   <node id='4624135994' timestamp='2017-01-22T20:22:19Z' uid='1723055' user='Johnny Mapperseed' visible='true' version='1' changeset='45378182' lat='28.1503309' lon='-81.8506295' />
@@ -1055,9 +1059,11 @@
   <node id='4630836731' timestamp='2017-01-24T23:08:22Z' uid='5184516' user='Ciccarello' visible='true' version='1' changeset='45453673' lat='28.1507069' lon='-81.8481489' />
   <node id='4630836732' timestamp='2017-12-11T01:34:41Z' uid='2716442' user='pete404' visible='true' version='3' changeset='54526311' lat='28.1510001' lon='-81.8489172' />
   <node id='4630836733' timestamp='2017-01-24T23:08:22Z' uid='5184516' user='Ciccarello' visible='true' version='1' changeset='45453673' lat='28.1510694' lon='-81.8488793' />
-  <node id='4630836734' timestamp='2017-12-11T01:34:41Z' uid='2716442' user='pete404' visible='true' version='3' changeset='54526311' lat='28.1509455' lon='-81.8488589'>
+  <node id='4630836734' action='modify' timestamp='2017-12-11T01:34:41Z' uid='2716442' user='pete404' visible='true' version='3' changeset='54526311' lat='28.1509455' lon='-81.8488589'>
     <tag k='access' v='private' />
     <tag k='entrance' v='main' />
+    <tag k='name' v='Phase I Main Entrance' />
+    <tag k='polynav' v='true' />
     <tag k='wheelchair' v='yes' />
   </node>
   <node id='4630836735' timestamp='2017-01-24T23:08:22Z' uid='5184516' user='Ciccarello' visible='true' version='1' changeset='45453673' lat='28.1512168' lon='-81.8492316' />
@@ -2470,6 +2476,7 @@
     <tag k='payment:mastercard' v='yes' />
     <tag k='payment:notes' v='yes' />
     <tag k='payment:visa' v='yes' />
+    <tag k='polynav' v='true' />
     <tag k='smoking' v='no' />
     <tag k='wheelchair' v='yes' />
   </node>
@@ -3012,7 +3019,7 @@
   <node id='5866932559' timestamp='2018-08-30T01:58:24Z' uid='2716442' user='pete404' visible='true' version='1' changeset='62123829' lat='28.1455099' lon='-81.8480064' />
   <node id='5866932560' timestamp='2018-08-30T01:58:24Z' uid='2716442' user='pete404' visible='true' version='1' changeset='62123829' lat='28.1455749' lon='-81.8480386' />
   <node id='5866932561' timestamp='2018-08-30T01:58:24Z' uid='2716442' user='pete404' visible='true' version='1' changeset='62123829' lat='28.1455915' lon='-81.8481083' />
-  <node id='5866932562' timestamp='2019-09-17T19:01:01Z' uid='2716442' user='pete404' visible='true' version='2' changeset='74595806' lat='28.1494997' lon='-81.8472742'>
+  <node id='5866932562' action='modify' timestamp='2019-09-17T19:01:01Z' uid='2716442' user='pete404' visible='true' version='2' changeset='74595806' lat='28.1494997' lon='-81.8472742'>
     <tag k='amenity' v='cafe' />
     <tag k='delivery' v='no' />
     <tag k='diet:gluten_free' v='yes' />
@@ -3022,6 +3029,7 @@
     <tag k='opening_hours' v='Mo-Fr 07:30-16:00' />
     <tag k='operator' v='Chartwells' />
     <tag k='outdoor_seating' v='yes' />
+    <tag k='polynav' v='true' />
     <tag k='smoking' v='no' />
     <tag k='takeaway' v='yes' />
     <tag k='wheelchair' v='yes' />
@@ -5114,7 +5122,6 @@
     <tag k='building' v='university' />
     <tag k='building:levels' v='5' />
     <tag k='name' v='Phase I Residence Hall' />
-    <tag k='polynav' v='true' />
   </way>
   <way id='467810963' action='modify' timestamp='2019-09-17T19:01:01Z' uid='2716442' user='pete404' visible='true' version='11' changeset='74595806'>
     <nd ref='4624139070' />
@@ -5136,7 +5143,6 @@
     <tag k='building' v='university' />
     <tag k='building:levels' v='1' />
     <tag k='name' v='Wellness Center' />
-    <tag k='polynav' v='true' />
     <tag k='roof:levels' v='0' />
   </way>
   <way id='467810964' timestamp='2018-08-30T01:59:29Z' uid='2716442' user='pete404' visible='true' version='6' changeset='62123829'>
