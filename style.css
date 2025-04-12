@@ -91,11 +91,10 @@ body {
 }
 
 #navigationui {
-    visibility: hidden;
     grid-area: stack;
     z-index: 10;
     pointer-events: none;
-    display: flex;
+    display: none;
     align-items: start;
     justify-content: left;
     padding: 1rem;

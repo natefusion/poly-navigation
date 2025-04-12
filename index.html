@@ -5,22 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MapLibre GL JS Example</title>
     <link rel="stylesheet" href="style.css">
-    
   </head>
   <body>
-    <script>
-      function load_content(name) {
-          item_name.innerHTML = name;
-      }
 
-      function load_navigationui() {
-          searchui.style.visibility = 'hidden';
-      }
 
-      function load_searchui() {
-          searchui.style.visibility = 'visible';
-      }
-    </script>
     <div class="wrapper">
       <div id="map"></div>
       <div id="searchui">
@@ -31,7 +19,7 @@
         <pre id="coordinates" class="coordinates"></pre>
         <div id="item_details" popover="manual">
           <button class="button" popovertarget="item_details">Back</button>
-          <button onclick="load_navigationui()" class="button" popovertarget="item_details">Navigate</button>
+          <button id="navigate_button" class="button" popovertarget="item_details">Navigate</button>
           <h1>Name</h1>
           <p id="item_name"></p>
           <h1>Location</h1>
@@ -43,11 +31,17 @@
         </div>
       </div>
       <div id="navigationui">
-        <p>Current selected location</p>
+        <h1>Start location</h1>
+        <p id="start_location_name">Current Geographic location</p>
+        <button id="select_start_location" class="button">Select Start Location</button>
+        <h1>End location</h1>
+        <p id="end_location_name"></p>
+        <button id="select_end_location" class="button">Select End Location</button>
         <button class="button">Begin Navigation</button>
-        <button  onclick="load_searchui()" class="button">Exit Navigation</button>
+        <button id="exit_navigation" class="button">Exit Navigation</button>
       </div>
     </div>
     <script type="module" src="script.js"></script>
+    <script src="functions.js"></script>
   </body>
 </html>

@@ -2,16 +2,8 @@ import maplibregl from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
 
 import Fuse from 'fuse.js';
-// const Fuse = require('fuse.js');
 
-function httpGet(theUrl)
-{
-    var xmlHttp = new XMLHttpRequest();
-    xmlHttp.open( "GET", theUrl, false ); // false for synchronous request
-    xmlHttp.send( null );
-    return xmlHttp.responseText;
-}
-
+import './functions.js';
 
 
 const fuseOptions = {
@@ -35,15 +27,11 @@ const fuseOptions = {
 	]
 };
 
-
-
-
-const geo = JSON.parse(httpGet('http://localhost:5173/osm/output.geojson'));
 const fuse = new Fuse(geo, fuseOptions);
 
-searchbox.addEventListener("input", function(e){
+searchbox.addEventListener("input", (e) => {
     var text = searchbox.value;
-    let items = fuse.search(text);
+    const items = fuse.search(text);
     if (items.length > 0) {
         let geometry = items[0].item.geometry;
 
@@ -90,13 +78,9 @@ searchbox.addEventListener("input", function(e){
             });
         }
 
-        
-        let names = items.map((function (x) {
-            return x.item.name;
-        }));
         let list = '';
-        for (name of names) {
-            list += `<button onclick="load_content('${name}')" class="button" popovertarget="item_details">${name}</button>`
+        for (const item of items) {
+            list += `<button onclick="load_item_details('${item.refIndex}')" class="button" popovertarget="item_details">${item.item.name}</button>`
         }
 
         searchresults.innerHTML = list;
@@ -104,7 +88,6 @@ searchbox.addEventListener("input", function(e){
         searchresults.innerHTML = '';
     }
 });
-
 
 // Initialize the map
 const map = new maplibregl.Map({
@@ -177,44 +160,33 @@ function reRoute() {
             }
         });
     }
-
 }
 
-
-function onDragEnd1() {
+marker1.on('dragend', () => {
     const lngLat = marker1.getLngLat();
     coordinates.style.display = 'block';
     coordinates.innerHTML =
         `Longitude: ${lngLat.lng}<br />Latitude: ${lngLat.lat}`;
 
     reRoute();
+});
 
-}
-
-function onDragEnd2() {
+marker2.on('dragend', () => {
     const lngLat = marker2.getLngLat();
     coordinates.style.display = 'block';
     coordinates.innerHTML =
         `Longitude: ${lngLat.lng}<br />Latitude: ${lngLat.lat}`;
 
     reRoute();
-}
-
-marker1.on('dragend', onDragEnd1);
-
-marker2.on('dragend', onDragEnd2);
-
-
-
-searchui.addEventListener('focusin', () => {
-    searchresults_wrapper.style.visibility = 'visible';
 });
 
+navigate_button.addEventListener("click", () => {
+    searchui.style.display = 'none';
+    navigationui.style.display = 'flex';
 
-document.addEventListener("focusin", function (event) {
-    const isClickInside = ui.contains(event.target);
-    if (!isClickInside) {
-        searchresults_wrapper.style.visibility = 'hidden';
+    if (selecting_end_location) {
+        end_location_name.innerHTML = item_name.innerHTML;
+    } else {
+        start_location_name.innerHTML = item_name.innerHTML;
     }
 });
-
