@@ -110,6 +110,6 @@ body {
 #saved_locations,
 #all_locations,
 #othersearch,
-#recentsearches  {
+#recentsearches_div  {
     display: grid;
 }

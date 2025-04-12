@@ -85,7 +85,7 @@ searchbox.addEventListener("input", (e) => {
 
         let list = '';
         for (const item of items) {
-            list += `<button onclick="load_item_details('${item.refIndex}')" class="button" popovertarget="item_details">${item.item.name}</button>`
+            list += `<button onclick="load_item_details('${item.refIndex}', true)" class="button" popovertarget="item_details">${item.item.name}</button>`
         }
 
         searchresults.innerHTML = list;
@@ -199,7 +199,7 @@ navigate_button.onclick = function() {
 searchbox.addEventListener('focusin', () => {
     searchresults_wrapper.style.visibility = 'visible';
     if (searchbox.value.length === 0) {
-        recentsearches.innerHTML = '<button class="button">Example Search</button><button class="button">Another example search</button>';
+        // recentsearches_div.innerHTML = '<button class="button">Example Search</button><button class="button">Another example search</button>';
         showme(othersearch);
     }
 
@@ -265,5 +265,5 @@ bookmark_checkbox.onclick = function() {
         bookmarks.delete(selected_item_idx);
     }
 
-    update_bookmarks();
+    load_bookmarks();
 }
