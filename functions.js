@@ -11,7 +11,6 @@ var load_items_completed = false;
 
 // A set, just indexes of geo
 var bookmarks = new Set();
-var should_update_bookmarks = true;
 
 function httpGet(theUrl) {
     var xmlHttp = new XMLHttpRequest();
@@ -47,4 +46,12 @@ function load_items() {
     }
 
     all_locations.innerHTML = list;
+}
+
+function update_bookmarks() {
+    let list = '';
+    for (const item of bookmarks) {
+        list += `<button onclick="load_item_details('${item}')" class="button" popovertarget="item_details">${geo[item].name}</button>`
+    }
+    saved_locations.innerHTML = list;
 }

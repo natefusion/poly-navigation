@@ -265,16 +265,5 @@ bookmark_checkbox.onclick = function() {
         bookmarks.delete(selected_item_idx);
     }
 
-    should_update_bookmarks = true;
+    update_bookmarks();
 }
-
-menu_button.addEventListener("focusin", () => {
-    if (should_update_bookmarks) {
-        let list = '';
-        for (const item of bookmarks) {
-            list += `<button onclick="load_item_details('${item}')" class="button" popovertarget="item_details">${geo[item].name}</button>`
-        }
-        saved_locations.innerHTML = list;
-        should_update_bookmarks = false;
-    }
-});
