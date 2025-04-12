@@ -7,16 +7,28 @@
     <link rel="stylesheet" href="style.css">
   </head>
   <body>
-
-
     <div class="wrapper">
       <div id="map"></div>
+      
       <div id="searchui">
         <input id="searchbox" type="search" placeholder="Search for location ..." />
+        
         <div id="searchresults_wrapper">
+          <div id="othersearch">
+            <button id="toggle_all_locations_button" class="button">
+              <span id="show_all_locations_span">Show All Locations</span>
+              <span id="hide_all_locations_span" class="hidden">Hide All Locations</span>
+              <hr>
+            </button>
+            <div id="all_locations" class="hidden"></div>
+            <p class="button">Recent Searches</p>
+            <div id="recentsearches"></div>
+          </div>
           <div id="searchresults"></div>
         </div>
+        
         <pre id="coordinates" class="coordinates"></pre>
+        
         <div id="item_details" popover="manual">
           <button class="button" popovertarget="item_details">Back</button>
           <button id="navigate_button" class="button" popovertarget="item_details">Navigate</button>
@@ -30,7 +42,8 @@
           <p id="item_description"></p>
         </div>
       </div>
-      <div id="navigationui">
+      
+      <div id="navigationui" class="hidden">
         <h1>Start location</h1>
         <p id="start_location_name">Current Geographic location</p>
         <button id="select_start_location" class="button">Select Start Location</button>
@@ -40,6 +53,16 @@
         <button id="begin_navigation" class="button">Begin Navigation</button>
         <button id="exit_navigation" class="button">Exit Navigation</button>
       </div>
+      
+      <!-- <div id="navigationdirections"></div> -->
+      
+      <!-- <div id="menu"></div> -->
+
+      <!-- <div id="all_locations_popover" popover="manual"> -->
+      <!--   <button class="button" popovertarget="all_locations_popover">Back</button> -->
+      <!--   <div id="all_locations"></div> -->
+      <!-- </div> -->
+      
     </div>
     <script type="module" src="script.js"></script>
     <script src="functions.js"></script>

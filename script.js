@@ -31,6 +31,13 @@ const fuse = new Fuse(geo, fuseOptions);
 
 searchbox.addEventListener("input", (e) => {
     var text = searchbox.value;
+
+    if (text.length === 0) {
+        showme(othersearch);
+    } else {
+        hideme(othersearch);
+    }
+            
     const items = fuse.search(text);
     if (items.length > 0) {
         let geometry = items[0].item.geometry;
@@ -48,7 +55,6 @@ searchbox.addEventListener("input", (e) => {
                 ]
             });
         } else {
-
             map.addSource('outline', {
                 'type': 'geojson',
                 'data':{
@@ -99,7 +105,6 @@ const map = new maplibregl.Map({
 
 // Add navigation controls
 map.addControl(new maplibregl.NavigationControl());
-
 
 const marker1 = new maplibregl.Marker({draggable: true})
       .setLngLat([-81.848914, 28.148263])
@@ -162,7 +167,8 @@ function reRoute() {
 
 marker1.on('dragend', () => {
     const lngLat = marker1.getLngLat();
-    coordinates.style.display = 'block';
+    showme(coordinates);
+    coordinates.classList.remove('hidden');
     coordinates.innerHTML =
         `Longitude: ${lngLat.lng}<br />Latitude: ${lngLat.lat}`;
 
@@ -171,7 +177,7 @@ marker1.on('dragend', () => {
 
 marker2.on('dragend', () => {
     const lngLat = marker2.getLngLat();
-    coordinates.style.display = 'block';
+    showme(coordinates);
     coordinates.innerHTML =
         `Longitude: ${lngLat.lng}<br />Latitude: ${lngLat.lat}`;
 
@@ -179,8 +185,8 @@ marker2.on('dragend', () => {
 });
 
 navigate_button.onclick = function() {
-    searchui.style.display = 'none';
-    navigationui.style.display = 'flex';
+    hideme(searchui);
+    showme(navigationui);
 
     if (selecting_end_location) {
         marker2.setLngLat([geo[end_location_idx][0],geo[end_location_idx][1]]);
@@ -191,11 +197,44 @@ navigate_button.onclick = function() {
     }
 };
 
+searchbox.addEventListener('focusin', () => {
+    searchresults_wrapper.style.visibility = 'visible';
+    if (searchbox.value.length === 0) {
+        recentsearches.innerHTML = '<button class="button">Example Search</button><button class="button">Another example search</button>';
+        showme(othersearch);
+    }
+
+    
+});
+
+document.addEventListener("focusin", (event) => {
+    const isClickInside = searchui.contains(event.target);
+    if (!isClickInside) {
+        searchresults_wrapper.style.visibility = 'hidden';
+    }
+});
+
+select_start_location.onclick = function() {
+    showme(searchui);
+    hideme(navigationui);
+    selecting_end_location = false;
+    searchbox.value = '';
+    searchresults.innerHTML = '';
+};
+
+select_end_location.onclick = function() {
+    showme(searchui);
+    hideme(navigationui);
+    selecting_end_location = true;
+    searchbox.value = '';
+    searchresults.innerHTML = '';
+};
+
 begin_navigation.onclick = reRoute;
 
 exit_navigation.onclick = function() {
-    searchui.style.display = 'flex';
-    navigationui.style.display = 'none';
+    showme(searchui);
+    hideme(navigationui);
 
     map.removeLayer('route');
     map.removeSource('route');
@@ -204,3 +243,18 @@ exit_navigation.onclick = function() {
     searchresults.innerHTML = '';
 };
 
+toggle_all_locations_button.onclick = function() {
+    if (load_items_completed === false) {
+        load_items();
+        load_items_completed = true;
+    }
+    let is_hidden = all_locations.classList.toggle("hidden");
+
+    if (!is_hidden) {
+        hideme(show_all_locations_span);
+        showme(hide_all_locations_span);
+    } else {
+        showme(show_all_locations_span);
+        hideme(hide_all_locations_span);
+    }
+}
