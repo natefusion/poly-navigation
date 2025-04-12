@@ -80,3 +80,12 @@ function load_recent_searches() {
 
     recentsearches_div.innerHTML = list;
 }
+
+function load_navigation_directions(navigation_directions) {
+    let items = '';
+    for (d of navigation_directions) {
+        items += `<p>${d}</p>`;
+    }
+    
+    navigationdirections.innerHTML = items ;
+}

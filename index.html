@@ -61,17 +61,21 @@
       </div>
       
       <div id="navigationui" class="hidden">
-        <h1>Start location</h1>
-        <p id="start_location_name">Current Geographic location</p>
-        <button id="select_start_location" class="button">Select Start Location</button>
-        <h1>End location</h1>
-        <p id="end_location_name"></p>
-        <button id="select_end_location" class="button">Select End Location</button>
-        <button id="begin_navigation" class="button">Begin Navigation</button>
+        <div id="navigationoverview">
+          <h1>Start location</h1>
+          <p id="start_location_name">Current Geographic location</p>
+          <button id="select_start_location" class="button">Select Start Location</button>
+          <h1>End location</h1>
+          <p id="end_location_name"></p>
+          <button id="select_end_location" class="button">Select End Location</button>
+          <button id="begin_navigation" class="button">Begin Navigation</button>
+        </div>
+        
+        <div id="navigationdirections" class="hidden"></div>
+        
         <button id="exit_navigation" class="button">Exit Navigation</button>
       </div>
-      
-      <!-- <div id="navigationdirections"></div> -->
+
     </div>
     <script type="module" src="script.js"></script>
     <script src="functions.js"></script>

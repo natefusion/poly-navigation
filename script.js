@@ -1,6 +1,9 @@
 import maplibregl from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
 
+import OSRMTextInstructions from 'osrm-text-instructions';
+const text_instructions = new OSRMTextInstructions('v5');
+
 import Fuse from 'fuse.js';
 
 import './functions.js';
@@ -117,22 +120,19 @@ function reRoute() {
     const src = marker1.getLngLat();
     const dst = marker2.getLngLat();
 
-    const str = 'http://0.0.0.0:5000/route/v1/foot/' + src.lng + ',' + src.lat + ';' + dst.lng + ',' + dst.lat + '?geometries=geojson';
+    const str = 'http://0.0.0.0:5000/route/v1/foot/' + src.lng + ',' + src.lat + ';' + dst.lng + ',' + dst.lat + '?geometries=geojson&steps=true';
     const route = httpGet(str);
     const json_route = JSON.parse(route);
 
+    const navigation_directions = json_route.routes[0].legs[0].steps.map((step, index) => {
+        return text_instructions.compile('en', step);
+    });
+
+    load_navigation_directions(navigation_directions);
+
     let source = map.getSource('route');
     if (source) {
-        map.style.setGeoJSONSourceData('route', {
-            "type": "FeatureCollection",
-            "features": [
-                {
-                    "type": "Feature",
-                    "properties": {},
-                    "geometry": json_route["routes"][0]["geometry"]
-                }
-            ]
-        });
+        map.getSource('route').setData(json_route.routes[0].geometry);
     } else {
         map.addSource('route', {
             'type': 'geojson',
@@ -142,7 +142,7 @@ function reRoute() {
                     {
                         "type": "Feature",
                         "properties": {},
-                        "geometry": json_route["routes"][0]["geometry"]
+                        "geometry": json_route.routes[0].geometry
                     }
                 ]
             }
@@ -186,6 +186,8 @@ marker2.on('dragend', () => {
 navigate_button.onclick = function() {
     hideme(searchui);
     showme(navigationui);
+    showme(navigationoverview);
+    hideme(navigationdirections);
 
     if (selecting_end_location) {
         marker2.setLngLat([geo[end_location_idx][0],geo[end_location_idx][1]]);
@@ -229,7 +231,11 @@ select_end_location.onclick = function() {
     searchresults.innerHTML = '';
 };
 
-begin_navigation.onclick = reRoute;
+begin_navigation.onclick = function() {
+    reRoute();
+    hideme(navigationoverview);
+    showme(navigationdirections);
+}
 
 exit_navigation.onclick = function() {
     showme(searchui);
