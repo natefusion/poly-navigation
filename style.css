@@ -55,7 +55,7 @@ body {
   pointer-events: auto; /* re-enable interaction for children like input/buttons */
 }
 
-#item_details, #all_locations_popover {
+#item_details, #all_locations_popover, #menu {
     height: 100%;
     width: 100%;
 }
@@ -107,14 +107,9 @@ body {
   pointer-events: auto; /* re-enable interaction for children like input/buttons */
 }
 
-#othersearch {
-    display: grid;
-}
-
-#recentsearches {
-    display: grid;
-}
-
-#all_locations {
+#saved_locations,
+#all_locations,
+#othersearch,
+#recentsearches  {
     display: grid;
 }

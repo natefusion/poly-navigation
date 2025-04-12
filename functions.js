@@ -9,6 +9,10 @@ var end_location_idx = -1;
 
 var load_items_completed = false;
 
+// A set, just indexes of geo
+var bookmarks = new Set();
+var should_update_bookmarks = true;
+
 function httpGet(theUrl) {
     var xmlHttp = new XMLHttpRequest();
     xmlHttp.open("GET", theUrl, false); // false for synchronous request
@@ -24,6 +28,8 @@ function load_item_details(items_idx) {
         start_location_idx = items_idx;
     }
     item_name.innerHTML = geo[items_idx].name;
+
+    bookmark_checkbox.checked = bookmarks.has(selected_item_idx);
 }
 
 function showme(el) {
@@ -35,7 +41,7 @@ function hideme(el) {
 }
 
 function load_items() {
-    list = '';
+    let list = '';
     for (const item in geo) {
         list += `<button onclick="load_item_details('${item}')" class="button" popovertarget="item_details">${geo[item].name}</button>`
     }

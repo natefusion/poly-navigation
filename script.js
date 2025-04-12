@@ -5,7 +5,6 @@ import Fuse from 'fuse.js';
 
 import './functions.js';
 
-
 const fuseOptions = {
 	// isCaseSensitive: false,
 	// includeScore: false,
@@ -258,3 +257,24 @@ toggle_all_locations_button.onclick = function() {
         hideme(hide_all_locations_span);
     }
 }
+
+bookmark_checkbox.onclick = function() {
+    if (bookmark_checkbox.checked) {
+        bookmarks.add(selected_item_idx);
+    } else {
+        bookmarks.delete(selected_item_idx);
+    }
+
+    should_update_bookmarks = true;
+}
+
+menu_button.addEventListener("focusin", () => {
+    if (should_update_bookmarks) {
+        let list = '';
+        for (const item of bookmarks) {
+            list += `<button onclick="load_item_details('${item}')" class="button" popovertarget="item_details">${geo[item].name}</button>`
+        }
+        saved_locations.innerHTML = list;
+        should_update_bookmarks = false;
+    }
+});

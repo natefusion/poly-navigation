@@ -9,8 +9,23 @@
   <body>
     <div class="wrapper">
       <div id="map"></div>
-      
+
       <div id="searchui">
+        <button id="menu_button" popovertarget="menu">Menu</button>
+
+        <div id="menu" popover="manual">
+          <button popovertarget="menu">Back</button>
+          <h1>Saved Locations</h1>
+          <div id="saved_locations"></div>
+          <button popovertarget="logout_popup">Log out</button>
+
+          <div id="logout_popup" popover="manual">
+            <h1>Log out?</h1>
+            <button id="logout_button">Yes</button>
+            <button popovertarget="logout_popup">No</button>
+          </div>
+        </div>
+        
         <input id="searchbox" type="search" placeholder="Search for location ..." />
         
         <div id="searchresults_wrapper">
@@ -32,6 +47,8 @@
         <div id="item_details" popover="manual">
           <button class="button" popovertarget="item_details">Back</button>
           <button id="navigate_button" class="button" popovertarget="item_details">Navigate</button>
+          <input type="checkbox" id="bookmark_checkbox"/>
+          <label for="bookmark_checkbox">Bookmark</label>
           <h1>Name</h1>
           <p id="item_name"></p>
           <h1>Location</h1>
@@ -55,8 +72,6 @@
       </div>
       
       <!-- <div id="navigationdirections"></div> -->
-      
-      <!-- <div id="menu"></div> -->
     </div>
     <script type="module" src="script.js"></script>
     <script src="functions.js"></script>
