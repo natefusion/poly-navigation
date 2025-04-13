@@ -101,6 +101,15 @@ searchbox.addEventListener("input", (e) => {
 const map = new maplibregl.Map({
     container: 'map', // ID of the div where the map will be rendered
     style: '/tiles/styles/osm-real/style.json',
+    // very LAME
+    transformRequest: (url, resourceType) => {
+        if (url.startsWith(`http://${window.location.hostname}/`) && !url.includes('/tiles/')) {
+            return {
+                url: url.replace(`http://${window.location.hostname}/`, `http://${window.location.hostname}/tiles/`)
+            };
+        }
+        return { url: url };
+    },
     center: [-81.848914, 28.148263], // Longitude, Latitude
     zoom: 17 // Zoom level
 });

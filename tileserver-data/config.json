@@ -1,10 +1,11 @@
 {
-  "options": {
-    "paths": {
-      "fonts": "fonts",
-      "styles": "styles"
-    }
-  },
+    "options": {
+        "paths": {
+            "fonts": "fonts",
+            "styles": "styles"
+        },
+        "frontPage": false
+    },
     "styles": {
         "osm-liberty": {
             "style": "osm-liberty/style.json",
