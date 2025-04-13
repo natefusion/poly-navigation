@@ -1,4 +1,4 @@
-const geo = JSON.parse(httpGet('http://localhost:5173/osm/output.geojson'));
+const geo = JSON.parse(httpGet(`http://${window.location.hostname}:5173/osm/output.geojson`));
 
 // if true, selecting start_location, if false then end_location
 var selecting_end_location = true;

@@ -100,7 +100,7 @@ searchbox.addEventListener("input", (e) => {
 // Initialize the map
 const map = new maplibregl.Map({
     container: 'map', // ID of the div where the map will be rendered
-    style: 'http://localhost:8080/styles/osm-real/style.json',
+    style: `http://${window.location.hostname}:8080/styles/osm-real/style.json`,
     center: [-81.848914, 28.148263], // Longitude, Latitude
     zoom: 17 // Zoom level
 });
@@ -120,7 +120,7 @@ function reRoute() {
     const src = marker1.getLngLat();
     const dst = marker2.getLngLat();
 
-    const str = 'http://0.0.0.0:5000/route/v1/foot/' + src.lng + ',' + src.lat + ';' + dst.lng + ',' + dst.lat + '?geometries=geojson&steps=true';
+    const str = `http://${window.location.hostname}:5000/route/v1/foot/${src.lng},${src.lat};${dst.lng},${dst.lat}?geometries=geojson&steps=true`;
     const route = httpGet(str);
     const json_route = JSON.parse(route);
 
@@ -170,8 +170,6 @@ marker1.on('dragend', () => {
     coordinates.classList.remove('hidden');
     coordinates.innerHTML =
         `Longitude: ${lngLat.lng}<br />Latitude: ${lngLat.lat}`;
-
-    reRoute();
 });
 
 marker2.on('dragend', () => {
@@ -179,8 +177,6 @@ marker2.on('dragend', () => {
     showme(coordinates);
     coordinates.innerHTML =
         `Longitude: ${lngLat.lng}<br />Latitude: ${lngLat.lat}`;
-
-    reRoute();
 });
 
 navigate_button.onclick = function() {
