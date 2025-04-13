@@ -11,18 +11,59 @@
       <div id="map"></div>
 
       <div id="searchui">
-        <button id="menu_button" popovertarget="menu">Menu</button>
+        <button id="menu_button" class="menu_button" popovertarget="menu">Menu</button>
 
         <div id="menu" popover="manual">
-          <button popovertarget="menu">Back</button>
+          <button popovertarget="menu" class="gen_button">Back</button>
           <h1>Saved Locations</h1>
           <div id="saved_locations"></div>
-          <button popovertarget="logout_popup">Log out</button>
+          <div id="gen_buttons_container">
+            <button popovertarget="login_popup" class="gen_button">Log in</button>
+            <button popovertarget="logout_popup" class="gen_button">Log out</button>
+            <button popovertarget="signup_popup" class="gen_button">Sign up</button>
+            <button class="gen_button">Help</button>
+          </div>
 
           <div id="logout_popup" popover="manual">
-            <h1>Log out?</h1>
-            <button id="logout_button">Yes</button>
-            <button popovertarget="logout_popup">No</button>
+            <h1>Would you like to log out?</h1>
+            <div class="logout--btn-container">
+              <button popovertarget="login-popup" id="logout_button" class="gen_button">Yes</button>
+              <button popovertarget="logout_popup" class="gen_button">No</button>
+            </div>
+          </div>
+
+          <div id="login_popup" popover="manual">
+            <h1 id="input-title" class="input-label">Please Sign-in</h1>
+            <div class="login-input-container">
+              <label for="input_username" class="input-label">Enter your username</label>
+              <input type="text" name="username" id="input-username">
+
+              <label for="input_password" class="input-label">Enter your password</label>
+              <input type="password" name="password" id="input-password">
+            </div>
+            <div class="login-btn-container">
+              <button id="confirm_button" class="gen_button">Confirm</button>
+              <button popovertarget="login_popup" class="gen_button">Cancel</button>
+            </div>
+          </div>
+
+          
+          <div id="signup_popup" popover="manual">
+            <h1 id="input-title" class="input-label">Please Sign-up</h1>
+            <div class="login-input-container">
+              <label for="input_username" class="input-label">Enter your username</label>
+              <input type="text" name="username" id="input-username">
+
+              <label for="input_password" class="input-label">Enter your password</label>
+              <input type="password" name="password" id="input-password">
+
+              <label for="input_password" class="input-label">Re-Enter your password</label>
+              <input type="password" name="password" id="input-password">
+            </div>
+            <div class="signup-btn-container">
+              <button id="confirm_button" class="gen_button">Confirm</button>
+              <button popovertarget="signup_popup" class="gen_button">Cancel</button>
+            </div>
           </div>
         </div>
         

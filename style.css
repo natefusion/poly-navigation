@@ -60,8 +60,74 @@ body {
     width: 100%;
 }
 
+#gen_buttons_container {
+    height: 100%;
+    width: 100%;
+}
+.menu_button {
+    width: 40%;
+    height: 4%;
+    border-radius: 5px;
+    font-weight: bold;
+    color: purple;
+    cursor: pointer;
+}
+
+.menu_button:hover {
+    border-color: purple;
+}
+
+.menu_button:active {
+    font-size: 13px;
+    border-width: 3px;
+    border-color: purple;
+}
+
+.gen_button {
+    border-radius: 5px;
+    font-weight: bold;
+    color: purple;
+    cursor: pointer;
+}
+
+.gen_button:hover {
+    border-color: purple;
+}
+
+.gen_button:active {
+    border-color: purple;
+}
+
+#menu {
+    padding-top: 20px;
+    background-color: rgb(226, 226, 226);
+}
+
+.login-input-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding-bottom: 5px;
+}
+
+.login-input-container input {
+    padding: 10px;
+    font-size: 16px;
+    line-height: 1.2;
+    box-sizing: border-box;
+}
+
+.input-label {
+    font-weight: bold;
+}
+
+#input-title{
+    text-align: center;
+}
+
 #searchbox {
     margin-bottom: 3px;
+    margin-top: 5px;
     font-size: 11px;
     line-height: 18px;
     border-radius: 3px;
