@@ -6,4 +6,6 @@ cp osm/output.geojson public/
 cp functions.js public/
 
 npm run build
-docker-compose up
+docker-compose up &
+
+wait
