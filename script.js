@@ -103,9 +103,9 @@ const map = new maplibregl.Map({
     style: '/tiles/styles/osm-real/style.json',
     // very LAME
     transformRequest: (url, resourceType) => {
-        if (url.startsWith(`http://${window.location.hostname}/`) && !url.includes('/tiles/')) {
+        if (url.startsWith(`https://${window.location.hostname}/`) && !url.includes('/tiles/')) {
             return {
-                url: url.replace(`http://${window.location.hostname}/`, `http://${window.location.hostname}/tiles/`)
+                url: url.replace(`https://${window.location.hostname}/`, `https://${window.location.hostname}/tiles/`)
             };
         }
         return { url: url };
