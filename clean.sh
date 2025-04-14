@@ -13,4 +13,4 @@ rm -rf dist/
 
 cd osm
 
-rm -f output.geojson polycampus.geojson polycampus.osm.pbf polycampus.osrm.*
+rm -f polycampus.geojson polycampus.osm.pbf polycampus.osrm.*

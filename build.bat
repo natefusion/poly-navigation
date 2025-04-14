@@ -6,6 +6,8 @@ if errorlevel 1 (
     exit /b 1
 )
 
+mkdir public
+
 REM Change directory to "osm"
 cd osm
 
@@ -16,7 +18,7 @@ move /Y polycampus.mbtiles ..\tileserver-data\
 
 REM Create search query data
 osmium export -o polycampus.geojson polycampus.osm --overwrite
-node filter-search-queries.js > output.geojson
+node filter-search-queries.js > ..\public\output.geojson
 
 REM Create data for routing server
 docker run -t -v "%cd%":/data ghcr.io/project-osrm/osrm-backend osrm-extract -p /data/foot.lua /data/polycampus.osm.pbf

@@ -5,6 +5,8 @@ if ! command -v "osmium" 2>&1 >/dev/null; then
     exit 1
 fi
 
+mkdir -p public
+
 cd osm
 
 # Create data for tileserver-gl
@@ -15,7 +17,7 @@ mv -f polycampus.mbtiles ../tileserver-data/
 
 # Create search query data
 osmium export -o polycampus.geojson polycampus.osm --overwrite
-node filter-search-queries.js > output.geojson
+node filter-search-queries.js > ../public/output.geojson
 
 # Create data for routing server
 docker run -t -v $(pwd):/data ghcr.io/project-osrm/osrm-backend osrm-extract -p /data/foot.lua /data/polycampus.osm.pbf
