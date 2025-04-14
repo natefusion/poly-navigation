@@ -11,8 +11,10 @@
       <div id="map"></div>
 
       <div id="searchui">
-        <button id="menu_button" class="menu_button" popovertarget="menu">Menu</button>
-
+        <div id="button_container">
+          <button id="menu_button" class="menu_button" popovertarget="menu">Menu</button>
+          <button id="update_location" class="menu_button">Update Location</button>
+        </div>
         <div id="menu" popover="manual">
           <button popovertarget="menu" class="gen_button">Back</button>
           <h1>Saved Locations</h1>
@@ -38,11 +40,11 @@
           <div id="login_popup" popover="manual">
             <h1 id="input-title" class="input-label">Log-in</h1>
             <div class="login-input-container">
-              <label for="input_username" class="input-label">Enter your username</label>
-              <input type="text" name="username" id="input-username">
+              <label for="input_username_login" class="input-label">Enter your username</label>
+              <input type="text" name="username" id="input_username_login">
 
-              <label for="input_password" class="input-label">Enter your password</label>
-              <input type="password" name="password" id="input-password">
+              <label for="input_password_login" class="input-label">Enter your password</label>
+              <input type="password" name="password" id="input_password_login">
             </div>
             <div class="login-btn-container">
               <button id="confirm_button" class="gen_button">Confirm</button>
@@ -54,12 +56,12 @@
           <div id="signup_popup" popover="manual">
             <h1 id="input-title" class="input-label">Sign-up</h1>
             <div class="login-input-container">
-              <label for="input_username" class="input-label">Enter your username</label>
-              <input type="text" name="username" id="input-username">
+              <label for="input_username_signup" class="input-label">Enter your username</label>
+              <input type="text" name="username" id="input_username_signup">
 
-              <label for="input_password" class="input-label">Enter your password</label>
-              <label for="input_password" class="input-label">Your password must contain . . . . . . </label>
-              <input type="password" name="password" id="input-password">
+              <label for="input_password_signup" class="input-label">Enter your password</label>
+              <label for="input_password_signup" class="input-label">Your password must contain . . . . . . </label>
+              <input type="password" name="password" id="input_password_signup">
 
               <label for="input_password" class="input-label">Re-Enter your password</label>
               <input type="password" name="password" id="input-password">

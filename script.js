@@ -115,7 +115,7 @@ const map = new maplibregl.Map({
 });
 
 // Add navigation controls
-map.addControl(new maplibregl.NavigationControl());
+map.addControl(new maplibregl.NavigationControl(), 'bottom-right');
 
 const marker1 = new maplibregl.Marker({draggable: false}).setLngLat([0,0]).addTo(map);
 
@@ -171,12 +171,13 @@ function reRoute() {
     }
 }
 
-function geolocation_callback(pos) {
+function geolocation_route_callback(pos) {
     geolocation = pos.coords;
     marker1.setLngLat([geolocation.longitude, geolocation.latitude]);
-    // console.log(`Current position: ${geolocation.longitude},${geolocation.latitude}`);
-
     reRoute();
+}
+
+function geolocation_callback(pos) {
 }
 
 function geolocation_error(err) {
@@ -203,8 +204,6 @@ searchbox.addEventListener('focusin', () => {
     if (searchbox.value.length === 0) {
         showme(othersearch);
     }
-
-    
 });
 
 document.addEventListener("focusin", (event) => {
@@ -236,7 +235,7 @@ begin_navigation.onclick = function() {
     showme(navigationdirections);
 
     geolocation_id = navigator.geolocation.watchPosition(
-        geolocation_callback,
+        geolocation_route_callback,
         geolocation_error,
         {
             enableHighAccuracy: false,
@@ -291,6 +290,24 @@ bookmark_checkbox.onclick = function() {
     load_bookmarks();
 }
 
+update_location.onclick = function() {
+    update_location.disabled = true;
+    navigator.geolocation.getCurrentPosition(
+        (pos) => {
+            geolocation = pos.coords;
+            marker1.setLngLat([geolocation.longitude, geolocation.latitude]);
+            console.log(`Current position: ${geolocation.longitude},${geolocation.latitude}`);
+            update_location.disabled = false;
+        },
+        geolocation_error,
+        {
+            enableHighAccuracy: true,
+            timeout: 20000,
+            maximumAge: 30000
+        }
+    );
+}
+
 navigator.permissions.query({name:'geolocation'}).then(function(result) {
     if (result.state == 'granted') {
         console.log("Already acquired geolocation permission ...");
@@ -299,9 +316,9 @@ navigator.permissions.query({name:'geolocation'}).then(function(result) {
         navigator.geolocation.getCurrentPosition(
             (pos) => {
                 geolocation = pos.coords;
-                marker1.setLngLat([geolocation.longitude, geolocation.latitude])
+                marker1.setLngLat([geolocation.longitude, geolocation.latitude]);
+                console.log(`Current position: ${geolocation.longitude},${geolocation.latitude}`);
             },
-            geolocation_callback,
             geolocation_error,
             {
                 enableHighAccuracy: true,
