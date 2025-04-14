@@ -120,7 +120,7 @@ map.addControl(new maplibregl.NavigationControl());
 const marker1 = new maplibregl.Marker({draggable: false}).setLngLat([0,0]).addTo(map);
 
 const marker2 = new maplibregl.Marker({draggable: false})
-      .setLngLat([-81.848914, 28.148263])
+      .setLngLat([0, 0])
       .addTo(map);
 
 function reRoute() {
@@ -173,8 +173,8 @@ function reRoute() {
 
 function geolocation_callback(pos) {
     geolocation = pos.coords;
-    marker1.setLngLat([geolocation.latitude, geolocation.longitude])
-    // console.log(`Current position: ${geolocation.latitude},${geolocation.longitude}`);
+    marker1.setLngLat([geolocation.longitude, geolocation.latitude]);
+    // console.log(`Current position: ${geolocation.longitude},${geolocation.latitude}`);
 
     reRoute();
 }
@@ -201,7 +201,6 @@ navigate_button.onclick = function() {
 searchbox.addEventListener('focusin', () => {
     searchresults_wrapper.style.visibility = 'visible';
     if (searchbox.value.length === 0) {
-        // recentsearches_div.innerHTML = '<button class="button">Example Search</button><button class="button">Another example search</button>';
         showme(othersearch);
     }
 
@@ -298,6 +297,10 @@ navigator.permissions.query({name:'geolocation'}).then(function(result) {
     } else if (result.state == 'prompt') {
         console.log("Getting geolocation permission ...");
         navigator.geolocation.getCurrentPosition(
+            (pos) => {
+                geolocation = pos.coords;
+                marker1.setLngLat([geolocation.longitude, geolocation.latitude])
+            },
             geolocation_callback,
             geolocation_error,
             {
