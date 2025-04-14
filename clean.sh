@@ -8,7 +8,7 @@ cd ..
 
 
 rm -f public/functions.js public/output.geojson
-rm -d public
+rm -rf public
 rm -rf dist/
 
 cd osm
