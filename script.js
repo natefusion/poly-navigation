@@ -25,7 +25,8 @@ const fuseOptions = {
 	// fieldNormWeight: 1,
 	keys: [
 		"name",
-		"addr:unit"
+		"addr:unit",
+        "tags"
 	]
 };
 

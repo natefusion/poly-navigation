@@ -28,7 +28,13 @@ function removeDuplicates(data) {
 }
 
 const pruned = with_polynav.map((x) => Object.assign(x["properties"], x["geometry"]["coordinates"]));
-const output = removeDuplicates(pruned);
+let output = removeDuplicates(pruned);
+
+output.forEach((x) => {
+    if ("tags" in x) {
+        x.tags = x.tags.split(',').map((x)=>x.trim());
+    }
+});
 
 console.log(JSON.stringify(output));
 
