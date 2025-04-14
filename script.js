@@ -117,11 +117,9 @@ const map = new maplibregl.Map({
 // Add navigation controls
 map.addControl(new maplibregl.NavigationControl());
 
-const marker1 = new maplibregl.Marker({draggable: true})
-      .setLngLat([-81.848914, 28.148263])
-      .addTo(map);
+const marker1 = new maplibregl.Marker({draggable: false}).setLngLat([0,0]).addTo(map);
 
-const marker2 = new maplibregl.Marker({draggable: true})
+const marker2 = new maplibregl.Marker({draggable: false})
       .setLngLat([-81.848914, 28.148263])
       .addTo(map);
 
@@ -173,20 +171,17 @@ function reRoute() {
     }
 }
 
-marker1.on('dragend', () => {
-    const lngLat = marker1.getLngLat();
-    showme(coordinates);
-    coordinates.classList.remove('hidden');
-    coordinates.innerHTML =
-        `Longitude: ${lngLat.lng}<br />Latitude: ${lngLat.lat}`;
-});
+function geolocation_callback(pos) {
+    geolocation = pos.coords;
+    marker1.setLngLat([geolocation.latitude, geolocation.longitude])
+    // console.log(`Current position: ${geolocation.latitude},${geolocation.longitude}`);
 
-marker2.on('dragend', () => {
-    const lngLat = marker2.getLngLat();
-    showme(coordinates);
-    coordinates.innerHTML =
-        `Longitude: ${lngLat.lng}<br />Latitude: ${lngLat.lat}`;
-});
+    reRoute();
+}
+
+function geolocation_error(err) {
+  console.error(`ERROR(${err.code}): ${err.message}`);
+}
 
 navigate_button.onclick = function() {
     hideme(searchui);
@@ -240,6 +235,16 @@ begin_navigation.onclick = function() {
     reRoute();
     hideme(navigationoverview);
     showme(navigationdirections);
+
+    geolocation_id = navigator.geolocation.watchPosition(
+        geolocation_callback,
+        geolocation_error,
+        {
+            enableHighAccuracy: false,
+            timeout: 20000,
+            maximumAge: 30000
+        }
+    );
 }
 
 exit_navigation.onclick = function() {
@@ -251,6 +256,14 @@ exit_navigation.onclick = function() {
 
     searchbox.value = '';
     searchresults.innerHTML = '';
+
+    if (geolocation_id === undefined) {
+        console.log("geolocation_id is undefined, what the heck.");
+    } else {
+        navigator.geolocation.clearWatch(geolocation_id);
+    }
+    
+    geolocation_id = undefined;
 };
 
 toggle_all_locations_button.onclick = function() {
@@ -278,3 +291,23 @@ bookmark_checkbox.onclick = function() {
 
     load_bookmarks();
 }
+
+navigator.permissions.query({name:'geolocation'}).then(function(result) {
+    if (result.state == 'granted') {
+        console.log("Already acquired geolocation permission ...");
+    } else if (result.state == 'prompt') {
+        console.log("Getting geolocation permission ...");
+        navigator.geolocation.getCurrentPosition(
+            geolocation_callback,
+            geolocation_error,
+            {
+                enableHighAccuracy: true,
+                timeout: 20000,
+                maximumAge: 30000
+            }
+        );
+    } else if (result.state == 'denied') {
+        console.log("Did not get geolocation permission ...");
+    }
+});
+

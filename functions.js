@@ -16,6 +16,9 @@ var bookmarks = new Set();
 var recent_searches = new Array();
 const max_recent_searches = 5;
 
+let geolocation = undefined;
+let geolocation_id = undefined;
+
 function httpGet(theUrl) {
     var xmlHttp = new XMLHttpRequest();
     xmlHttp.open("GET", theUrl, false); // false for synchronous request
