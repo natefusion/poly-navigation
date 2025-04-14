@@ -77,6 +77,7 @@ body {
     font-weight: bold;
     color: purple;
     cursor: pointer;
+    padding: 1em;
 }
 
 .menu_button:hover {
@@ -107,6 +108,7 @@ body {
     color: purple;
     cursor: pointer;
     box-sizing: border-box;
+    padding: 1em;
 }
 
 .gen_button:hover {

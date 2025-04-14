@@ -74,11 +74,8 @@ const map = new maplibregl.Map({
 // Add navigation controls
 map.addControl(new maplibregl.NavigationControl(), 'bottom-right');
 
-const marker1 = new maplibregl.Marker({draggable: false}).setLngLat([0,0]).addTo(map);
-
-const marker2 = new maplibregl.Marker({draggable: false})
-      .setLngLat([0, 0])
-      .addTo(map);
+const marker1 = new maplibregl.Marker({draggable: true, color: '#FF0000'});
+const marker2 = new maplibregl.Marker({draggable: false});
 
 function reRoute() {
     const src = marker1.getLngLat();
@@ -128,15 +125,6 @@ function reRoute() {
     }
 }
 
-function geolocation_route_callback(pos) {
-    geolocation = pos.coords;
-    marker1.setLngLat([geolocation.longitude, geolocation.latitude]);
-    reRoute();
-}
-
-function geolocation_callback(pos) {
-}
-
 function geolocation_error(err) {
   console.error(`ERROR(${err.code}): ${err.message}`);
 }
@@ -148,10 +136,11 @@ navigate_button.onclick = function() {
     hideme(navigationdirections);
 
     if (selecting_end_location) {
-        marker2.setLngLat([geo[end_location_idx][0],geo[end_location_idx][1]]);
+        marker2.setLngLat(end_location).addTo(map);
         end_location_name.innerHTML = item_name.innerHTML;
     } else {
-        marker1.setLngLat([geo[start_location_idx][0],geo[start_location_idx][1]]);
+        start_at_geolocation = false;
+        marker1.setLngLat(start_location);
         start_location_name.innerHTML = item_name.innerHTML;
     }
 };
@@ -187,19 +176,27 @@ select_end_location.onclick = function() {
 };
 
 begin_navigation.onclick = function() {
-    reRoute();
+    if (start_at_geolocation) {
+        geolocation_id = navigator.geolocation.watchPosition(
+            (pos) => {
+                geolocation = pos.coords;
+                start_location = [geolocation.longitude, geolocation.latitude];
+                marker1.setLngLat(start_location);
+                reRoute();
+            },
+            geolocation_error,
+            {
+                enableHighAccuracy: false,
+                timeout: 20000,
+                maximumAge: 30000
+            }
+        );
+    } else {
+        reRoute();
+    }
+
     hideme(navigationoverview);
     showme(navigationdirections);
-
-    geolocation_id = navigator.geolocation.watchPosition(
-        geolocation_route_callback,
-        geolocation_error,
-        {
-            enableHighAccuracy: false,
-            timeout: 20000,
-            maximumAge: 30000
-        }
-    );
 }
 
 exit_navigation.onclick = function() {
@@ -209,6 +206,9 @@ exit_navigation.onclick = function() {
     map.removeLayer('route');
     map.removeSource('route');
 
+    marker1.remove();
+    marker2.remove();
+
     searchbox.value = '';
     searchresults.innerHTML = '';
 
@@ -217,7 +217,9 @@ exit_navigation.onclick = function() {
     } else {
         navigator.geolocation.clearWatch(geolocation_id);
     }
-    
+
+    selecting_end_location = true;
+    start_at_geolocation = true;
     geolocation_id = undefined;
 };
 
@@ -265,13 +267,31 @@ update_location.onclick = function() {
     );
 }
 
+update_location_before_navigation.onclick = function() {
+    update_location_before_navigation.disabled = true;
+    navigator.geolocation.getCurrentPosition(
+        (pos) => {
+            geolocation = pos.coords;
+            marker1.setLngLat([geolocation.longitude, geolocation.latitude]);
+            console.log(`Current position: ${geolocation.longitude},${geolocation.latitude}`);
+            update_location_before_navigation.disabled = false;
+        },
+        geolocation_error,
+        {
+            enableHighAccuracy: true,
+            timeout: 20000,
+            maximumAge: 30000
+        }
+    );
+}
+
 navigator.permissions.query({name:'geolocation'}).then(function(result) {
     if (result.state == 'prompt' || result.state == 'granted') {
         console.log("Getting geolocation permission ...");
         navigator.geolocation.getCurrentPosition(
             (pos) => {
                 geolocation = pos.coords;
-                marker1.setLngLat([geolocation.longitude, geolocation.latitude]);
+                marker1.setLngLat([geolocation.longitude, geolocation.latitude]).addTo(map);
                 console.log(`Current position: ${geolocation.longitude},${geolocation.latitude}`);
             },
             geolocation_error,
@@ -285,4 +305,3 @@ navigator.permissions.query({name:'geolocation'}).then(function(result) {
         console.log("Did not get geolocation permission ...");
     }
 });
-

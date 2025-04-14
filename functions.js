@@ -4,8 +4,9 @@ const geo = JSON.parse(httpGet('/output.geojson'));
 var selecting_end_location = true;
 var selected_item_idx = -1;
 
-var start_location_idx = -1;
-var end_location_idx = -1;
+var start_location = undefined;
+var end_location = undefined;
+var start_at_geolocation = true;
 
 var load_items_completed = false;
 
@@ -29,9 +30,9 @@ function httpGet(theUrl) {
 function load_item_details(items_idx, searching = false) {
     selected_item_idx = items_idx;
     if (selecting_end_location) {
-        end_location_idx = items_idx;
+        end_location = [geo[selected_item_idx][0],geo[selected_item_idx][1]];
     } else {
-        start_location_idx = items_idx;
+        start_location = [geo[selected_item_idx][0],geo[selected_item_idx][1]];
     }
     item_name.innerHTML = geo[items_idx].name;
 

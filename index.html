@@ -13,7 +13,7 @@
       <div id="searchui">
         <div id="button_container">
           <button id="menu_button" class="menu_button" popovertarget="menu">Menu</button>
-          <button id="update_location" class="menu_button">Update Location</button>
+          <button id="update_location" class="menu_button">Get Geolocation</button>
         </div>
         <div id="menu" popover="manual">
           <button popovertarget="menu" class="gen_button">Back</button>
@@ -109,10 +109,11 @@
       
       <div id="navigationui" class="hidden">
         <div id="navigationoverview">
-          <h1>Start location</h1>
-          <p id="start_location_name">Current Geographic location</p>
+          <h1 style="color: red">Start location</h1>
+          <p id="start_location_name">Location of Red Pin</p>
           <button id="select_start_location" class="gen_button">Select Start Location</button>
-          <h1>End location</h1>
+          <button id="update_location_before_navigation" class="menu_button">Get Geolocation</button>
+          <h1 style="color: #3FB1CE">End location</h1>
           <p id="end_location_name"></p>
           <div class="nav_buttons_container">
             <button id="select_end_location" class="gen_button">Select End Location</button>
