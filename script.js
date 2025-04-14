@@ -206,7 +206,6 @@ exit_navigation.onclick = function() {
     map.removeLayer('route');
     map.removeSource('route');
 
-    marker1.remove();
     marker2.remove();
 
     searchbox.value = '';
