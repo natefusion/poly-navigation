@@ -42,50 +42,6 @@ searchbox.addEventListener("input", (e) => {
             
     const items = fuse.search(text);
     if (items.length > 0) {
-        let geometry = items[0].item.geometry;
-
-        let source = map.getSource('outline');
-        if (source) {
-            map.style.setGeoJSONSourceData('outline', {
-                "type": "FeatureCollection",
-                "features": [
-                    {
-                        "type": "Feature",
-                        "properties": {},
-                        "geometry": geometry
-                    }
-                ]
-            });
-        } else {
-            map.addSource('outline', {
-                'type': 'geojson',
-                'data':{
-                    "type": "FeatureCollection",
-                    "features": [
-                        {
-                            "type": "Feature",
-                            "properties": {},
-                            "geometry":  geometry
-                        }
-                    ]
-                }
-            });
-
-            map.addLayer({
-                'id': 'outline',
-                'type': 'line',
-                'source': 'outline',
-                'layout': {
-                    'line-join': 'round',
-                    'line-cap': 'round'
-                },
-                'paint': {
-                    'line-color': '#F00',
-                    'line-width': 8
-                }
-            });
-        }
-
         let list = '';
         for (const item of items) {
             list += `<button onclick="load_item_details('${item.refIndex}', true)" class="button" popovertarget="item_details">${item.item.name}</button>`
