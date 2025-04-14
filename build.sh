@@ -7,6 +7,8 @@ fi
 
 mkdir -p public
 
+cp functions.js public/
+
 cd osm
 
 # Create data for tileserver-gl
