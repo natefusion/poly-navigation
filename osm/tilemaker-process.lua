@@ -9,7 +9,7 @@
 -- Preferred language can be (for example) "en" for English, "de" for German, or nil to use OSM's name tag:
 preferred_language = "en"
 -- This is written into the following vector tile attribute (usually "name:latin"):
-preferred_language_attribute = "name:latin"
+preferred_language_attribute = "name:en"
 -- If OSM's name tag differs, then write it into this attribute (usually "name_int"):
 default_language_attribute = "name_int"
 -- Also write these languages if they differ - for example, { "de", "fr" }
@@ -52,7 +52,7 @@ unpavedValues = Set { "unpaved", "compacted", "dirt", "earth", "fine_gravel", "g
 
 -- Process node tags
 
-node_keys = { "addr:housenumber","aerialway","aeroway","amenity","barrier","highway","historic","leisure","natural","office","place","railway","shop","sport","tourism","waterway" }
+node_keys = { "addr:housenumber","aerialway","aeroway","amenity","barrier","highway","historic","leisure","natural","office","place","railway","shop","sport","tourism","waterway","indoor" }
 
 -- Get admin level which the place node is capital of.
 -- Returns nil in case of invalid capital and for places which are not capitals.
@@ -121,6 +121,18 @@ end
 
 
 function node_function()
+    local indoor = Find("indoor")
+    if indoor ~= "" then
+        Layer("indoor", false);
+        Attribute("class", "indoor")
+        Attribute("subclass", indoor)
+        local ak = AllKeys()
+        local at = AllTags()
+        for _, value in ipairs(ak, at) do
+            Attribute(value, Find(value))
+        end
+    end
+    
 	-- Write 'aerodrome_label'
 	local aeroway = Find("aeroway")
 	if aeroway == "aerodrome" then
@@ -246,9 +258,9 @@ landcoverKeys   = { wood="wood", forest="wood",
 
 -- POI key/value pairs: based on https://github.com/openmaptiles/openmaptiles/blob/master/layers/poi/mapping.yaml
 poiTags         = { aerialway = Set { "station" },
-					amenity = Set { "arts_centre", "bank", "bar", "bbq", "bicycle_parking", "bicycle_rental", "biergarten", "bus_station", "cafe", "cinema", "clinic", "college", "community_centre", "courthouse", "dentist", "doctors", "embassy", "fast_food", "ferry_terminal", "fire_station", "food_court", "fuel", "grave_yard", "hospital", "ice_cream", "kindergarten", "library", "marketplace", "motorcycle_parking", "nightclub", "nursing_home", "parking", "pharmacy", "place_of_worship", "police", "post_box", "post_office", "prison", "pub", "public_building", "recycling", "restaurant", "school", "shelter", "swimming_pool", "taxi", "telephone", "theatre", "toilets", "townhall", "university", "veterinary", "waste_basket" },
+					amenity = Set { "arts_centre", "bank", "bar", "bbq", "bicycle_parking", "bicycle_rental", "biergarten", "bus_station", "cafe", "cinema", "clinic", "college", "community_centre", "courthouse", "dentist", "doctors", "embassy", "fast_food", "ferry_terminal", "fire_station", "food_court", "fuel", "grave_yard", "hospital", "ice_cream", "kindergarten", "library", "marketplace", "motorcycle_parking", "nightclub", "nursing_home", "parking", "pharmacy", "place_of_worship", "police", "post_box", "post_office", "prison", "pub", "public_building", "recycling", "restaurant", "school", "shelter", "swimming_pool", "taxi", "telephone", "theatre", "toilets", "townhall", "university", "veterinary", "waste_basket", "fitness_centre" },
 					barrier = Set { "bollard", "border_control", "cycle_barrier", "gate", "lift_gate", "sally_port", "stile", "toll_booth" },
-					building = Set { "dormitory" },
+					building = Set { "dormitory", "university" },
 					highway = Set { "bus_stop" },
 					historic = Set { "monument", "castle", "ruins" },
 					landuse = Set { "basin", "brownfield", "cemetery", "reservoir", "winter_sports" },
@@ -457,29 +469,23 @@ function way_function()
 
     -- Indoor paths
     if indoor ~= "" then
-
         is_area = false
         if indoor == "area" or indoor == "room" then
             is_area = true
         end
 
         local stairs = Find("stairs")
-        local add_stairs_attr = false
         if stairs == "yes" then
             is_area = false
-            add_stairs_attr = true
         end
 
         Layer("indoor", is_area)
 
-        -- these should go after the Layer function call for whatever reason
-        Attribute("level", Find("level"))
-        if add_stairs_attr then 
-            Attribute("stairs", "yes")
+        local ak = AllKeys()
+        local at = AllTags()
+        for _, value in ipairs(ak, at) do
+            Attribute(value, Find(value))
         end
-        SetNameAttributes()
-        Attribute("class", "indoor")
-        Attribute("subclass", indoor)
     end
 
 	-- Roads ('transportation' and 'transportation_name')

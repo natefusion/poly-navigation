@@ -4838,7 +4838,7 @@
                 "symbol-sort-key": ["to-number", ["get", "rank"]],
                 "text-anchor": "center",
                 "text-field": ["coalesce", ["get", "name:en"], ["get", "name"]],
-                "text-font": ["Open Sans Bold Italic"],
+                "text-font": ["Open Sans Bold"],
                 "text-max-width": 14,
                 "text-offset": [0, 0],
                 "text-padding": 2,
@@ -4874,7 +4874,7 @@
                 "symbol-sort-key": ["to-number", ["get", "rank"]],
                 "text-anchor": "center",
                 "text-field": ["coalesce", ["get", "name:en"], ["get", "name"]],
-                "text-font": ["Open Sans Semibold Italic"],
+                "text-font": ["Open Sans Semibold"],
                 "text-max-width": 9,
                 "text-offset": [0, 0],
                 "text-padding": 2,
@@ -4947,7 +4947,7 @@
                 "symbol-sort-key": ["to-number", ["get", "rank"]],
                 "text-anchor": "top",
                 "text-field": ["coalesce", ["get", "name:en"], ["get", "name"]],
-                "text-font": ["Open Sans Semibold Italic"],
+                "text-font": ["Open Sans Semibold"],
                 "text-max-width": 9,
                 "text-offset": [0, 1.2],
                 "text-padding": 2,
@@ -5453,7 +5453,7 @@
                 "symbol-sort-key": ["to-number", ["get", "rank"]],
                 "text-anchor": "top",
                 "text-field": ["coalesce", ["get", "name:en"], ["get", "name"]],
-                "text-font": ["Open Sans Semibold Italic"],
+                "text-font": ["Open Sans Semibold"],
                 "text-max-width": 6,
                 "text-padding": 2,
                 "text-size": {"stops": [[14, 13], [20, 16]]},
@@ -5483,7 +5483,7 @@
                 "symbol-sort-key": ["to-number", ["get", "rank"]],
                 "text-anchor": "top",
                 "text-field": ["coalesce", ["get", "name:en"], ["get", "name"]],
-                "text-font": ["Open Sans Semibold Italic"],
+                "text-font": ["Open Sans Semibold"],
                 "text-max-width": 9,
                 "text-offset": [0, 1.1],
                 "text-padding": 2,
@@ -5934,7 +5934,7 @@
                 "symbol-spacing": 150,
                 "text-allow-overlap": false,
                 "text-field": ["coalesce", ["get", "name:en"], ["get", "name"]],
-                "text-font": ["Open Sans Semibold Italic"],
+                "text-font": ["Open Sans Semibold"],
                 "text-max-width": {"stops": [[12, 5], [18, 8]]},
                 "text-size": {"stops": [[15, 10], [20, 13]]},
                 "visibility": "visible"
@@ -5959,7 +5959,7 @@
                 "symbol-spacing": 150,
                 "text-allow-overlap": false,
                 "text-field": ["coalesce", ["get", "name:en"], ["get", "name"]],
-                "text-font": ["Open Sans Semibold Italic"],
+                "text-font": ["Open Sans Semibold"],
                 "text-size": 12,
                 "visibility": "visible"
             },
@@ -6235,8 +6235,7 @@
             "filter": [
                 "all",
                 ["==", "$type", "LineString"],
-                ["==", "class", "indoor"],
-                ["==", "subclass", "corridor"]
+                ["==", "indoor", "corridor"]
 
             ],
             "paint": {
@@ -6253,7 +6252,7 @@
             "filter": [
                 "all",
                 ["==", "$type", "LineString"],
-                ["==", "class", "indoor"],
+                ["has", "indoor"],
                 ["==", "stairs", "yes"]
 
             ],
@@ -6271,8 +6270,7 @@
             "filter": [
                 "all",
                 ["==", "$type", "Polygon"],
-                ["==", "class", "indoor"],
-                ["==", "subclass", "area"]
+                ["==", "indoor", "area"]
 
             ],
             "paint": {"fill-color": "hsl(311, 29%, 89%)", "fill-opacity": 0.5}
@@ -6286,11 +6284,83 @@
             "filter": [
                 "all",
                 ["==", "$type", "Polygon"],
-                ["==", "class", "indoor"],
-                ["==", "subclass", "room"]
+                ["==", "indoor", "room"]
 
             ],
             "paint": {"fill-color": "hsl(211, 29%, 89%)", "fill-opacity": 0.5}
+        },
+        {
+            "id": "Classroom entrances",
+            "type": "symbol",
+            "source": "openmaptiles",
+            "source-layer": "indoor",
+            "minzoom": 19,
+            "layout": {
+                "icon-allow-overlap": false,
+                "icon-image": "circle",
+                "text-anchor": "top",
+                "text-field": [
+                    "coalesce",
+                    ["get", "name:en"],
+                    ["get", "name"]
+                ],
+                "text-font": ["Open Sans Semibold"],
+                "text-max-width": 15,
+                "text-offset": [0, 1],
+                "text-padding": 2,
+                "text-size": {"stops": [[15, 10], [20, 11]]},
+                "visibility": "visible"
+            },
+            
+            "filter": [
+                "all",
+                ["==", "$type", "Point"],
+                ["==", "indoor", "door"]
+
+            ],
+            "paint": {
+                "icon-color": "hsl(0, 0%, 0%)",
+                "icon-halo-blur": 1,
+                "icon-halo-color": "hsl(0, 0%, 100%)",
+                "icon-halo-width": 0.5
+            }
+        },
+        {
+            "id": "Vending machines",
+            "type": "symbol",
+            "source": "openmaptiles",
+            "source-layer": "indoor",
+            "minzoom": 19,
+            "layout": {
+                "icon-allow-overlap": false,
+                "icon-image": "cafe",
+                "text-anchor": "top",
+                "text-field": [
+                    "coalesce",
+                    ["get", "name:en"],
+                    ["get", "name"]
+                ],
+                "text-font": ["Open Sans Semibold"],
+                "text-max-width": 15,
+                "text-offset": [0, 1],
+                "text-padding": 2,
+                "text-size": {"stops": [[15, 10], [20, 11]]},
+                "visibility": "visible"
+            },
+            
+            "filter": [
+                "all",
+                ["==", "$type", "Point"],
+                ["==", "indoor", "yes"],
+                ["==", "amenity", "vending_machine"]
+
+            ],
+            "paint": {
+                "icon-color": "hsl(0, 0%, 0%)",
+                "icon-halo-blur": 1,
+                "icon-halo-color": "hsl(0, 0%, 100%)",
+                "icon-halo-width": 0.5
+            }
         }
     ]
 }
