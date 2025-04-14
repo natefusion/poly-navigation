@@ -309,9 +309,7 @@ update_location.onclick = function() {
 }
 
 navigator.permissions.query({name:'geolocation'}).then(function(result) {
-    if (result.state == 'granted') {
-        console.log("Already acquired geolocation permission ...");
-    } else if (result.state == 'prompt') {
+    if (result.state == 'prompt' || result.state == 'granted') {
         console.log("Getting geolocation permission ...");
         navigator.geolocation.getCurrentPosition(
             (pos) => {
