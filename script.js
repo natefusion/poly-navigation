@@ -6,7 +6,7 @@ const text_instructions = new OSRMTextInstructions('v5');
 
 import Fuse from 'fuse.js';
 
-// import '/functions.js';
+import './public/functions.js';
 
 const fuseOptions = {
 	// isCaseSensitive: false,
