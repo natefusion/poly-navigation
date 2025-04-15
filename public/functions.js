@@ -32,11 +32,12 @@ function load_item_details(items_idx, searching = false) {
     let item = geo[selected_item_idx];
     if (selecting_end_location) {
         end_location = [item[0],item[1]];
-
         little_map.jumpTo({center: end_location});
+        little_map_marker.setLngLat(end_location);
     } else {
         start_location = [item[0],item[1]];
         little_map.jumpTo({center: start_location});
+        little_map_marker.setLngLat(start_location);
     }
     item_name.innerHTML = item.name;
 
@@ -54,7 +55,7 @@ function load_item_details(items_idx, searching = false) {
     }
 
     if (item.hasOwnProperty('folder') && item.hasOwnProperty('ref')) {
-        item_image.src = `/images/${item.folder}/${item.ref}.`
+        item_image.src = `/images/${item.folder}/${item.ref}.jpg`
     }
 
     if (item.hasOwnProperty('tags')) {

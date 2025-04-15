@@ -73,11 +73,14 @@ const map = new maplibregl.Map({
     zoom: 17 // Zoom level
 });
 
-const little_map = new maplibregl.Map({
+window.little_map = new maplibregl.Map({
     container: 'item_map',
     style: '/tiles/styles/osm-real/style.json',
+    transformRequest: transform_request,
+    interactive: false,
     zoom: 19
 });
+window.little_map_marker = new maplibregl.Marker({draggable: false}).setLngLat([0,0]).addTo(window.little_map);
 
 // Add navigation controls
 map.addControl(new maplibregl.NavigationControl(), 'bottom-right');
