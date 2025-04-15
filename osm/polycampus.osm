@@ -2737,6 +2737,7 @@
     <tag k='payment:visa' v='yes' />
     <tag k='payment:visa_debit' v='yes' />
     <tag k='polynav' v='true' />
+    <tag k='ref' v='mosaic' />
     <tag k='smoking' v='no' />
     <tag k='tags' v='IST, food' />
     <tag k='takeaway' v='only' />

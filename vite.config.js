@@ -14,5 +14,8 @@ export default {
                 rewrite: (path) => path.replace(/^\/tiles/, ''),
             }
         }
-    }
+    },
+    build: {
+        copyPublicDir: false
+    },
 }

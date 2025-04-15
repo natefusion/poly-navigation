@@ -29,12 +29,16 @@ function httpGet(theUrl) {
 
 function load_item_details(items_idx, searching = false) {
     selected_item_idx = items_idx;
+    let item = geo[selected_item_idx];
     if (selecting_end_location) {
-        end_location = [geo[selected_item_idx][0],geo[selected_item_idx][1]];
+        end_location = [item[0],item[1]];
+
+        little_map.jumpTo({center: end_location});
     } else {
-        start_location = [geo[selected_item_idx][0],geo[selected_item_idx][1]];
+        start_location = [item[0],item[1]];
+        little_map.jumpTo({center: start_location});
     }
-    item_name.innerHTML = geo[items_idx].name;
+    item_name.innerHTML = item.name;
 
     bookmark_checkbox.checked = bookmarks.has(selected_item_idx);
 
@@ -48,6 +52,16 @@ function load_item_details(items_idx, searching = false) {
         
         load_recent_searches();
     }
+
+    if (item.hasOwnProperty('folder') && item.hasOwnProperty('ref')) {
+        item_image.src = `/images/${item.folder}/${item.ref}.`
+    }
+
+    if (item.hasOwnProperty('tags')) {
+        item_tags.innerHTML = `<p>${item.tags.toString()}</p>`
+    }
+
+
 }
 
 function showme(el) {

@@ -58,6 +58,10 @@ body {
     background-color: rgb(226, 226, 226);
 }
 
+#item_image {
+    max-width: 100%;
+}
+
 #gen_buttons_container {
     height: 100%;
     width: 100%;

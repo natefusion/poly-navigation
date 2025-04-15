@@ -6,7 +6,7 @@ const text_instructions = new OSRMTextInstructions('v5');
 
 import Fuse from 'fuse.js';
 
-import './functions.js';
+// import '/functions.js';
 
 const fuseOptions = {
 	// isCaseSensitive: false,
@@ -54,21 +54,29 @@ searchbox.addEventListener("input", (e) => {
     }
 });
 
+function transform_request(url, resourceType) {
+    if (url.startsWith(`http://${window.location.hostname}/`) && !url.includes('/tiles/')) {
+        return {
+            url: url.replace(`http://${window.location.hostname}/`, `https://${window.location.hostname}/tiles/`)
+        };
+    }
+    return { url: url };
+}
+
 // Initialize the map
 const map = new maplibregl.Map({
     container: 'map', // ID of the div where the map will be rendered
     style: '/tiles/styles/osm-real/style.json',
     // very LAME
-    transformRequest: (url, resourceType) => {
-        if (url.startsWith(`http://${window.location.hostname}/`) && !url.includes('/tiles/')) {
-            return {
-                url: url.replace(`http://${window.location.hostname}/`, `https://${window.location.hostname}/tiles/`)
-            };
-        }
-        return { url: url };
-    },
+    transformRequest: transform_request,
     center: [-81.848914, 28.148263], // Longitude, Latitude
     zoom: 17 // Zoom level
+});
+
+const little_map = new maplibregl.Map({
+    container: 'item_map',
+    style: '/tiles/styles/osm-real/style.json',
+    zoom: 19
 });
 
 // Add navigation controls
