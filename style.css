@@ -41,7 +41,7 @@ body {
     display: flex;
     align-items: start;
     justify-content: left;
-    padding: 1rem;
+    margin: 1rem;
     flex-direction: column;
     overflow-y: auto;
 }
@@ -50,9 +50,12 @@ body {
   pointer-events: auto; /* re-enable interaction for children like input/buttons */
 }
 
-#item_details, #all_locations_popover, #menu {
-    height: 100%;
-    width: 100%;
+#item_details, #menu {
+    margin: 1rem;
+    padding: 1rem;
+    width: auto;
+    height: auto;
+    background-color: rgb(226, 226, 226);
 }
 
 #gen_buttons_container {
@@ -117,11 +120,6 @@ body {
 
 .gen_button:active {
     background-color: #9122ff1e;
-}
-
-#menu {
-    padding-top: 20px;
-    background-color: rgb(226, 226, 226);
 }
 
 .login-input-container {
