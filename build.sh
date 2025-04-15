@@ -5,10 +5,6 @@ if ! command -v "osmium" 2>&1 >/dev/null; then
     exit 1
 fi
 
-mkdir -p public
-
-cp functions.js public/
-
 cd osm
 
 # Create data for tileserver-gl
