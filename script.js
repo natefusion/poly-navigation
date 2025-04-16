@@ -157,7 +157,6 @@ navigate_button.onclick = function() {
         hideme(end_location_name_initial);
         showme(end_location_name_final);
     } else {
-        start_at_geolocation = false;
         marker1.setLngLat(start_location);
         start_location_name_final.innerHTML = item_name.innerHTML;
         hideme(start_location_name_initial);
@@ -187,6 +186,8 @@ select_start_location.onclick = function() {
     searchresults.innerHTML = '';
     marker1.setDraggable(false);
     hideme(update_location);
+    showme(exit_navigation_when_getting_start_location);
+    start_at_geolocation = false;
 };
 
 select_end_location.onclick = function() {
@@ -224,6 +225,8 @@ begin_navigation.onclick = function() {
     showme(navigationdirections);
 }
 
+
+
 exit_navigation.onclick = function() {
     showme(searchui);
     showme(update_location);
@@ -240,16 +243,15 @@ exit_navigation.onclick = function() {
     searchbox.value = '';
     searchresults.innerHTML = '';
 
-    if (start_at_geolocation) {
-        if (geolocation_id === undefined) {
+    if (geolocation_id === undefined) {
+        if (start_at_geolocation) {
             console.log("geolocation_id is undefined, what the heck.");
-        } else {
-            navigator.geolocation.clearWatch(geolocation_id);
         }
+    } else {
+        navigator.geolocation.clearWatch(geolocation_id);
     }
 
-    selecting_end_location = true;
-    start_at_geolocation = true;
+    selecting_end_location = true;    
     geolocation_id = undefined;
     start_location = undefined;
     end_location = undefined;
@@ -259,7 +261,10 @@ exit_navigation.onclick = function() {
     showme(start_location_name_initial);
     hideme(end_location_name_final);
     hideme(start_location_name_final);
+    hideme(exit_navigation_when_getting_start_location);
 };
+
+exit_navigation_when_getting_start_location.onclick = exit_navigation.onclick;
 
 toggle_all_locations_button.onclick = function() {
     if (load_items_completed === false) {
