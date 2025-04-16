@@ -8,7 +8,7 @@
     },
     "styles": {
         "osm-liberty": {
-            "style": "osm-liberty/style.json",
+            "style": "styles/osm-liberty/style.json",
             "tilejson": {
                 "type": "overlay"
             }     
