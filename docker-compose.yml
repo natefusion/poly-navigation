@@ -4,7 +4,7 @@ services:
     volumes:
       - ./tileserver-data:/data
     ports:
-      - "80:80"
+      - "80:8080"
     # Optional: if the container needs to be re-run from scratch each time
     restart: "no"  
 
