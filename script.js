@@ -162,6 +162,7 @@ navigate_button.onclick = function() {
         start_location_name_final.innerHTML = item_name.innerHTML;
         hideme(start_location_name_initial);
         showme(start_location_name_final);
+        hideme(cancel_select_start_location);
     }
 };
 
