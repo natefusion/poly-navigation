@@ -1,6 +1,4 @@
 #!/bin/sh
 
+build.sh
 npm run build
-docker-compose up &
-
-wait
