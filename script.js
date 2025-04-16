@@ -88,6 +88,8 @@ map.addControl(new maplibregl.NavigationControl(), 'bottom-right');
 const marker1 = new maplibregl.Marker({draggable: true, color: '#FF0000'});
 const marker2 = new maplibregl.Marker({draggable: false});
 
+marker1.on('dragend', function() { start_at_geolocation = false; });
+
 function reRoute() {
     const src = marker1.getLngLat();
     const dst = marker2.getLngLat();
@@ -137,7 +139,10 @@ function reRoute() {
 }
 
 function geolocation_error(err) {
-  console.error(`ERROR(${err.code}): ${err.message}`);
+    console.error(`ERROR(${err.code}): ${err.message}`);
+    marker1.setLngLat([-81.848914, 28.148263]).addTo(map);
+    geolocation_error_popover.togglePopover();
+    start_at_geolocation = false;
 }
 
 navigate_button.onclick = function() {
@@ -148,11 +153,15 @@ navigate_button.onclick = function() {
 
     if (selecting_end_location) {
         marker2.setLngLat(end_location).addTo(map);
-        end_location_name.innerHTML = item_name.innerHTML;
+        end_location_name_final.innerHTML = item_name.innerHTML;
+        hideme(end_location_name_initial);
+        showme(end_location_name_final);
     } else {
         start_at_geolocation = false;
         marker1.setLngLat(start_location);
-        start_location_name.innerHTML = item_name.innerHTML;
+        start_location_name_final.innerHTML = item_name.innerHTML;
+        hideme(start_location_name_initial);
+        showme(start_location_name_final);
     }
 };
 
@@ -176,6 +185,8 @@ select_start_location.onclick = function() {
     selecting_end_location = false;
     searchbox.value = '';
     searchresults.innerHTML = '';
+    marker1.setDraggable(false);
+    hideme(update_location);
 };
 
 select_end_location.onclick = function() {
@@ -188,8 +199,10 @@ select_end_location.onclick = function() {
 
 begin_navigation.onclick = function() {
     if (start_at_geolocation) {
+        console.log("Starting at geolocation ...");
         geolocation_id = navigator.geolocation.watchPosition(
             (pos) => {
+                console.log("Geolocation reacquired");
                 geolocation = pos.coords;
                 start_location = [geolocation.longitude, geolocation.latitude];
                 marker1.setLngLat(start_location);
@@ -203,6 +216,7 @@ begin_navigation.onclick = function() {
             }
         );
     } else {
+        console.log("Starting at red pin or selected location");
         reRoute();
     }
 
@@ -212,25 +226,39 @@ begin_navigation.onclick = function() {
 
 exit_navigation.onclick = function() {
     showme(searchui);
+    showme(update_location);
     hideme(navigationui);
 
-    map.removeLayer('route');
-    map.removeSource('route');
+    if (map.getLayer('route') !== undefined) {
+        map.removeLayer('route');
+        map.removeSource('route');
+    }
 
     marker2.remove();
+    marker1.setDraggable(true);
 
     searchbox.value = '';
     searchresults.innerHTML = '';
 
-    if (geolocation_id === undefined) {
-        console.log("geolocation_id is undefined, what the heck.");
-    } else {
-        navigator.geolocation.clearWatch(geolocation_id);
+    if (start_at_geolocation) {
+        if (geolocation_id === undefined) {
+            console.log("geolocation_id is undefined, what the heck.");
+        } else {
+            navigator.geolocation.clearWatch(geolocation_id);
+        }
     }
 
     selecting_end_location = true;
     start_at_geolocation = true;
     geolocation_id = undefined;
+    start_location = undefined;
+    end_location = undefined;
+    selected_item_idx = undefined;
+    
+    showme(end_location_name_initial);
+    showme(start_location_name_initial);
+    hideme(end_location_name_final);
+    hideme(start_location_name_final);
 };
 
 toggle_all_locations_button.onclick = function() {
@@ -259,14 +287,13 @@ bookmark_checkbox.onclick = function() {
     load_bookmarks();
 }
 
-update_location.onclick = function() {
-    update_location.disabled = true;
+function get_new_location() {
     navigator.geolocation.getCurrentPosition(
         (pos) => {
+            start_at_geolocation = true;
             geolocation = pos.coords;
             marker1.setLngLat([geolocation.longitude, geolocation.latitude]);
             console.log(`Current position: ${geolocation.longitude},${geolocation.latitude}`);
-            update_location.disabled = false;
         },
         geolocation_error,
         {
@@ -277,22 +304,11 @@ update_location.onclick = function() {
     );
 }
 
+update_location.onclick = get_new_location;
 update_location_before_navigation.onclick = function() {
-    update_location_before_navigation.disabled = true;
-    navigator.geolocation.getCurrentPosition(
-        (pos) => {
-            geolocation = pos.coords;
-            marker1.setLngLat([geolocation.longitude, geolocation.latitude]);
-            console.log(`Current position: ${geolocation.longitude},${geolocation.latitude}`);
-            update_location_before_navigation.disabled = false;
-        },
-        geolocation_error,
-        {
-            enableHighAccuracy: true,
-            timeout: 20000,
-            maximumAge: 30000
-        }
-    );
+    get_new_location();
+    showme(start_location_name_initial);
+    hideme(start_location_name_final);
 }
 
 navigator.permissions.query({name:'geolocation'}).then(function(result) {

@@ -2,7 +2,7 @@ const geo = JSON.parse(httpGet('/output.geojson'));
 
 // if true, selecting start_location, if false then end_location
 var selecting_end_location = true;
-var selected_item_idx = -1;
+var selected_item_idx = undefined;
 
 var start_location = undefined;
 var end_location = undefined;
