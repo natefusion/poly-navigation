@@ -11,14 +11,17 @@
       <div id="map"></div>
 
       <div id="searchui">
-        <div id="button_container">
+        <div class="button_container_horizontal">
           <button id="menu_button" class="menu_button" popovertarget="menu">Menu</button>
           <button id="update_location" class="menu_button">Get Geolocation</button>
           <button id="cancel_select_start_location" class="gen_button hidden">Cancel</button>
         </div>
         <div id="menu" popover="manual">
-          <button popovertarget="menu" class="gen_button">Back</button>
-          <h1>Saved Locations</h1>
+          <div>
+            <button popovertarget="menu" class="gen_button">Back</button>
+          </div>
+          <h1 class="section_container">Saved Locations</h1>
+          <h1 class="section_container">Account Information</h1>
           <div id="saved_locations"></div>
           <div id="gen_buttons_container">
             <button popovertarget="login_popup" class="gen_button">Log in</button>
@@ -64,7 +67,7 @@
               <label for="input_password_signup" class="input-label">Your password must contain . . . . . . </label>
               <input type="password" name="password" id="input_password_signup">
 
-              <label for="input_password" class="input-label">Re-Enter your password</label>
+              <label for="input_password" class="input-label">Confirm your password</label>
               <input type="password" name="password" id="input-password">
             </div>
             <div class="signup-btn-container">
@@ -96,39 +99,44 @@
           <button class="gen_button" popovertarget="item_details">Back</button>
           <button id="navigate_button" class="gen_button" popovertarget="item_details">Navigate</button>
           <input type="checkbox" id="bookmark_checkbox"/>
-          <label for="bookmark_checkbox">Bookmark</label>
-          <h1>Name</h1>
-          <p id="item_name"></p>
-          <h1>Tags</h1>
-          <p id="item_tags"></p>
-          <h1>Map</h1>
+          <label for="bookmark_checkbox">Add to Favorites</label>
+          <h1 class="section_container">Name</h1>
+          <p class="gen_text" id="item_name"></p>
+          <h1 class="section_container">Tags</h1>
+          <p class="gen_text" id="item_tags"></p>
+          <h1 class="section_container">Map</h1>
           <div id="item_map"></div>
-          <h1>Image</h1>
+          <h1 class="section_container">Image</h1>
           <img id="item_image" alt="No Image Available"></img>
         </div>
       </div>
       
       <div id="navigationui" class="hidden">
         <div id="navigationoverview">
-          <h1 style="color: red">Start location</h1>
-          <p id="start_location_name_initial">Location of Red Pin</p>
-          <p id="start_location_name_final" class="hidden"></p>
-          <button id="select_start_location" class="gen_button">Select Start Location</button>
-          <button id="update_location_before_navigation" class="menu_button">Get Geolocation</button>
-          <h1 style="color: #3FB1CE">End location</h1>
-          <p id="end_location_name_initial"></p>
-          <p id="end_location_name_final" class="hidden"></p>
+          <h1 class="section_container">Start location</h1>
+          <p class="gen_text" id="start_location_name_initial">Location of Red Pin</p>
+          <p id="start_location_name_final" class="gen-text hidden"></p>
           <div class="nav_buttons_container">
-            <button id="select_end_location" class="gen_button">Select End Location</button>
-            <button id="begin_navigation" class="gen_button">Begin Navigation</button>
+            <button id="select_start_location" class="gen_button nav_buttons">Select Start Location</button>
+            <p class="gen_text" style="align-self: center">or</p>
+            <button id="update_location_before_navigation" class="gen_button nav_buttons">Get Geolocation</button>
+          </div>
+          <h1 class="section_container">End location</h1>
+          <p class="gen_text" id="end_location_name_initial"></p>
+          <p class="gen_text" id="end_location_name_final" class="hidden"></p>
+          <div class="nav_buttons_container">
+            <button id="select_end_location" class="gen_button nav_buttons">Select End Location</button>
+            <button id="begin_navigation" class="gen_button nav_buttons">Begin Navigation</button>
           </div>
         </div>
         <div id="navigationdirections" class="hidden"></div>
-        <button id="exit_navigation" class="gen_button">Exit Navigation</button>
+        <div style="margin-top: 5%;">
+          <button id="exit_navigation" class="gen_button nav_buttons">Exit Navigation</button>
+        </div>
       </div>
 
       <div id="geolocation_error_popover" popover="auto">
-        <p>Could not get geolocation</p>
+        <p class="gen_text">Could not get geolocation</p>
         <button popovertarget="geolocation_error_popover" class="gen_button">Okay</button>
       </div>
 
