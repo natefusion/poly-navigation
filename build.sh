@@ -5,6 +5,8 @@ if ! command -v "osmium" 2>&1 >/dev/null; then
     exit 1
 fi
 
+git log -1 --format=%h > ./public/commit.txt
+
 cd osm
 
 # Create data for tileserver-gl

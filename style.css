@@ -67,6 +67,11 @@ body {
     background-color: rgb(226, 226, 226);
 }
 
+#login_popup, #logout_popup, #about_popup, #signup_popup {
+    padding: 1rem;
+    background-color: rgb(226, 226, 226);
+}
+
 #item_image {
     max-width: 100%;
 }

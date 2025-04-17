@@ -8,6 +8,8 @@ import Fuse from 'fuse.js';
 
 import './public/functions.js';
 
+fetch('/commit.txt').then((req) => req.text()).then((id) => document.getElementById("commit_id").innerHTML = id);
+
 const fuseOptions = {
 	// isCaseSensitive: false,
 	// includeScore: false,

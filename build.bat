@@ -6,7 +6,7 @@ if errorlevel 1 (
     exit /b 1
 )
 
-mkdir public
+git log -1 --format=%h > .\public\commit.txt
 
 REM Change directory to "osm"
 cd osm
