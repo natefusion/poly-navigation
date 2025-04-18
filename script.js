@@ -205,7 +205,7 @@ document.addEventListener("focusin", (event) => {
 
 window.ondeviceorientation = (event) => {
     if (start_at_geolocation) {
-        map.rotateTo(-event.alpha);
+        map.rotateTo(-event.alpha, {center: [geolocation.longitude, geolocation.latitude]});
     }
 };
 
