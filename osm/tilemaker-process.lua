@@ -263,7 +263,7 @@ poiTags         = { aerialway = Set { "station" },
 					building = Set { "dormitory", "university" },
 					highway = Set { "bus_stop" },
 					historic = Set { "monument", "castle", "ruins" },
-					landuse = Set { "basin", "brownfield", "cemetery", "reservoir", "winter_sports" },
+					landuse = Set { "basin", "brownfield", "cemetery", "reservoir", "winter_sports", "recreation_ground" },
 					leisure = Set { "dog_park", "escape_game", "garden", "golf_course", "ice_rink", "hackerspace", "marina", "miniature_golf", "park", "pitch", "playground", "sports_centre", "stadium", "swimming_area", "swimming_pool", "water_park" },
 					railway = Set { "halt", "station", "subway_entrance", "train_station_entrance", "tram_stop" },
 					shop = Set { "accessories", "alcohol", "antiques", "art", "bag", "bakery", "beauty", "bed", "beverages", "bicycle", "books", "boutique", "butcher", "camera", "car", "car_repair", "carpet", "charity", "chemist", "chocolate", "clothes", "coffee", "computer", "confectionery", "convenience", "copyshop", "cosmetics", "deli", "delicatessen", "department_store", "doityourself", "dry_cleaning", "electronics", "erotic", "fabric", "florist", "frozen_food", "furniture", "garden_centre", "general", "gift", "greengrocer", "hairdresser", "hardware", "hearing_aids", "hifi", "ice_cream", "interior_decoration", "jewelry", "kiosk", "lamps", "laundry", "mall", "massage", "mobile_phone", "motorcycle", "music", "musical_instrument", "newsagent", "optician", "outdoor", "perfume", "perfumery", "pet", "photo", "second_hand", "shoes", "sports", "stationery", "supermarket", "tailor", "tattoo", "ticket", "tobacco", "toys", "travel_agency", "video", "video_games", "watches", "weapons", "wholesale", "wine" },
@@ -727,6 +727,7 @@ function way_function()
 		if l=="wetland" then Attribute("subclass", Find("wetland"))
 		else Attribute("subclass", l) end
 		write_name = true
+        SetNameAttributes()
 
 	-- Set 'landuse'
 	else

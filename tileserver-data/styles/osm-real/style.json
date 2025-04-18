@@ -430,6 +430,37 @@
             "paint": {"fill-antialias": true, "fill-color": "hsl(126, 100%, 92%)"}
         },
         {
+            "id": "Recreation Ground Labels",
+            "type": "symbol",
+            "source": "openmaptiles",
+            "source-layer": "poi",
+            "minzoom": 16,
+            "filter": ["all", ["==", "subclass", "recreation_ground"]],
+            "layout": {
+                "icon-allow-overlap": false,
+                "icon-offset": [0, 0],
+                "icon-pitch-alignment": "viewport",
+                "icon-text-fit": "none",
+                "symbol-sort-key": ["to-number", ["get", "rank"]],
+                "text-anchor": "center",
+                "text-field": ["coalesce", ["get", "name:en"], ["get", "name"]],
+                "text-font": ["Open Sans Semibold"],
+                "text-max-width": 9,
+                "text-offset": [0, 0],
+                "text-padding": 2,
+                "text-size": 11,
+                "visibility": "visible"
+            },
+            "paint": {
+                "icon-translate-anchor": "map",
+                "text-color": "hsl(60, 100%, 15%)",
+                "text-halo-color": "hsl(0, 0%, 100%)",
+                "text-halo-width": 0.8,
+                "text-translate": [0, 5],
+                "text-translate-anchor": "viewport"
+            }
+        },
+        {
             "id": "Orchard and vineyard",
             "type": "fill",
             "source": "openmaptiles",

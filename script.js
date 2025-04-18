@@ -28,6 +28,8 @@ const fuseOptions = {
 	keys: [
 		"name",
 		"addr:unit",
+        "ref",
+        "folder",
         "tags"
 	]
 };
