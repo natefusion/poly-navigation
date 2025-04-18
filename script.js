@@ -101,7 +101,7 @@ function reRoute() {
     const src = marker1.getLngLat();
     const dst = marker2.getLngLat();
 
-    const str = `/osrm/route/v1/foot/${src.lng},${src.lat};${dst.lng},${dst.lat}?geometries=geojson&steps=true`;
+    const str = `/osrm/route/v1/foot/${src.lng},${src.lat};${dst.lng},${dst.lat}?geometries=geojson&steps=true&overview=full`;
     const route = httpGet(str);
     const json_route = JSON.parse(route);
 
@@ -203,6 +203,12 @@ document.addEventListener("focusin", (event) => {
     }
 });
 
+window.ondeviceorientation = (event) => {
+    if (start_at_geolocation) {
+        map.setBearing(event.alpha);
+    }
+};
+
 select_start_location.onclick = function() {
     showme(searchui);
     hideme(navigationui);
@@ -243,9 +249,9 @@ begin_navigation.onclick = function() {
                 start_location = [geolocation.longitude, geolocation.latitude];
                 marker1.setLngLat(start_location);
             },
-            geolocation_error,
+            (err) => console.error(`ERROR(${err.code}): ${err.message}`),
             {
-                enableHighAccuracy: false,
+                enableHighAccuracy: true,
                 timeout: 20000,
                 maximumAge: 30000
             }
