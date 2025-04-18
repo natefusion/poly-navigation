@@ -203,12 +203,19 @@ document.addEventListener("focusin", (event) => {
     }
 });
 
+let touching_map = false;
+
+map.on('dragstart', () => touching_map = true);
+map.on('zoomstart', () => touching_map = true);
+map.on('rotatestart', () => touching_map = true);
+
+map.on('dragend', () => touching_map = false);
+map.on('zoomend', () => touching_map = false);
+map.on('rotateend', () => touching_map = false);
+
 window.ondeviceorientation = (event) => {
-    if (start_at_geolocation) {
-        map.jumpTo({
-            bearing: -event.alpha,
-            center: [geolocation.longitude, geolocation.latitude]
-        });
+    if (start_at_geolocation && !touching_map) {
+        map.setBearing(-event.alpha);
     }
 };
 
