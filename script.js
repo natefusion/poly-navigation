@@ -90,7 +90,10 @@ map.addControl(new maplibregl.NavigationControl(), 'bottom-right');
 const marker1 = new maplibregl.Marker({draggable: true, color: '#FF0000'});
 const marker2 = new maplibregl.Marker({draggable: false});
 
-marker1.on('dragend', function() { start_at_geolocation = false; });
+marker1.on('dragend', function() {
+    geolocation_ui_handler(false);
+    reRoute()
+});
 
 function reRoute() {
     const src = marker1.getLngLat();
@@ -140,11 +143,22 @@ function reRoute() {
     }
 }
 
+function geolocation_ui_handler(should_start_at_geolocation) {
+    start_at_geolocation = should_start_at_geolocation;
+    if (start_at_geolocation) {
+        showme(tracking_current_geolocation);
+        hideme(not_tracking_current_geolocation);
+    } else {
+        hideme(tracking_current_geolocation);
+        showme(not_tracking_current_geolocation);
+    }
+}
+
 function geolocation_error(err) {
     console.error(`ERROR(${err.code}): ${err.message}`);
     marker1.setLngLat([-81.848914, 28.148263]).addTo(map);
     geolocation_error_popover.togglePopover();
-    start_at_geolocation = false;
+    geolocation_ui_handler(false);
 }
 
 navigate_button.onclick = function() {
@@ -159,13 +173,15 @@ navigate_button.onclick = function() {
         hideme(end_location_name_initial);
         showme(end_location_name_final);
     } else {
-        start_at_geolocation = false;
         marker1.setLngLat(start_location);
         start_location_name_final.innerHTML = item_name.innerHTML;
         hideme(start_location_name_initial);
         showme(start_location_name_final);
         hideme(cancel_select_start_location);
+        geolocation_ui_handler(false);
     }
+
+    reRoute();
 };
 
 searchbox.addEventListener('focusin', () => {
@@ -219,7 +235,6 @@ begin_navigation.onclick = function() {
                 geolocation = pos.coords;
                 start_location = [geolocation.longitude, geolocation.latitude];
                 marker1.setLngLat(start_location);
-                reRoute();
             },
             geolocation_error,
             {
@@ -301,11 +316,31 @@ bookmark_checkbox.onclick = function() {
 }
 
 function get_new_location() {
+    update_location.onclick = function() {
+        navigator.geolocation.getCurrentPosition(
+            (pos) => {
+                start_at_geolocation = true;
+                geolocation = pos.coords;
+                marker1.setLngLat([geolocation.longitude, geolocation.latitude]);
+                console.log(`Current position: ${geolocation.longitude},${geolocation.latitude}`);
+            },
+            geolocation_error,
+            {
+                enableHighAccuracy: true,
+                timeout: 20000,
+                maximumAge: 30000
+            }
+        );
+    }
+};
+
+update_location_before_navigation.onclick = function() {
     navigator.geolocation.getCurrentPosition(
         (pos) => {
-            start_at_geolocation = true;
+            geolocation_ui_handler(true);
             geolocation = pos.coords;
             marker1.setLngLat([geolocation.longitude, geolocation.latitude]);
+            reRoute();
             console.log(`Current position: ${geolocation.longitude},${geolocation.latitude}`);
         },
         geolocation_error,
@@ -315,11 +350,6 @@ function get_new_location() {
             maximumAge: 30000
         }
     );
-}
-
-update_location.onclick = get_new_location;
-update_location_before_navigation.onclick = function() {
-    get_new_location();
     showme(start_location_name_initial);
     hideme(start_location_name_final);
 }
@@ -331,6 +361,7 @@ navigator.permissions.query({name:'geolocation'}).then(function(result) {
             (pos) => {
                 geolocation = pos.coords;
                 marker1.setLngLat([geolocation.longitude, geolocation.latitude]).addTo(map);
+                geolocation_ui_handler(true);
                 console.log(`Current position: ${geolocation.longitude},${geolocation.latitude}`);
             },
             geolocation_error,
