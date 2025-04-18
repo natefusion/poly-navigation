@@ -1,0 +1,9 @@
+[Unit]
+Description=Start the poly-navigation web server
+
+[Service]
+Type=simple
+ExecStart=/home/nthnpiel/start-poly-navigation.sh
+
+[Install]
+WantedBy=default.target
