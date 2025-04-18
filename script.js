@@ -213,6 +213,10 @@ map.on('dragend', () => touching_map = false);
 map.on('zoomend', () => touching_map = false);
 map.on('rotateend', () => touching_map = false);
 
+map.on('touchmove', () => touching_map = true);
+map.on('touchstart', () => touching_map = true);
+map.on('touchend', () => touching_map = false);
+
 window.ondeviceorientation = (event) => {
     if (start_at_geolocation && !touching_map) {
         map.setBearing(-event.alpha);
