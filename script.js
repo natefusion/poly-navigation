@@ -152,6 +152,8 @@ function geolocation_ui_handler(should_start_at_geolocation) {
         hideme(tracking_current_geolocation);
         showme(not_tracking_current_geolocation);
     }
+
+    hideme(geolocation_loader_container);
 }
 
 function geolocation_error(err) {
@@ -159,6 +161,7 @@ function geolocation_error(err) {
     marker1.setLngLat([-81.848914, 28.148263]).addTo(map);
     geolocation_error_popover.togglePopover();
     geolocation_ui_handler(false);
+    hideme(geolocation_loader_container);
 }
 
 navigate_button.onclick = function() {
@@ -228,9 +231,11 @@ select_end_location.onclick = function() {
 
 begin_navigation.onclick = function() {
     if (start_at_geolocation) {
+        showme(geolocation_loader_container);
         console.log("Starting at geolocation ...");
         geolocation_id = navigator.geolocation.watchPosition(
             (pos) => {
+                hideme(geolocation_loader_container);
                 console.log("Geolocation reacquired");
                 geolocation = pos.coords;
                 start_location = [geolocation.longitude, geolocation.latitude];
@@ -315,32 +320,34 @@ bookmark_checkbox.onclick = function() {
     load_bookmarks();
 }
 
-function get_new_location() {
-    update_location.onclick = function() {
-        navigator.geolocation.getCurrentPosition(
-            (pos) => {
-                start_at_geolocation = true;
-                geolocation = pos.coords;
-                marker1.setLngLat([geolocation.longitude, geolocation.latitude]);
-                console.log(`Current position: ${geolocation.longitude},${geolocation.latitude}`);
-            },
-            geolocation_error,
-            {
-                enableHighAccuracy: true,
-                timeout: 20000,
-                maximumAge: 30000
-            }
-        );
-    }
-};
-
-update_location_before_navigation.onclick = function() {
+update_location.onclick = function() {
+    showme(geolocation_loader_container);
     navigator.geolocation.getCurrentPosition(
         (pos) => {
             geolocation_ui_handler(true);
             geolocation = pos.coords;
             marker1.setLngLat([geolocation.longitude, geolocation.latitude]);
-            reRoute();
+            map.flyTo({center: [geolocation.longitude, geolocation.latitude]});
+            console.log(`Current position: ${geolocation.longitude},${geolocation.latitude}`);
+        },
+        geolocation_error,
+        {
+            enableHighAccuracy: true,
+            timeout: 20000,
+            maximumAge: 30000
+        }
+    );
+};
+
+update_location_before_navigation.onclick = function() {
+    showme(geolocation_loader_container);
+    navigator.geolocation.getCurrentPosition(
+        (pos) => {
+            geolocation_ui_handler(true);
+            geolocation = pos.coords;
+            marker1.setLngLat([geolocation.longitude, geolocation.latitude]);
+            map.flyTo({center: [geolocation.longitude, geolocation.latitude]});
+            reRoute(); // important difference to update_location.onclick
             console.log(`Current position: ${geolocation.longitude},${geolocation.latitude}`);
         },
         geolocation_error,
@@ -355,12 +362,14 @@ update_location_before_navigation.onclick = function() {
 }
 
 navigator.permissions.query({name:'geolocation'}).then(function(result) {
+    showme(geolocation_loader_container);
     if (result.state == 'prompt' || result.state == 'granted') {
         console.log("Getting geolocation permission ...");
         navigator.geolocation.getCurrentPosition(
             (pos) => {
                 geolocation = pos.coords;
                 marker1.setLngLat([geolocation.longitude, geolocation.latitude]).addTo(map);
+                map.flyTo({center: [geolocation.longitude, geolocation.latitude]});
                 geolocation_ui_handler(true);
                 console.log(`Current position: ${geolocation.longitude},${geolocation.latitude}`);
             },
