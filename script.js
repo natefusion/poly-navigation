@@ -93,7 +93,7 @@ const marker1 = new maplibregl.Marker({draggable: true, color: '#FF0000'});
 const marker2 = new maplibregl.Marker({draggable: false});
 
 marker1.on('dragend', function() {
-    geolocation_ui_handler(false);
+    turn_off_geolocation_ui();
     reRoute()
 });
 
@@ -145,25 +145,31 @@ function reRoute() {
     }
 }
 
-function geolocation_ui_handler(should_start_at_geolocation) {
-    start_at_geolocation = should_start_at_geolocation;
-    if (start_at_geolocation) {
-        showme(tracking_current_geolocation);
-        hideme(not_tracking_current_geolocation);
-    } else {
-        hideme(tracking_current_geolocation);
-        showme(not_tracking_current_geolocation);
-    }
+function geolocation_callback(pos) {
+    start_at_geolocation = true;
+    geolocation = pos.coords;
+    marker1.setLngLat([geolocation.longitude, geolocation.latitude]).addTo(map);
+    map.flyTo({center: [geolocation.longitude, geolocation.latitude]});
+    
+    showme(tracking_current_geolocation);
+    hideme(not_tracking_current_geolocation);
+    hideme(geolocation_loader_container);
+    
+    console.log(`Current position: ${geolocation.longitude},${geolocation.latitude}`);
+}
 
+function turn_off_geolocation_ui() {
+    start_at_geolocation = false;
+    hideme(tracking_current_geolocation);
+    showme(not_tracking_current_geolocation);
     hideme(geolocation_loader_container);
 }
 
 function geolocation_error(err) {
     console.error(`ERROR(${err.code}): ${err.message}`);
     marker1.setLngLat([-81.848914, 28.148263]).addTo(map);
-    geolocation_error_popover.togglePopover();
-    geolocation_ui_handler(false);
-    hideme(geolocation_loader_container);
+    document.getElementById("geolocation_error_popover").togglePopover();
+    turn_off_geolocation_ui();
 }
 
 navigate_button.onclick = function() {
@@ -183,7 +189,7 @@ navigate_button.onclick = function() {
         hideme(start_location_name_initial);
         showme(start_location_name_final);
         hideme(cancel_select_start_location);
-        geolocation_ui_handler(false);
+        turn_off_geolocation_ui();
     }
 
     reRoute();
@@ -203,26 +209,19 @@ document.addEventListener("focusin", (event) => {
     }
 });
 
-let touching_map = false;
-let interaction_timeout = null;
-
-function map_touch_handler() {
-    touching_map = true;
-    clearTimeout(interaction_timeout);
-    interaction_timeout = setTimeout(() => touching_map = false, 2000);
+function set_bearing(event) {
+    map.flyTo({center: [geolocation.longitude, geolocation.latitude], bearing: -event.alpha});
 }
 
-map.on('dragstart', map_touch_handler);
-map.on('zoomstart', map_touch_handler);
-map.on('rotatestart', map_touch_handler);
-map.on('touchmove', map_touch_handler);
-map.on('touchstart', map_touch_handler);
+function dont_get_bearing_from_device(event) {
+    window.removeEventListener('deviceorientation', set_bearing);
+    showme(recenter_map);
+}
 
-window.ondeviceorientation = (event) => {
-    if (start_at_geolocation && !touching_map) {
-        map.jumpTo({bearing: -event.alpha, center: [geolocation.longitude, geolocation.latitude]});
-    }
-};
+function do_get_bearing_from_device(event) {
+    window.addEventListener('deviceorientation', set_bearing);
+    hideme(recenter_map);
+}
 
 select_start_location.onclick = function() {
     showme(searchui);
@@ -256,6 +255,11 @@ begin_navigation.onclick = function() {
     if (start_at_geolocation) {
         showme(geolocation_loader_container);
         console.log("Starting at geolocation ...");
+        
+        recenter_map.addEventListener('click', do_get_bearing_from_device);
+        map.on('touchstart', dont_get_bearing_from_device);
+        window.addEventListener('deviceorientation', set_bearing);
+        
         geolocation_id = navigator.geolocation.watchPosition(
             (pos) => {
                 hideme(geolocation_loader_container);
@@ -263,6 +267,7 @@ begin_navigation.onclick = function() {
                 geolocation = pos.coords;
                 start_location = [geolocation.longitude, geolocation.latitude];
                 marker1.setLngLat(start_location);
+
             },
             (err) => console.error(`ERROR(${err.code}): ${err.message}`),
             {
@@ -304,6 +309,9 @@ exit_navigation.onclick = function() {
         navigator.geolocation.clearWatch(geolocation_id);
     }
 
+    map.off('touchstart', dont_get_bearing_from_device);
+    recenter_map.removeEventListener('click', do_get_bearing_from_device);
+
     selecting_end_location = true;    
     geolocation_id = undefined;
     start_location = undefined;
@@ -314,7 +322,6 @@ exit_navigation.onclick = function() {
     showme(start_location_name_initial);
     hideme(end_location_name_final);
     hideme(start_location_name_final);
-    hideme(exit_navigation_when_getting_start_location);
 };
 
 toggle_all_locations_button.onclick = function() {
@@ -346,13 +353,7 @@ bookmark_checkbox.onclick = function() {
 update_location.onclick = function() {
     showme(geolocation_loader_container);
     navigator.geolocation.getCurrentPosition(
-        (pos) => {
-            geolocation_ui_handler(true);
-            geolocation = pos.coords;
-            marker1.setLngLat([geolocation.longitude, geolocation.latitude]);
-            map.flyTo({center: [geolocation.longitude, geolocation.latitude]});
-            console.log(`Current position: ${geolocation.longitude},${geolocation.latitude}`);
-        },
+        geolocation_callback,
         geolocation_error,
         {
             enableHighAccuracy: true,
@@ -366,12 +367,8 @@ update_location_before_navigation.onclick = function() {
     showme(geolocation_loader_container);
     navigator.geolocation.getCurrentPosition(
         (pos) => {
-            geolocation_ui_handler(true);
-            geolocation = pos.coords;
-            marker1.setLngLat([geolocation.longitude, geolocation.latitude]);
-            map.flyTo({center: [geolocation.longitude, geolocation.latitude]});
+            geolocation_callback(pos);
             reRoute(); // important difference to update_location.onclick
-            console.log(`Current position: ${geolocation.longitude},${geolocation.latitude}`);
         },
         geolocation_error,
         {
@@ -389,13 +386,7 @@ navigator.permissions.query({name:'geolocation'}).then(function(result) {
     if (result.state == 'prompt' || result.state == 'granted') {
         console.log("Getting geolocation permission ...");
         navigator.geolocation.getCurrentPosition(
-            (pos) => {
-                geolocation = pos.coords;
-                marker1.setLngLat([geolocation.longitude, geolocation.latitude]).addTo(map);
-                map.flyTo({center: [geolocation.longitude, geolocation.latitude]});
-                geolocation_ui_handler(true);
-                console.log(`Current position: ${geolocation.longitude},${geolocation.latitude}`);
-            },
+            geolocation_callback,
             geolocation_error,
             {
                 enableHighAccuracy: true,
