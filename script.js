@@ -219,13 +219,13 @@ function set_bearing(event) {
 }
 
 function dont_get_bearing_from_device() {
-    window.removeEventListener('deviceorientation', set_bearing);
+    window.removeEventListener('deviceorientationabsolute', set_bearing);
     recenter_map.toggleAttribute('disabled', false);
 }
 
 function do_get_bearing_from_device() {
     map.flyTo({center: [geolocation.longitude, geolocation.latitude], zoom: 17});
-    map.once('moveend', () => window.addEventListener('deviceorientation', set_bearing));
+    map.once('moveend', () => window.addEventListener('deviceorientationabsolute', set_bearing));
     recenter_map.toggleAttribute('disabled', true);
 }
 
@@ -318,7 +318,7 @@ exit_navigation.onclick = function() {
     map.off('touchstart', dont_get_bearing_from_device);
     recenter_map.removeEventListener('click', do_get_bearing_from_device);
     hideme(recenter_map);
-    window.removeEventListener('deviceorientation', set_bearing);
+    window.removeEventListener('deviceorientationabsolute', set_bearing);
 
     selecting_end_location = true;    
     geolocation_id = undefined;
