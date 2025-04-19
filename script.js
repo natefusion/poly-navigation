@@ -51,7 +51,7 @@ searchbox.addEventListener("input", (e) => {
     if (items.length > 0) {
         let list = '';
         for (const item of items) {
-            list += `<button onclick="load_item_details('${item.refIndex}', true)" class="button" popovertarget="item_details">${item.item.name}</button>`
+            list += `<button onclick="load_item_details('${item.refIndex}', true)" class="button button_search" popovertarget="item_details">${item.item.name}</button>`
         }
 
         searchresults.innerHTML = list;

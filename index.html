@@ -9,20 +9,29 @@
   <body>
     <div class="wrapper">
       <div id="map"></div>
-
       <div id="searchui">
-        <div class="button_container_horizontal">
-          <button id="menu_button" class="menu_button" popovertarget="menu">Menu</button>
-          <button id="update_location" class="menu_button">Get Geolocation</button>
-          <button id="cancel_select_start_location" class="gen_button hidden">Cancel</button>
+        <div class="menu_container">
+          <div class="title_container">
+            <h1 class="main_title">Customizable Campus Navigation System​</h1>
+          </div>
+          <div class="button_container_horizontal">
+            <button id="menu_button" class="menu_button" popovertarget="menu">Menu</button>
+            <button id="update_location" class="menu_button">Get Geolocation</button>
+            <button id="cancel_select_start_location" class="gen_button hidden">Cancel</button>
+          </div>
+          <div style="padding: 5px;">
+            <input id="searchbox" type="search" placeholder="Search for location ..." />
+          </div>
         </div>
         <div id="menu" popover="manual">
           <div>
             <button popovertarget="menu" class="gen_button">Back</button>
           </div>
           <h1 class="section_container">Saved Locations</h1>
-          <h1 class="section_container">Account Information</h1>
+          <p id="saved_location_text">None</p>
           <div id="saved_locations"></div>
+          <h1 class="section_container">Account Information</h1>
+          <p id="account_information_text">None</p>
           <div id="gen_buttons_container">
             <button popovertarget="login_popup" class="gen_button">Log in</button>
             <button popovertarget="logout_popup" class="gen_button">Log out</button>
@@ -89,8 +98,6 @@
           </div>
         </div>
         
-        <input id="searchbox" type="search" placeholder="Search for location ..." />
-        
         <div id="searchresults_wrapper">
           <div id="othersearch">
             <button id="toggle_all_locations_button" class="button">
@@ -99,8 +106,10 @@
               <hr>
             </button>
             <div id="all_locations" class="hidden"></div>
-            <p class="button">Recent Searches</p>
-            <div id="recentsearches_div"></div>
+            <button class="button" style="text-align: center;">Recent Searches</p>
+            <hr>
+            <div id="recentsearches_div">
+            </div>
           </div>
           <div id="searchresults"></div>
         </div>
@@ -125,28 +134,29 @@
       
       <div id="navigationui" class="hidden">
         <div id="navigationoverview">
-          <h1 class="section_container">Start location</h1>
-          <p class="gen_text" id="start_location_name_initial">Location of Red Pin</p>
-          <p id="start_location_name_final" class="gen-text hidden"></p>
+          <h1 id="section_title" class="section_container nav_container">Navigation Menu</h1>
+          <h1 class="section_container nav_container">Start location</h1>
+          <p class="gen_text text_light" id="start_location_name_initial">Location of Red Pin 📍</p>
+          <p id="start_location_name_final" class="gen-text text_light hidden"></p>
           <div class="nav_buttons_container">
             <button id="select_start_location" class="gen_button nav_buttons">Select Start Location</button>
-            <p class="gen_text" style="align-self: center">or</p>
+            <p class="gen_text">or</p>
             <button id="update_location_before_navigation" class="gen_button nav_buttons">Get Geolocation</button>
           </div>
-          <h1 class="section_container">End location</h1>
-          <p class="gen_text" id="end_location_name_initial"></p>
-          <p class="gen_text" id="end_location_name_final" class="hidden"></p>
+          <h1 class="section_container nav_container">End location</h1>
+          <p class="gen_text text_light" id="end_location_name_initial"></p>
+          <p class="gen_text text_light" id="end_location_name_final" class="hidden"></p>
           <div class="nav_buttons_container">
             <button id="select_end_location" class="gen_button nav_buttons">Select End Location</button>
             <button id="begin_navigation" class="gen_button nav_buttons">Begin Navigation</button>
           </div>
         </div>
         <div id="navigationdirections" class="hidden"></div>
-        <div style="margin-top: 5%;">
+        <div style="margin-top: 5%; text-align: center">
+          <button id="exit_navigation" class="gen_button nav_buttons">Exit Navigation</button>
           <p class="gen_text hidden" id="tracking_current_geolocation">Tracking Current Geolocation</p>
           <p class="gen_text hidden" id="not_tracking_current_geolocation">Not tracking Current Geolocation</p>
           <button id="recenter_map" class="hidden gen_button nav_buttons" disabled>Recenter</button>
-          <button id="exit_navigation" class="gen_button nav_buttons">Exit Navigation</button>
         </div>
       </div>
 

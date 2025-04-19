@@ -76,7 +76,7 @@ function hideme(el) {
 function load_items() {
     let list = '';
     for (const item in geo) {
-        list += `<button onclick="load_item_details('${item}')" class="button" popovertarget="item_details">${geo[item].name}</button>`
+        list += `<button onclick="load_item_details('${item}')" class="button button_search" popovertarget="item_details">${geo[item].name}</button>`
     }
 
     all_locations.innerHTML = list;
@@ -89,6 +89,15 @@ function load_bookmarks() {
     }
 
     saved_locations.innerHTML = list;
+    let is_hidden = saved_location_text.classList.toggle("hidden");
+
+    if (!is_hidden) {
+        hideme(saved_location_text);
+        showme(saved_location_text);
+    } else {
+        showme(saved_location_text);
+        hideme(saved_location_text);
+    }
 }
 
 function load_recent_searches() {
