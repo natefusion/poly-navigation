@@ -103,7 +103,7 @@ function load_bookmarks() {
 function load_recent_searches() {
     let list = '';
     for (const item of recent_searches) {
-        list += `<button onclick="load_item_details('${item}')" class="button" popovertarget="item_details">${geo[item].name}</button>`
+        list += `<button onclick="load_item_details('${item}')" class="button button_search" popovertarget="item_details">${geo[item].name}</button>`
     }
 
     recentsearches_div.innerHTML = list;
