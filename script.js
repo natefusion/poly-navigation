@@ -259,6 +259,7 @@ select_end_location.onclick = function() {
 };
 
 begin_navigation.onclick = function() {
+    marker1.setDraggable(false);
     if (start_at_geolocation) {
         showme(geolocation_loader_container);
         console.log("Starting at geolocation ...");
