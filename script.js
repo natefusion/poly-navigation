@@ -215,6 +215,7 @@ function map_touch_handler() {
 map.on('dragstart', () => map_touch_handler);
 map.on('zoomstart', () => map_touch_handler);
 map.on('rotatestart', () => map_touch_handler);
+map.on('touchmove', () => map_touch_handler);
 map.on('touchstart', () => map_touch_handler);
 
 window.ondeviceorientation = (event) => {
