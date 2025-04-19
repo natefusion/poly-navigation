@@ -91,7 +91,7 @@ window.little_map_marker = new maplibregl.Marker({draggable: false}).setLngLat([
 // Add navigation controls
 map.addControl(new maplibregl.NavigationControl(), 'bottom-right');
 
-const marker1 = new maplibregl.Marker({draggable: true, color: '#FF0000'});
+const marker1 = new maplibregl.Marker({draggable: false, color: '#FF0000'});
 const marker2 = new maplibregl.Marker({draggable: false});
 
 function marker1_drag_callback() {
@@ -195,6 +195,7 @@ navigate_button.onclick = function() {
         turn_off_geolocation_ui();
     }
 
+    marker1.setDraggable(true);
     marker1.on('dragend', marker1_drag_callback);
 
     reRoute();
@@ -331,6 +332,7 @@ exit_navigation.onclick = function() {
     hideme(end_location_name_final);
     hideme(start_location_name_final);
 
+    marker1.setDraggable(false);
     marker1.off('dragend', marker1_drag_callback);
 };
 
