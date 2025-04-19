@@ -39,7 +39,7 @@
             <button class="gen_button">Help</button>
             <button popovertarget="about_popup" class="gen_button">About</button>
             <div id="about_popup" popover="auto">
-              <h1>About</h1>
+              <h1 id="input-title">About</h1>
               <h3>Authors</h3>
               <p>Nathan Piel</p>
               <p>Colby Bradford</p>
@@ -47,7 +47,7 @@
               <p>Connor Kuziemko</p>
               <h3>Commit ID</h3>
               <p id="commit_id"></p>
-              <button popovertarget="about_popup" class="gen_button">Okay</button>
+              <button popovertarget="about_popup" class="gen_button button_confirm">Okay</button>
             </div>
             <div class="container">
 
@@ -57,8 +57,8 @@
           <div id="logout_popup" popover="manual">
             <h1>Would you like to log out?</h1>
             <div class="logout--btn-container">
-              <button popovertarget="login_popup" id="logout_button" class="gen_button">Yes</button>
-              <button popovertarget="logout_popup" class="gen_button">No</button>
+              <button popovertarget="login_popup" id="logout_button" class="gen_button button_confirm">Yes</button>
+              <button popovertarget="logout_popup" class="gen_button button_cancel">No</button>
             </div>
           </div>
 
@@ -72,8 +72,8 @@
               <input type="password" name="password" id="input_password_login">
             </div>
             <div class="login-btn-container">
-              <button id="confirm_button" class="gen_button">Confirm</button>
-              <button popovertarget="login_popup" class="gen_button">Cancel</button>
+              <button id="confirm_button" class="gen_button button_confirm">Confirm</button>
+              <button popovertarget="login_popup" class="gen_button button_cancel">Cancel</button>
             </div>
           </div>
 
@@ -92,8 +92,8 @@
               <input type="password" name="password" id="input-password">
             </div>
             <div class="signup-btn-container">
-              <button id="confirm_button" class="gen_button">Confirm</button>
-              <button popovertarget="signup_popup" class="gen_button">Cancel</button>
+              <button id="confirm_button" class="gen_button button_confirm">Confirm</button>
+              <button popovertarget="signup_popup" class="gen_button button_cancel">Cancel</button>
             </div>
           </div>
         </div>
@@ -134,15 +134,15 @@
       <div id="navigationui" class="hidden">
         <div id="navigationoverview">
           <h1 id="section_title" class="section_container nav_container">Navigation Menu</h1>
-          <h1 class="section_container nav_container">Start location</h1>
-          <p class="gen_text text_light" id="start_location_name_initial">Location of Red Pin 📍</p>
+          <h1 class="section_container nav_container">Start location 📍</h1>
+          <p class="gen_text text_light" id="start_location_name_initial">Location of Red Pin</p>
           <p id="start_location_name_final" class="gen-text text_light hidden"></p>
           <div class="nav_buttons_container">
             <button id="select_start_location" class="gen_button nav_buttons">Select Start Location</button>
             <p class="gen_text">or</p>
             <button id="update_location_before_navigation" class="gen_button nav_buttons">Get Geolocation</button>
           </div>
-          <h1 class="section_container nav_container">End location</h1>
+          <h1 class="section_container nav_container">End location 🚩</h1>
           <p class="gen_text text_light" id="end_location_name_initial"></p>
           <p class="gen_text text_light" id="end_location_name_final" class="hidden"></p>
           <div class="nav_buttons_container">
