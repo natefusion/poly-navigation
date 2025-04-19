@@ -204,15 +204,18 @@ document.addEventListener("focusin", (event) => {
 });
 
 let touching_map = false;
+let interaction_timeout = null;
 
-map.on('dragstart', () => touching_map = true);
-map.on('dragend', () => touching_map = false);
+function map_touch_handler() {
+    userInteracted = true;
+    clearTimeout(interaction_timeout);
+    interactionTimeout = setTimeout(() => touching_map = false, 2000);
+}
 
-map.on('zoomstart', () => touching_map = true);
-map.on('rotatestart', () => touching_map = true);
-
-map.on('touchstart', () => touching_map = true);
-map.on('touchend', () => touching_map = false);
+map.on('dragstart', () => map_touch_handler);
+map.on('zoomstart', () => map_touch_handler);
+map.on('rotatestart', () => map_touch_handler);
+map.on('touchstart', () => map_touch_handler);
 
 window.ondeviceorientation = (event) => {
     if (start_at_geolocation && !touching_map) {
