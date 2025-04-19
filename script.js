@@ -10,6 +10,8 @@ import './public/functions.js';
 
 fetch('/commit.txt').then((req) => req.text()).then((id) => document.getElementById("commit_id").innerHTML = id);
 
+const poly_center = [-81.848914, 28.148263];
+
 const fuseOptions = {
 	// isCaseSensitive: false,
 	// includeScore: false,
@@ -73,7 +75,7 @@ const map = new maplibregl.Map({
     style: '/tiles/styles/osm-real/style.json',
     // very LAME
     transformRequest: transform_request,
-    center: [-81.848914, 28.148263], // Longitude, Latitude
+    center: poly_center, // Longitude, Latitude
     zoom: 17 // Zoom level
 });
 
@@ -89,13 +91,13 @@ window.little_map_marker = new maplibregl.Marker({draggable: false}).setLngLat([
 // Add navigation controls
 map.addControl(new maplibregl.NavigationControl(), 'bottom-right');
 
-const marker1 = new maplibregl.Marker({draggable: true, color: '#FF0000'});
+const marker1 = new maplibregl.Marker({draggable: true, color: '#FF0000'}).setLngLat(poly_center).addTo(map);
 const marker2 = new maplibregl.Marker({draggable: false});
 
-marker1.on('dragend', function() {
+function marker1_drag_callback() {
     turn_off_geolocation_ui();
     reRoute()
-});
+}
 
 function reRoute() {
     const src = marker1.getLngLat();
@@ -148,7 +150,7 @@ function reRoute() {
 function geolocation_callback(pos) {
     start_at_geolocation = true;
     geolocation = pos.coords;
-    marker1.setLngLat([geolocation.longitude, geolocation.latitude]).addTo(map);
+    marker1.setLngLat([geolocation.longitude, geolocation.latitude]);
     map.flyTo({center: [geolocation.longitude, geolocation.latitude]});
     
     showme(tracking_current_geolocation);
@@ -165,9 +167,10 @@ function turn_off_geolocation_ui() {
     hideme(geolocation_loader_container);
 }
 
-function geolocation_error(err) {
+function geolocation_error(err, location) {
     console.error(`ERROR(${err.code}): ${err.message}`);
-    marker1.setLngLat([-81.848914, 28.148263]).addTo(map);
+    marker1.setLngLat(location);
+    map.flyTo({center: location, zoom: 17});
     document.getElementById("geolocation_error_popover").togglePopover();
     turn_off_geolocation_ui();
 }
@@ -192,6 +195,8 @@ navigate_button.onclick = function() {
         turn_off_geolocation_ui();
     }
 
+    marker1.on('dragend', marker1_drag_callback);
+
     reRoute();
 };
 
@@ -210,17 +215,18 @@ document.addEventListener("focusin", (event) => {
 });
 
 function set_bearing(event) {
-    map.flyTo({center: [geolocation.longitude, geolocation.latitude], bearing: -event.alpha});
+    map.setBearing(-event.alpha);
 }
 
-function dont_get_bearing_from_device(event) {
+function dont_get_bearing_from_device() {
     window.removeEventListener('deviceorientation', set_bearing);
-    showme(recenter_map);
+    recenter_map.toggleAttribute('disabled', false);
 }
 
-function do_get_bearing_from_device(event) {
-    window.addEventListener('deviceorientation', set_bearing);
-    hideme(recenter_map);
+function do_get_bearing_from_device() {
+    map.flyTo({center: [geolocation.longitude, geolocation.latitude], zoom: 17});
+    map.once('moveend', () => window.addEventListener('deviceorientation', set_bearing));
+    recenter_map.toggleAttribute('disabled', true);
 }
 
 select_start_location.onclick = function() {
@@ -255,10 +261,11 @@ begin_navigation.onclick = function() {
     if (start_at_geolocation) {
         showme(geolocation_loader_container);
         console.log("Starting at geolocation ...");
-        
+
+        do_get_bearing_from_device();
         recenter_map.addEventListener('click', do_get_bearing_from_device);
+        showme(recenter_map);
         map.on('touchstart', dont_get_bearing_from_device);
-        window.addEventListener('deviceorientation', set_bearing);
         
         geolocation_id = navigator.geolocation.watchPosition(
             (pos) => {
@@ -267,7 +274,6 @@ begin_navigation.onclick = function() {
                 geolocation = pos.coords;
                 start_location = [geolocation.longitude, geolocation.latitude];
                 marker1.setLngLat(start_location);
-
             },
             (err) => console.error(`ERROR(${err.code}): ${err.message}`),
             {
@@ -311,6 +317,8 @@ exit_navigation.onclick = function() {
 
     map.off('touchstart', dont_get_bearing_from_device);
     recenter_map.removeEventListener('click', do_get_bearing_from_device);
+    hideme(recenter_map);
+    window.removeEventListener('deviceorientation', set_bearing);
 
     selecting_end_location = true;    
     geolocation_id = undefined;
@@ -322,6 +330,8 @@ exit_navigation.onclick = function() {
     showme(start_location_name_initial);
     hideme(end_location_name_final);
     hideme(start_location_name_final);
+
+    marker1.off('dragend', marker1_drag_callback);
 };
 
 toggle_all_locations_button.onclick = function() {
@@ -354,7 +364,7 @@ update_location.onclick = function() {
     showme(geolocation_loader_container);
     navigator.geolocation.getCurrentPosition(
         geolocation_callback,
-        geolocation_error,
+        (err) => geolocation_error(err, poly_center),
         {
             enableHighAccuracy: true,
             timeout: 20000,
@@ -370,7 +380,7 @@ update_location_before_navigation.onclick = function() {
             geolocation_callback(pos);
             reRoute(); // important difference to update_location.onclick
         },
-        geolocation_error,
+        (err) => geolocation_error(err, marker1.getLngLat()),
         {
             enableHighAccuracy: true,
             timeout: 20000,
@@ -387,7 +397,7 @@ navigator.permissions.query({name:'geolocation'}).then(function(result) {
         console.log("Getting geolocation permission ...");
         navigator.geolocation.getCurrentPosition(
             geolocation_callback,
-            geolocation_error,
+            (err) => geolocation_error(err, poly_center),
             {
                 enableHighAccuracy: true,
                 timeout: 20000,
