@@ -207,7 +207,7 @@ let touching_map = false;
 let interaction_timeout = null;
 
 function map_touch_handler() {
-    userInteracted = true;
+    touching_map = true;
     clearTimeout(interaction_timeout);
     interactionTimeout = setTimeout(() => touching_map = false, 2000);
 }
