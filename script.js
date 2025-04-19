@@ -410,3 +410,44 @@ navigator.permissions.query({name:'geolocation'}).then(function(result) {
         console.log("Did not get geolocation permission ...");
     }
 });
+
+// Reveal-Drawer functionality for the navigation part
+let isDragging = false;
+let initialHeight;
+let startY;
+let newHeight;
+
+const drawer = document.getElementById("navigationoverview");
+const drawerHandle = document.getElementById("navigationoverview");
+
+// Only for smaller screens like smartphones
+if (window.innerWidth <= 1000) {
+    drawerHandle.addEventListener("touchstart", function (e) {
+        if (e.touches.length === 1) {
+          isDragging = true;
+          initialHeight = drawer.offsetHeight;
+          startY = e.touches[0].clientY;
+          document.body.style.cursor = "row-resize";
+        }
+      });
+      
+      document.addEventListener("touchmove", function (e) {
+        if (isDragging) {
+          const currentY = e.touches[0].clientY;
+          const deltaY = currentY - startY;
+          newHeight = initialHeight + deltaY;
+        
+          // Limit the drawer to 500px 
+          newHeight = Math.max(50, Math.min(500, newHeight));
+      
+          drawer.style.height = `${newHeight}px`;
+        }
+      });
+      
+      document.addEventListener("touchend", function () {
+        if (isDragging) {
+          isDragging = false;
+          document.body.style.cursor = "default";
+        }
+      });
+}

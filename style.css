@@ -347,6 +347,12 @@ body {
   pointer-events: auto; /* re-enable interaction for children like input/buttons */
 }
 
+.no-select {
+    user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+  }
+
 #saved_locations,
 #all_locations,
 #othersearch,
@@ -377,3 +383,41 @@ body {
 @keyframes spin {
     to { transform: rotate(360deg); }
 }
+
+.mobile-flex-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  @media (max-width: 768px) {
+    #navigationui {
+      width: 90%;
+    }
+
+    #navigationoverview {
+        overflow: hidden;
+    }
+
+    .mobile-flex-container {
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+  
+    .location-block {
+      width: 48%;
+    }
+  
+    .nav_buttons_container .nav_buttons {
+      width: 100%;
+    }
+
+    .section_container {
+        font-size: 14px;
+    }
+
+    .gen_text {
+        font-size: 14px;
+    }
+  }
