@@ -169,8 +169,8 @@ function turn_off_geolocation_ui() {
 
 function geolocation_error(err, location) {
     console.error(`ERROR(${err.code}): ${err.message}`);
-    marker1.setLngLat(location);
-    map.flyTo({center: location, zoom: 17}).addTo(map);
+    marker1.setLngLat(location).addTo(map);
+    map.flyTo({center: location, zoom: 17})
     document.getElementById("geolocation_error_popover").togglePopover();
     turn_off_geolocation_ui();
 }
@@ -216,7 +216,7 @@ document.addEventListener("focusin", (event) => {
 });
 
 function set_bearing(event) {
-    map.setBearing(-event.alpha);
+    map.setBearing(-event.alpha, {center: marker1.getLngLat()});
 }
 
 function dont_get_bearing_from_device() {
