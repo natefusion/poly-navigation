@@ -209,7 +209,7 @@ let interaction_timeout = null;
 function map_touch_handler() {
     touching_map = true;
     clearTimeout(interaction_timeout);
-    interactionTimeout = setTimeout(() => touching_map = false, 2000);
+    interaction_timeout = setTimeout(() => touching_map = false, 2000);
 }
 
 map.on('dragstart', () => map_touch_handler);
