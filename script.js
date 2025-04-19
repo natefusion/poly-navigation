@@ -205,7 +205,12 @@ document.addEventListener("focusin", (event) => {
 
 let touching_map = false;
 
+map.on('dragstart', () => touching_map = true);
+map.on('dragend', () => touching_map = false);
+
+map.on('zoomstart', () => touching_map = true);
 map.on('rotatestart', () => touching_map = true);
+
 map.on('touchstart', () => touching_map = true);
 map.on('touchend', () => touching_map = false);
 
