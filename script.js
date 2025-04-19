@@ -91,7 +91,7 @@ window.little_map_marker = new maplibregl.Marker({draggable: false}).setLngLat([
 // Add navigation controls
 map.addControl(new maplibregl.NavigationControl(), 'bottom-right');
 
-const marker1 = new maplibregl.Marker({draggable: true, color: '#FF0000'}).setLngLat(poly_center).addTo(map);
+const marker1 = new maplibregl.Marker({draggable: true, color: '#FF0000'});
 const marker2 = new maplibregl.Marker({draggable: false});
 
 function marker1_drag_callback() {
@@ -150,7 +150,7 @@ function reRoute() {
 function geolocation_callback(pos) {
     start_at_geolocation = true;
     geolocation = pos.coords;
-    marker1.setLngLat([geolocation.longitude, geolocation.latitude]);
+    marker1.setLngLat([geolocation.longitude, geolocation.latitude]).addTo(map);
     map.flyTo({center: [geolocation.longitude, geolocation.latitude]});
     
     showme(tracking_current_geolocation);
@@ -170,7 +170,7 @@ function turn_off_geolocation_ui() {
 function geolocation_error(err, location) {
     console.error(`ERROR(${err.code}): ${err.message}`);
     marker1.setLngLat(location);
-    map.flyTo({center: location, zoom: 17});
+    map.flyTo({center: location, zoom: 17}).addTo(map);
     document.getElementById("geolocation_error_popover").togglePopover();
     turn_off_geolocation_ui();
 }
