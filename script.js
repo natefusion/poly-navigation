@@ -266,6 +266,7 @@ begin_navigation.onclick = function() {
     do_get_bearing_from_device();
     recenter_map.addEventListener('click', do_get_bearing_from_device);
     map.on('dragstart', dont_get_bearing_from_device);
+    map.on('touchstart', dont_get_bearing_from_device);
     
     if (start_at_geolocation) {
         showme(geolocation_loader_container);
@@ -321,6 +322,7 @@ function stop_navigation() {
     }
 
     map.off('dragstart', dont_get_bearing_from_device);
+    map.off('touchstart', dont_get_bearing_from_device);
     recenter_map.removeEventListener('click', do_get_bearing_from_device);
     window.removeEventListener('deviceorientationabsolute', set_bearing);
 

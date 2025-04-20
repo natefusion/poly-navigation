@@ -342,7 +342,6 @@ body {
     padding: 1rem;
     flex-direction: column;
     min-width: 130px;
-    /* width: 15%; */
 }
 
 #navigationui * {
