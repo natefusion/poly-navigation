@@ -36,7 +36,7 @@
             <button popovertarget="login_popup" class="gen_button">Log in</button>
             <button popovertarget="logout_popup" class="gen_button">Log out</button>
             <button popovertarget="signup_popup" class="gen_button">Sign up</button>
-            <button class="gen_button">Help</button>
+            <button popovertarget="help_popup" class="gen_button">Help</button>
             <button popovertarget="about_popup" class="gen_button">About</button>
             <div id="about_popup" popover="auto">
               <h1 id="input-title">About</h1>
@@ -55,10 +55,34 @@
           </div>
 
           <div id="logout_popup" popover="manual">
-            <h1>Would you like to log out?</h1>
+            <h1 id="input-title" class="input-label">Would you like to log out?</h1>
             <div class="logout--btn-container">
               <button popovertarget="login_popup" id="logout_button" class="gen_button button_confirm">Yes</button>
               <button popovertarget="logout_popup" class="gen_button button_cancel">No</button>
+            </div>
+          </div>
+
+          <div id="help_popup" popover="manual">
+            <h1 id="input-title" class="input-label">How to Navigate the Campus Map</h1>
+            <div style="text-align: left;">
+              <p>1. Search for a place and select it to view details.
+                <br>
+                2. Click "Navigate" to center the map on that location.
+                <br>
+                3. Use the Navigation Menu to select your starting point.
+                <br>
+                4. Click "Begin Navigation" to see the shortest route.
+                <br>
+                <br>
+                <br>
+                To save locations, log in and click "Add to Favorites" on a place’s page. 
+                <br>
+                Your saved locations will appear under "Saved Locations" in the menu.
+                <br>
+              </p>
+            </div>
+            <div class="help--btn-container">
+              <button popovertarget="help_popup" class="gen_button button_confirm">Okay</button>
             </div>
           </div>
 
