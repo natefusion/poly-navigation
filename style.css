@@ -119,6 +119,7 @@ body {
     padding: 3px;
     border-radius: 5px;
     width: 10em;
+    overflow-y: hidden;
 }
 
 .section_container {

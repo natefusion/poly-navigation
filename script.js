@@ -435,30 +435,31 @@ const drawerHandle = document.getElementById("navigationoverview");
 if (window.innerWidth <= 1000) {
     drawerHandle.addEventListener("touchstart", function (e) {
         if (e.touches.length === 1) {
-          isDragging = true;
-          initialHeight = drawer.offsetHeight;
-          startY = e.touches[0].clientY;
-          document.body.style.cursor = "row-resize";
+            isDragging = true;
+            initialHeight = drawer.offsetHeight;
+            startY = e.touches[0].clientY;
+            document.body.style.cursor = "row-resize";
         }
-      });
-      
-      document.addEventListener("touchmove", function (e) {
+    }, { passive: false });
+    
+    document.addEventListener("touchmove", function (e) {
         if (isDragging) {
-          const currentY = e.touches[0].clientY;
-          const deltaY = currentY - startY;
-          newHeight = initialHeight + deltaY;
-        
-          // Limit the drawer to 500px 
-          newHeight = Math.max(50, Math.min(500, newHeight));
-      
-          drawer.style.height = `${newHeight}px`;
+            e.preventDefault();
+            const currentY = e.touches[0].clientY;
+            const deltaY = currentY - startY;
+            newHeight = initialHeight + deltaY;
+            
+            // Limit the drawer to 500px 
+            newHeight = Math.max(50, Math.min(500, newHeight));
+            
+            drawer.style.height = `${newHeight}px`;
         }
-      });
-      
-      document.addEventListener("touchend", function () {
+    }, { passive: false });
+    
+    document.addEventListener("touchend", function () {
         if (isDragging) {
-          isDragging = false;
-          document.body.style.cursor = "default";
+            isDragging = false;
+            document.body.style.cursor = "default";
         }
-      });
+    });
 }
