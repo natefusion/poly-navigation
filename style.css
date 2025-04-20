@@ -229,6 +229,7 @@ body {
 .menu_container {
     width: 100%;
     box-shadow: 0px 4px 10px #2c3e50;
+    border-radius: 12px;
     background-color: rgb(221, 221, 221);
 }
 .gen_button:hover {
@@ -273,6 +274,7 @@ body {
     background-color: #2c3e50;
     color: white;
     border: 0px;
+    min-width: 60px;
 }
 
 .button_confirm:hover {
@@ -289,6 +291,7 @@ body {
 
 .button_cancel {
     border: 1px solid black;
+    min-width: 60px;
 }
 
 .button_cancel:hover {

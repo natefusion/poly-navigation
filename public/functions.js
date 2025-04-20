@@ -85,7 +85,7 @@ function load_items() {
 function load_bookmarks() {
     let list = '';
     for (const item of bookmarks) {
-        list += `<button onclick="load_item_details('${item}')" class="button" popovertarget="item_details">${geo[item].name}</button>`
+        list += `<button onclick="load_item_details('${item}')" class="button button_search" popovertarget="item_details">${geo[item].name}</button>`
     }
 
     saved_locations.innerHTML = list;
