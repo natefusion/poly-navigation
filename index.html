@@ -106,7 +106,7 @@
               <hr>
             </button>
             <div id="all_locations" class="hidden"></div>
-            <button class="button" style="text-align: center;">Recent Searches</p>
+            <p class="button" style="text-align: center;">Recent Searches</p>
             <hr>
             <div id="recentsearches_div"></div>
           </div>
@@ -133,34 +133,38 @@
       
       <div id="navigationui" class="hidden">
         <div id="navigationoverview">
-          <h1 id="section_title" class="section_container nav_container">Navigation Menu</h1>
           <div class="mobile-flex-container">
-          <div>
-            <h1 class="section_container nav_container">Start location 📍</h1>
-            <p class="gen_text text_light" id="start_location_name_initial">Location of Red Pin</p>
-            <p id="start_location_name_final" class="gen-text text_light hidden"></p>
-            <div class="nav_buttons_container">
-              <button id="select_start_location" class="gen_button nav_buttons">Select Start Location</button>
-              <p class="gen_text" style="height: 30%; margin: 0; padding-bottom: 5px;">or</p>
-              <button id="update_location_before_navigation" class="gen_button nav_buttons">Get Geolocation</button>
+            <div>
+              <h1 class="section_container nav_container">Start location 📍</h1>
+              <p class="gen_text text_light" id="start_location_name_initial">Location of Red Pin</p>
+              <p id="start_location_name_final" class="gen-text text_light hidden"></p>
+              <div class="nav_buttons_container">
+                <button id="select_start_location" class="gen_button nav_buttons">Select Start Location</button>
+                <p class="gen_text" style="height: 30%; margin: 0; padding-bottom: 5px;">or</p>
+                <button id="update_location_before_navigation" class="gen_button nav_buttons">Get Geolocation</button>
+              </div>
+            </div>
+            <div>
+              <h1 class="section_container nav_container">End location 🚩</h1>
+              <p class="gen_text text_light" id="end_location_name_initial"></p>
+              <p class="gen_text text_light" id="end_location_name_final" class="hidden"></p>
+              <div class="nav_buttons_container">
+                <button id="select_end_location" class="gen_button nav_buttons">Select End Location</button>
+              </div>
             </div>
           </div>
-          <div>
-            <h1 class="section_container nav_container">End location 🚩</h1>
-            <p class="gen_text text_light" id="end_location_name_initial"></p>
-            <p class="gen_text text_light" id="end_location_name_final" class="hidden"></p>
-            <div class="nav_buttons_container">
-              <button id="select_end_location" class="gen_button nav_buttons">Select End Location</button>
-              <button id="begin_navigation" class="gen_button nav_buttons">Begin Navigation</button>
-            </div>
+          <div class="nav_buttons_container">
+            <button id="begin_navigation" class="gen_button nav_buttons">Begin Navigation</button>
+            <button id="exit_navigation_in_overview" class="gen_button nav_buttons">Exit Navigation</button>
           </div>
         </div>
-        <div id="navigationdirections" class="hidden"></div>
-        <div style="margin-top: 5%; text-align: center">
-          <p class="gen_text hidden" id="tracking_current_geolocation">Tracking Current Geolocation</p>
-          <p class="gen_text hidden" id="not_tracking_current_geolocation">Not tracking Current Geolocation</p>
-          <button id="recenter_map" class="hidden gen_button nav_buttons" disabled>Recenter</button>
-          <button id="exit_navigation" class="gen_button nav_buttons">Exit Navigation</button>
+
+        <div id="navigationdirections_container" style="display: flex">
+          <div id="navigationdirections"></div>
+          <div>
+            <button id="recenter_map" class="gen_button nav_buttons" disabled>Recenter</button>
+            <button id="exit_navigation_in_directions" class="gen_button nav_buttons">Exit Navigation</button>
+          </div>
         </div>
       </div>
 
@@ -171,7 +175,13 @@
       
       <div id="geolocation_loader_container" class="geolocation_loader_container hidden">
         <span>Getting Geolocation ...</span>
-        <div class="geolocation_loader_anim"></div></div>
+        <div class="geolocation_loader_anim"></div>
+      </div>
+      
+      <div id="geolocation_tracking_message_container">
+        <p id="tracking_current_geolocation" class="gen_text hidden">Tracking Current Geolocation</p>
+        <p id="not_tracking_current_geolocation" class="gen_text hidden">Not tracking Current Geolocation</p>
+      </div>
     </div>
     <script type="module" src="script.js"></script>
     <script src="functions.js"></script>

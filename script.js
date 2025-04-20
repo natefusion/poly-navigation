@@ -156,6 +156,7 @@ function geolocation_callback(pos) {
     showme(tracking_current_geolocation);
     hideme(not_tracking_current_geolocation);
     hideme(geolocation_loader_container);
+    showme(geolocation_tracking_message_container);
     
     console.log(`Current position: ${geolocation.longitude},${geolocation.latitude}`);
 }
@@ -165,6 +166,7 @@ function turn_off_geolocation_ui() {
     hideme(tracking_current_geolocation);
     showme(not_tracking_current_geolocation);
     hideme(geolocation_loader_container);
+    showme(geolocation_tracking_message_container);
 }
 
 function geolocation_error(err, location) {
@@ -179,7 +181,7 @@ navigate_button.onclick = function() {
     hideme(searchui);
     showme(navigationui);
     showme(navigationoverview);
-    hideme(navigationdirections);
+    hideme(navigationdirections_container);
 
     if (selecting_end_location) {
         marker2.setLngLat(end_location).addTo(map);
@@ -225,7 +227,7 @@ function dont_get_bearing_from_device() {
 }
 
 function do_get_bearing_from_device() {
-    map.flyTo({center: [geolocation.longitude, geolocation.latitude], zoom: 17});
+    map.flyTo({center: marker1.getLngLat(), zoom: 17});
     map.once('moveend', () => window.addEventListener('deviceorientationabsolute', set_bearing));
     recenter_map.toggleAttribute('disabled', true);
 }
@@ -253,6 +255,7 @@ cancel_select_start_location.onclick = function() {
 select_end_location.onclick = function() {
     showme(searchui);
     hideme(navigationui);
+    marker1.setDraggable(false);
     selecting_end_location = true;
     searchbox.value = '';
     searchresults.innerHTML = '';
@@ -260,22 +263,22 @@ select_end_location.onclick = function() {
 
 begin_navigation.onclick = function() {
     marker1.setDraggable(false);
+    do_get_bearing_from_device();
+    recenter_map.addEventListener('click', do_get_bearing_from_device);
+    map.on('dragstart', dont_get_bearing_from_device);
+    
     if (start_at_geolocation) {
         showme(geolocation_loader_container);
+        hideme(geolocation_tracking_message_container);
         console.log("Starting at geolocation ...");
-
-        do_get_bearing_from_device();
-        recenter_map.addEventListener('click', do_get_bearing_from_device);
-        showme(recenter_map);
-        map.on('touchstart', dont_get_bearing_from_device);
         
         geolocation_id = navigator.geolocation.watchPosition(
             (pos) => {
                 hideme(geolocation_loader_container);
+                showme(geolocation_tracking_message_container);
                 console.log("Geolocation reacquired");
                 geolocation = pos.coords;
-                start_location = [geolocation.longitude, geolocation.latitude];
-                marker1.setLngLat(start_location);
+                marker1.setLngLat([geolocation.longitude, geolocation.latitude]);
             },
             (err) => console.error(`ERROR(${err.code}): ${err.message}`),
             {
@@ -290,10 +293,10 @@ begin_navigation.onclick = function() {
     }
 
     hideme(navigationoverview);
-    showme(navigationdirections);
+    showme(navigationdirections_container);
 }
 
-exit_navigation.onclick = function() {
+function stop_navigation() {
     showme(searchui);
     showme(update_location);
     hideme(navigationui);
@@ -317,9 +320,8 @@ exit_navigation.onclick = function() {
         navigator.geolocation.clearWatch(geolocation_id);
     }
 
-    map.off('touchstart', dont_get_bearing_from_device);
+    map.off('dragstart', dont_get_bearing_from_device);
     recenter_map.removeEventListener('click', do_get_bearing_from_device);
-    hideme(recenter_map);
     window.removeEventListener('deviceorientationabsolute', set_bearing);
 
     selecting_end_location = true;    
@@ -335,7 +337,10 @@ exit_navigation.onclick = function() {
 
     marker1.setDraggable(false);
     marker1.off('dragend', marker1_drag_callback);
-};
+}
+
+exit_navigation_in_directions.onclick = stop_navigation;
+exit_navigation_in_overview.onclick = stop_navigation;
 
 toggle_all_locations_button.onclick = function() {
     if (load_items_completed === false) {
@@ -365,6 +370,7 @@ bookmark_checkbox.onclick = function() {
 
 update_location.onclick = function() {
     showme(geolocation_loader_container);
+    hideme(geolocation_tracking_message_container);
     navigator.geolocation.getCurrentPosition(
         geolocation_callback,
         (err) => geolocation_error(err, poly_center),
@@ -378,6 +384,7 @@ update_location.onclick = function() {
 
 update_location_before_navigation.onclick = function() {
     showme(geolocation_loader_container);
+    hideme(geolocation_tracking_message_container);
     navigator.geolocation.getCurrentPosition(
         (pos) => {
             geolocation_callback(pos);
@@ -396,6 +403,7 @@ update_location_before_navigation.onclick = function() {
 
 navigator.permissions.query({name:'geolocation'}).then(function(result) {
     showme(geolocation_loader_container);
+    hideme(geolocation_tracking_message_container);
     if (result.state == 'prompt' || result.state == 'granted') {
         console.log("Getting geolocation permission ...");
         navigator.geolocation.getCurrentPosition(

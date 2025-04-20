@@ -110,10 +110,11 @@ function load_recent_searches() {
 }
 
 function load_navigation_directions(navigation_directions) {
-    let items = '';
+    let items = '<ol>';
     for (d of navigation_directions) {
-        items += `<p>${d}</p>`;
+        items += `<li>${d}</li>`;
     }
+    items += '</ol>';
     
     navigationdirections.innerHTML = items ;
 }
