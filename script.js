@@ -240,25 +240,28 @@ select_start_location.onclick = function() {
     searchresults.innerHTML = '';
     marker1.setDraggable(false);
     hideme(update_location);
-    showme(cancel_select_start_location);
+    showme(cancel_select_start_or_end_location);
 };
 
-cancel_select_start_location.onclick = function() {
+cancel_select_start_or_end_location.onclick = function() {
     hideme(searchui);
     showme(navigationui);
     selecting_end_location = true;
     marker1.setDraggable(true);
     showme(update_location);
-    hideme(cancel_select_start_location);
+    hideme(cancel_select_start_or_end_location);
 }
 
 select_end_location.onclick = function() {
     showme(searchui);
     hideme(navigationui);
-    marker1.setDraggable(false);
     selecting_end_location = true;
+    marker1.setDraggable(false);
     searchbox.value = '';
     searchresults.innerHTML = '';
+
+    hideme(update_location);
+    showme(cancel_select_start_or_end_location);
 };
 
 begin_navigation.onclick = function() {
