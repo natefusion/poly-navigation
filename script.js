@@ -107,6 +107,11 @@ function reRoute() {
     const route = httpGet(str);
     const json_route = JSON.parse(route);
 
+    if (json_route.code !== "Ok") {
+        console.log(json_route.message);
+        return;
+    }
+
     const navigation_directions = json_route.routes[0].legs[0].steps.map((step, index) => {
         return text_instructions.compile('en', step);
     });
