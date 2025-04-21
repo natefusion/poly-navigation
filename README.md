@@ -3,20 +3,42 @@ Shows various locations around Florida Poly and provides directions to get there
 
 # Dependencies to run the server on your computer
 - [docker](https://docker.com/)
-  - to run the programs that are too hard to install
+  - To run some required tools
 - [osmium-tool](https://osmcode.org/osmium-tool/)
-  - to convert .osm files to other useful formats
+  - To convert .osm files to other useful formats
 - [npm](https://www.npmjs.com/)
-  - for javascript libraries
+  - For javascript libraries
 - [node.js](https://nodejs.org/en)
-  - for one three line script
+  - For external javascript code and npm
+- [certbot (optional)](https://certbot.eff.org/)
+  - For https cetification
   
-# How to run the server
-## Initial setup after first downloading this repository
-`npm install .`
+# Development setup
+## Initial setup
+- `cd poly-navigation`
+- `npm install .`
 
-## To create all the necessary files to do the thing. This should be run after every change to polycampus.osm
-`./build.sh`
+## Build step
+- `./build.sh` or `./build.bat` to create all the necessary files to start the server. This only needs to be run after a change to polycampus.osm
 
 ## To start the server
-`./run.sh`
+- `./run.sh` or `./run.bat`
+
+# Production setup
+## Initial setup
+- `cd poly-navigation`
+- `npm install .`
+- `cp ./config/poly-navigation.service /etc/systemd/system/`
+  - You will need to change the `ExecStart` line to the file path for start-poly-navigation.sh
+- `sudo systemctl daemon-reload && sudo systemctl enable poly-navigation.service`
+- `cp ./config/ncp.conf /etc/nginx/sites-available/ncp.conf`
+  - Remove the lines created by Certbot (labeled "managed by Cerbot")
+  - Change `server_name` to your domain
+  - Change `root` to `<location-of-this-repository>/dist`
+- `sudo systemctl enable nginx`
+- `sudo certbot --nginx`
+  - `sudo systemctl restart nginx` to apply the changes Certbot made
+
+
+## Build and deploy
+- `./server-run.sh`
