@@ -18,10 +18,8 @@ Shows various locations around Florida Poly and provides directions to get there
 - `cd poly-navigation`
 - `npm install .`
 
-## Build step
+## Build and run
 - `./build.sh` or `./build.bat` to create all the necessary files to start the server. This only needs to be run after a change to polycampus.osm
-
-## To start the server
 - `./run.sh` or `./run.bat`
 
 # Production setup
@@ -29,14 +27,14 @@ Shows various locations around Florida Poly and provides directions to get there
 - `cd poly-navigation`
 - `npm install .`
 - `cp ./config/poly-navigation.service /etc/systemd/system/`
-  - You will need to change the `ExecStart` line to the file path for start-poly-navigation.sh
+  - You will need to change the `ExecStart` line to the file path for `./config/start-poly-navigation.sh`
 - `sudo systemctl daemon-reload && sudo systemctl enable poly-navigation.service`
 - `cp ./config/ncp.conf /etc/nginx/sites-available/ncp.conf`
   - Remove the lines created by Certbot (labeled "managed by Cerbot")
   - Change `server_name` to your domain
   - Change `root` to `<location-of-this-repository>/dist`
 - `sudo systemctl enable nginx`
-- `sudo certbot --nginx`
+- `sudo certbot --nginx` (optional)
   - `sudo systemctl restart nginx` to apply the changes Certbot made
 
 
