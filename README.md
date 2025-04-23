@@ -46,3 +46,34 @@ Shows various locations around Florida Poly and provides directions to get there
 
 ## Build and deploy
 - `./server-run.sh`
+
+# File Tree
+- `osm`
+  - `filter-search-queries.js`
+    - Filters through raw point-of-interest data from `polycampus.osm` for use with our fuzzy-searching library.
+  - `foot.lua`
+    - Configuration for OSRM-Backend.
+    - Provided by OSRM-Backend.
+  - `polycampus.osm`
+    - Map data for Florida Poly.
+  - `tilemaker-config.lua`
+    - Configuration for Tilermaker. Specifies options for different map layers and other general options.
+    - Provided by Tilemaker.
+  - `tilemaker-process.lua`
+    - Configuration for Tilemaker. Specifies which data should be included in the vector map data.
+    - Provided by Tilemaker.
+- `public`
+  - `functions.js`
+    - Additional source code for the UI. Assists `script.js` with functions that need to be available in the global scope.
+  - `images`
+    - Holds point-of-interest images.
+- `tileserver-data`
+  - Configuration for TileServer GL. Holds map style information.
+- `app.py`
+  - Source code for our Account System. Handles user data, log in, and sign up.
+- `index.html`
+  - Website layout.
+- `script.js`
+  - Source code for UI. The glue thats holds this website together.
+- `style.css`
+  - UI style.
