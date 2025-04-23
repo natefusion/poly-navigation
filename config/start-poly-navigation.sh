@@ -2,6 +2,6 @@
 
 cd /home/nthnpiel/poly-navigation
 docker-compose up &
-python3 app.py &
+./venv/bin/python3 app.py &
 
 wait

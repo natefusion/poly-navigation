@@ -10,6 +10,8 @@ Shows various locations around Florida Poly and provides directions to get there
   - For javascript libraries
 - [node.js](https://nodejs.org/en)
   - For external javascript code and npm
+- [python3](https://python.org)
+  - For external javascript code and npm
 - [certbot (optional)](https://certbot.eff.org/)
   - For https cetification
   
@@ -17,6 +19,8 @@ Shows various locations around Florida Poly and provides directions to get there
 ## Initial setup
 - `cd poly-navigation`
 - `npm install .`
+- `python3 -m venv venv`
+- `.\venv\bin\pip install flask flask-cors`
 
 ## Build and run
 - `./build.sh` or `./build.bat` to create all the necessary files to start the server. This only needs to be run after a change to polycampus.osm
@@ -26,6 +30,8 @@ Shows various locations around Florida Poly and provides directions to get there
 ## Initial setup
 - `cd poly-navigation`
 - `npm install .`
+- `python3 -m venv venv`
+- `.\venv\bin\pip install flask flask-cors`
 - `cp ./config/poly-navigation.service /etc/systemd/system/`
   - You will need to change the `ExecStart` line to the file path for `./config/start-poly-navigation.sh`
 - `sudo systemctl daemon-reload && sudo systemctl enable poly-navigation.service`
