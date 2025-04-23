@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Florida Poly Navigation System</title>
     <link rel="stylesheet" href="style.css">
+    
+
+
   </head>
   <body>
     <div class="wrapper">
@@ -38,6 +41,10 @@
             <button popovertarget="signup_popup" class="gen_button">Sign up</button>
             <button popovertarget="help_popup" class="gen_button">Help</button>
             <button popovertarget="about_popup" class="gen_button">About</button>
+	    
+ 
+		
+	    
             <div id="about_popup" popover="auto">
               <h1 id="input-title">About</h1>
               <h3>Authors</h3>
@@ -98,6 +105,18 @@
             <div class="login-btn-container">
               <button id="confirm_button" class="gen_button button_confirm">Confirm</button>
               <button popovertarget="login_popup" class="gen_button button_cancel">Cancel</button>
+	      <div class="form-group">
+                    <div class="captcha-container">
+                            <label>Prove you're not a robot:</label>
+                            <div class="captcha-box">
+                                    <span id="captcha-text"></span>
+
+                                            <i class="fas fa-sync-alt"></i>
+                                    </button>
+                            </div>
+                            <input type="text" id="captcha-input" required placeholder="Enter the code above">
+                    </div>
+</div>
             </div>
           </div>
 
