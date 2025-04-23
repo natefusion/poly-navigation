@@ -587,7 +587,10 @@ document.addEventListener('DOMContentLoaded', () => {
             alert('Passwords do not match');
             return;
         }
-
+	if(password.length<10) {
+               alert('Password length is less than 10 characters');
+               return;
+        }
         try {
             const res = await fetch(`https://34.133.14.10:8443/auth/signup?username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}`, {
                 method: 'POST',
