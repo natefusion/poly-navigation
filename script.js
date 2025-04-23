@@ -684,6 +684,7 @@ logout_button.onclick = async  function () {
         credentials: "include"
     });
     logged_in = false;
+    document.cookie = '';
     bookmarks = new Set();
     recent_searches = new Array();
 	const usertag = document.getElementById('account_information_text');
