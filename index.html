@@ -36,9 +36,9 @@
           <h1 class="section_container">Account Information</h1>
           <p id="account_information_text"></p>
           <div id="gen_buttons_container">
-            <button popovertarget="login_popup" class="gen_button">Log in</button>
-            <button popovertarget="logout_popup" class="gen_button">Log out</button>
-            <button popovertarget="signup_popup" class="gen_button">Sign up</button>
+            <button id="login_button" popovertarget="login_popup" class="gen_button">Log in</button>
+            <button id="logout_button" popovertarget="logout_popup" class="gen_button hidden">Log out</button>
+            <button id="signup_button" popovertarget="signup_popup" class="gen_button">Sign up</button>
             <button popovertarget="help_popup" class="gen_button">Help</button>
             <button popovertarget="about_popup" class="gen_button">About</button>
 	    
@@ -64,7 +64,7 @@
           <div id="logout_popup" popover="manual">
             <h1 id="input-title" class="input-label">Would you like to log out?</h1>
             <div class="logout--btn-container">
-              <button popovertarget="logout_popup" id="logout_button" class="gen_button button_confirm">Yes</button>
+              <button id="actually_logout" popovertarget="logout_popup" id="logout_button" class="gen_button button_confirm">Yes</button>
               <button popovertarget="logout_popup" class="gen_button button_cancel">No</button>
             </div>
           </div>
@@ -133,7 +133,7 @@
               <input type="password" name="password" id="input_password_signup" class="input">
 
               <label for="input_password" class="input-label">Confirm your password</label>
-              <input type="password" name="password" id="input-password" class="input">
+              <input type="password" name="password" id="confirm_password_signup" class="input">
             </div>
             <div class="signup-btn-container">
               <button id="confirm_button_signup" class="gen_button button_confirm">Confirm</button>

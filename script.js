@@ -586,12 +586,17 @@ document.addEventListener('DOMContentLoaded', () => {
                 
                 load_bookmarks_from_server();
 	            load_recent_searches_from_server();
+                hideme(signup_button);
+                hideme(login_button);
+                showme(logout_button);
             } else {
+                showme(signup_button);
+                showme(login_button);
+                hideme(logout_button);
                 console.log("Could Not Login")
             }
         });
     }
-    
 
     confirm_button_login.onclick = async  function() {
         const captchaInput = document.getElementById('captcha-input').value;
@@ -622,9 +627,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 account_information_text.innerHTML = username
                 alert("Login successful");
                 logged_in = true;
+                hideme(signup_button);
+                hideme(login_button);
+                showme(logout_button);
                 load_bookmarks_from_server();
 	            load_recent_searches_from_server();
             } else {
+                showme(signup_button);
+                showme(login_button);
+                hideme(logout_button);
                 alert("Login failed: " + data.error);
 	            return;
             }
@@ -632,6 +643,8 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error("Network error:", err);
             alert("Failed to connect to the server");
         }
+        input_password_login.value = "";
+        input_username_login.value = "";
 	    login_popup.hidePopover();
 	    const usertag = document.getElementById('account_information_text');
 	    usertag.textContent = username;
@@ -640,7 +653,7 @@ document.addEventListener('DOMContentLoaded', () => {
     confirm_button_signup.onclick = async function() {
         const username = document.getElementById("input_username_signup").value;
         const password = document.getElementById("input_password_signup").value;
-        const confirmpassword = document.getElementById('input-password').value;
+        const confirmpassword = document.getElementById('confirm_password_signup').value;
 
         account_information_text.innerHTML = "None";
 
@@ -667,13 +680,23 @@ document.addEventListener('DOMContentLoaded', () => {
                 logged_in = true;
                 load_bookmarks_from_server();
 	            load_recent_searches_from_server();
+                hideme(signup_button);
+                hideme(login_button);
+                showme(logout_button);
             } else {
+                showme(signup_button);
+                showme(login_button);
+                hideme(logout_button);
                 alert('Error: ' + data.error);
             }
         } catch (err) {
             console.error('Request failed', err);
             alert('Network error');
         }
+
+        input_password_signup.value = "";
+        input_username_signup.value = "";
+        confirm_password_signup.value = "";
     };
 });
 const logout_button = document.getElementById('logout_button');
@@ -683,10 +706,16 @@ logout_button.onclick = async  function () {
         method: "POST",
         credentials: "include"
     });
+};
+
+actually_logout.onclick = function() {
+    showme(signup_button);
+    showme(login_button);
+    hideme(logout_button);
     logged_in = false;
     document.cookie = '';
     bookmarks = new Set();
     recent_searches = new Array();
 	const usertag = document.getElementById('account_information_text');
 	usertag.textContent = "None";
-};
+}
