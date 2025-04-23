@@ -384,36 +384,54 @@ toggle_all_locations_button.onclick = function() {
     }
 }
 
-bookmark_checkbox.onclick = async function () {
-    try {
-        // Fetch existing bookmarks from server
-        const res = await fetch("/auth/bookmarks", {
+function load_recent_searches_from_server() {
+    if (logged_in) {
+        fetch("/auth/recent_searches", {
             method: "GET",
             credentials: "include"
+        }).then((res) => res.json()).then((data) => {
+            recent_searches = structuredClone(data.recent_searches);
+            for (let i in recent_searches) {
+                recent_searches[i] = parseInt(recent_searches[i]);
+            }
+
+            load_recent_searches();
         });
-        const data = await res.json();
-
-        // ✅ Update the global bookmarks set
-        bookmarks = new Set(data.bookmarks || []);
-
-        // Add or remove the selected item
-        if (bookmark_checkbox.checked) {
-            bookmarks.add(selected_item_idx);
-        } else {
-            bookmarks.delete(selected_item_idx);
-        }
-
-        // Save updated bookmarks and refresh UI
-        await saveBookmarksToServer();
-        load_bookmarks();
-    } catch (err) {
-        console.error("Error updating bookmarks:", err);
     }
-};
+}
 
+function load_bookmarks_from_server() {
+    if (logged_in) {
+        fetch("/auth/bookmarks", {
+            method: "GET",
+            credentials: "include"
+        }).then((res) => res.json()).then((data) => {
+            bookmarks = new Set();
+            for (let item of data.bookmarks) {
+                bookmarks.add(parseInt(item));
+            }
+            
+            load_bookmarks();
+        });
+    }
+}
+
+bookmark_checkbox.onclick = function() {
+    if (bookmark_checkbox.checked) {
+        bookmarks.add(selected_item_idx);
+    } else {
+        bookmarks.delete(selected_item_idx);
+    }
+
+    load_bookmarks();
+    saveBookmarksToServer();
+}
 
 
 async function saveBookmarksToServer() {
+    if (!logged_in) {
+        return;
+    }
     const bookmarkArray = Array.from(bookmarks);
     const params = new URLSearchParams();
     params.append('bookmarks', JSON.stringify(bookmarkArray));
@@ -431,7 +449,6 @@ async function saveBookmarksToServer() {
         console.error('Network error saving bookmarks:', err);
     }
 }
-
 
 update_location.onclick = function() {
     showme(geolocation_loader_container);
@@ -547,19 +564,23 @@ function updateCaptcha() {
 document.addEventListener('DOMContentLoaded', () => {
     updateCaptcha();
 
-    fetch('/auth/login', {
-        method: "POST",
-        credentials: "include"
-    }).then((req) => {
-        if (req.ok) {
-            account_information_text.innerHTML = getCookie("username")
-            console.log("Logged in");
-            logged_in = true;
-            
-            load_bookmarks();
-	        load_recent_searches();
-        }
-    });
+    if (getCookie("username") !== "" && getCookie("password") !== "") {
+        fetch('/auth/login', {
+            method: "POST",
+            credentials: "include"
+        }).then((req) => {
+            if (req.ok) {
+                account_information_text.innerHTML = getCookie("username")
+                console.log("Logged in");
+                logged_in = true;
+                
+                load_bookmarks_from_server();
+	            load_recent_searches_from_server();
+            } else {
+                console.log("Could Not Login")
+            }
+        });
+    }
     
 
     confirm_button_login.onclick = async  function() {
@@ -591,6 +612,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 account_information_text.innerHTML = username
                 alert("Login successful");
                 logged_in = true;
+                load_bookmarks_from_server();
+	            load_recent_searches_from_server();
             } else {
                 alert("Login failed: " + data.error);
 	            return;
@@ -599,8 +622,6 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error("Network error:", err);
             alert("Failed to connect to the server");
         }
-	    load_bookmarks();
-	    load_recent_searches();
 	    login_popup.hidePopover();
 	    const usertag = document.getElementById('account_information_text');
 	    usertag.textContent = username;
@@ -610,7 +631,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const username = document.getElementById("input_username_signup").value;
         const password = document.getElementById("input_password_signup").value;
         const confirmpassword = document.getElementById('input-password').value;
-	    let list = '';
 
         account_information_text.innerHTML = "None";
 
@@ -618,9 +638,9 @@ document.addEventListener('DOMContentLoaded', () => {
             alert('Passwords do not match');
             return;
         }
-	if(password.length<10) {
-               alert('Password length is less than 10 characters');
-               return;
+	    if(password.length<10) {
+            alert('Password length is less than 10 characters');
+            return;
         }
         try {
             const res = await fetch(`/auth/signup?username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}`, {
@@ -634,7 +654,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 signup_popup.hidePopover();
                 account_information_text.innerHTML = username;
                 logged_in = true;
-                // Maybe redirect or close modal here
+                load_bookmarks_from_server();
+	            load_recent_searches_from_server();
             } else {
                 alert('Error: ' + data.error);
             }
@@ -642,9 +663,6 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error('Request failed', err);
             alert('Network error');
         }
-
-        load_bookmarks();
-	    load_recent_searches();
     };
 });
 const logout_button = document.getElementById('logout_button');
@@ -655,6 +673,8 @@ logout_button.onclick = async  function () {
         credentials: "include"
     });
     logged_in = false;
+    bookmarks = new Set();
+    recent_searches = new Array();
 	const usertag = document.getElementById('account_information_text');
 	usertag.textContent = "None";
 };

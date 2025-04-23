@@ -71,7 +71,7 @@ async function load_item_details(items_idx, searching = false) {
             }
         }
 
-	    load_recent_searches();
+        load_recent_searches();
     }
 
     if (item.hasOwnProperty('folder') && item.hasOwnProperty('ref')) {
@@ -81,8 +81,6 @@ async function load_item_details(items_idx, searching = false) {
     if (item.hasOwnProperty('tags')) {
         item_tags.innerHTML = `<p>${item.tags.toString()}</p>`
     }
-
-
 }
 
 function showme(el) {
@@ -102,17 +100,7 @@ function load_items() {
     all_locations.innerHTML = list;
 }
 
-async function load_bookmarks() {
-    if (logged_in) {
-        const res = await fetch("/auth/bookmarks", {
-            method: "GET",
-            credentials: "include"
-        });
-
-        const data = await res.json();
-        bookmarks = new Set(data.bookmarks || []);
-    }
-
+function load_bookmarks() {
     let list = '';
     for (const item of bookmarks) {
         list += `<button onclick="load_item_details('${item}')" class="button button_search" popovertarget="item_details">${geo[item].name}</button>`;
@@ -120,26 +108,15 @@ async function load_bookmarks() {
 
     saved_locations.innerHTML = list;
 
-    const is_hidden = saved_location_text.classList.contains("hidden");
-    if (is_hidden) {
-        showme(saved_location_text);
-    } else {
+    if (bookmarks.size > 0) {
         hideme(saved_location_text);
+    } else {
+        showme(saved_location_text);
     }
 }
 
 
 async function load_recent_searches() {
-    if (logged_in) {
-        const res = await fetch("/auth/recent_searches", {
-            method: "GET",
-            credentials: "include"
-        });
-
-        const data = await res.json();
-        recent_searches = new Array(data.recent_searches || []);
-    }
-    
     let list = '';
     for (const item of recent_searches) {
         list += `<button onclick="load_item_details('${item}')" class="button button_search" popovertarget="item_details">${geo[item].name}</button>`
