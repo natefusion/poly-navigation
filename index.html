@@ -102,20 +102,20 @@
               <label for="input_password_login" class="input-label">Enter your password</label>
               <input type="password" name="password" id="input_password_login" class="input">
             </div>
-            <div class="login-btn-container">
+            <div class="captcha-container">
+              <p class="gen-text">Prove you're not a robot:</label>
+              <div class="captcha-box">
+                      <span style="color: red;" id="captcha-text"></span>
+
+                              <i class="fas fa-sync-alt"></i>
+                      </button>
+              </div>
+              <input type="text" class="input" id="captcha-input" style="height: 30px;" required placeholder="Enter the code above">
+      </div>
+            <div class="login-btn-container" style="margin-top: 20px;">
               <button id="confirm_button" class="gen_button button_confirm">Confirm</button>
               <button popovertarget="login_popup" class="gen_button button_cancel">Cancel</button>
 	      <div class="form-group">
-                    <div class="captcha-container">
-                            <p class="gen-text">Prove you're not a robot:</label>
-                            <div class="captcha-box">
-                                    <span style="color: red;" id="captcha-text"></span>
-
-                                            <i class="fas fa-sync-alt"></i>
-                                    </button>
-                            </div>
-                            <input type="text" class="input" id="captcha-input" style="height: 30px;" required placeholder="Enter the code above">
-                    </div>
 </div>
             </div>
           </div>
