@@ -561,6 +561,16 @@ function updateCaptcha() {
     document.getElementById('captcha-text').textContent = currentCaptcha;
 }
 
+async function digestMessage(message) {
+    const msgUint8 = new TextEncoder().encode(message); // encode as (utf-8) Uint8Array
+    const hashBuffer = await window.crypto.subtle.digest("SHA-256", msgUint8); // hash the message
+    const hashArray = Array.from(new Uint8Array(hashBuffer)); // convert buffer to byte array
+    const hashHex = hashArray
+          .map((b) => b.toString(16).padStart(2, "0"))
+          .join(""); // convert bytes to hex string
+    return hashHex;
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     updateCaptcha();
 
@@ -591,7 +601,7 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
  	    const username = document.getElementById("input_username_login").value;
-        const password = document.getElementById("input_password_login").value;
+        const password = await digestMessage(document.getElementById("input_password_login").value);
 
         account_information_text.innerHTML = "None";
 	    
@@ -643,7 +653,8 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
         try {
-            const res = await fetch(`/auth/signup?username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}`, {
+            const password_hash = await digestMessage(password);
+            const res = await fetch(`/auth/signup?username=${encodeURIComponent(username)}&password=${encodeURIComponent(password_hash)}`, {
                 method: 'POST',
             });
 
