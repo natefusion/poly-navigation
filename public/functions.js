@@ -27,7 +27,7 @@ function httpGet(theUrl) {
     return xmlHttp.responseText;
 }
 
-function load_item_details(items_idx, searching = false) {
+async function load_item_details(items_idx, searching = false) {
     selected_item_idx = items_idx;
     let item = geo[selected_item_idx];
     if (selecting_end_location) {
@@ -44,6 +44,7 @@ function load_item_details(items_idx, searching = false) {
     bookmark_checkbox.checked = bookmarks.has(selected_item_idx);
 
     if (searching) {
+
         recent_searches = structuredClone(recent_searches.filter((x) => x !== selected_item_idx));
         recent_searches.unshift(selected_item_idx);
 
@@ -51,7 +52,9 @@ function load_item_details(items_idx, searching = false) {
             recent_searches.pop();
         }
         
-        load_recent_searches();
+     
+
+	    load_recent_searches();
     }
 
     if (item.hasOwnProperty('folder') && item.hasOwnProperty('ref')) {
@@ -82,26 +85,38 @@ function load_items() {
     all_locations.innerHTML = list;
 }
 
-function load_bookmarks() {
-    let list = '';
-    for (const item of bookmarks) {
-        list += `<button onclick="load_item_details('${item}')" class="button button_search" popovertarget="item_details">${geo[item].name}</button>`
-    }
+async function load_bookmarks() {
+    try {
+        const res = await fetch("https://34.133.14.10:8443/auth/bookmarks", {
+            method: "GET",
+            credentials: "include"
+        });
 
-    saved_locations.innerHTML = list;
-    let is_hidden = saved_location_text.classList.toggle("hidden");
+        const data = await res.json();
+        const bookmarks = new Set(data.bookmarks || []);
 
-    if (!is_hidden) {
-        hideme(saved_location_text);
-        showme(saved_location_text);
-    } else {
-        showme(saved_location_text);
-        hideme(saved_location_text);
+        let list = '';
+        for (const item of bookmarks) {
+            list += `<button onclick="load_item_details('${item}')" class="button button_search" popovertarget="item_details">${geo[item].name}</button>`;
+        }
+
+        saved_locations.innerHTML = list;
+
+        const is_hidden = saved_location_text.classList.contains("hidden");
+        if (is_hidden) {
+            showme(saved_location_text);
+        } else {
+            hideme(saved_location_text);
+        }
+    } catch (err) {
+        console.error("Failed to load bookmarks:", err);
+        saved_locations.innerHTML = '<p>Error loading bookmarks</p>';
     }
 }
 
-function load_recent_searches() {
-    let list = '';
+
+async function load_recent_searches() {
+   let list = '';
     for (const item of recent_searches) {
         list += `<button onclick="load_item_details('${item}')" class="button button_search" popovertarget="item_details">${geo[item].name}</button>`
     }
