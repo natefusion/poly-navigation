@@ -20,6 +20,8 @@ const max_recent_searches = 5;
 let geolocation = undefined;
 let geolocation_id = undefined;
 
+var logged_in = false;
+
 function httpGet(theUrl) {
     var xmlHttp = new XMLHttpRequest();
     xmlHttp.open("GET", theUrl, false); // false for synchronous request
@@ -44,15 +46,30 @@ async function load_item_details(items_idx, searching = false) {
     bookmark_checkbox.checked = bookmarks.has(selected_item_idx);
 
     if (searching) {
-
         recent_searches = structuredClone(recent_searches.filter((x) => x !== selected_item_idx));
         recent_searches.unshift(selected_item_idx);
 
         if (recent_searches.length > max_recent_searches) {
             recent_searches.pop();
         }
-        
-     
+
+        if (logged_in) {
+            const params = new URLSearchParams();
+            params.append('recent_searches', JSON.stringify(recent_searches));
+	        
+            try {
+	            const res = await fetch(`/auth/recent_searches?${params.toString()}`, {
+		            method: 'POST',
+		            credentials: 'include',
+	            });
+                if (!res.ok) {
+                    const errData = await res.json();
+                    console.error('Failed to save recent_searches:', errData.error);
+                }
+            } catch (err) {
+                console.error('Network error saving recent_searches:', err);
+            }
+        }
 
 	    load_recent_searches();
     }
@@ -86,37 +103,44 @@ function load_items() {
 }
 
 async function load_bookmarks() {
-    try {
-        const res = await fetch("https://34.133.14.10:8443/auth/bookmarks", {
+    if (logged_in) {
+        const res = await fetch("/auth/bookmarks", {
             method: "GET",
             credentials: "include"
         });
 
         const data = await res.json();
-        const bookmarks = new Set(data.bookmarks || []);
+        bookmarks = new Set(data.bookmarks || []);
+    }
 
-        let list = '';
-        for (const item of bookmarks) {
-            list += `<button onclick="load_item_details('${item}')" class="button button_search" popovertarget="item_details">${geo[item].name}</button>`;
-        }
+    let list = '';
+    for (const item of bookmarks) {
+        list += `<button onclick="load_item_details('${item}')" class="button button_search" popovertarget="item_details">${geo[item].name}</button>`;
+    }
 
-        saved_locations.innerHTML = list;
+    saved_locations.innerHTML = list;
 
-        const is_hidden = saved_location_text.classList.contains("hidden");
-        if (is_hidden) {
-            showme(saved_location_text);
-        } else {
-            hideme(saved_location_text);
-        }
-    } catch (err) {
-        console.error("Failed to load bookmarks:", err);
-        saved_locations.innerHTML = '<p>Error loading bookmarks</p>';
+    const is_hidden = saved_location_text.classList.contains("hidden");
+    if (is_hidden) {
+        showme(saved_location_text);
+    } else {
+        hideme(saved_location_text);
     }
 }
 
 
 async function load_recent_searches() {
-   let list = '';
+    if (logged_in) {
+        const res = await fetch("/auth/recent_searches", {
+            method: "GET",
+            credentials: "include"
+        });
+
+        const data = await res.json();
+        recent_searches = new Array(data.recent_searches || []);
+    }
+    
+    let list = '';
     for (const item of recent_searches) {
         list += `<button onclick="load_item_details('${item}')" class="button button_search" popovertarget="item_details">${geo[item].name}</button>`
     }

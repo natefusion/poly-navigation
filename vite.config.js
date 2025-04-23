@@ -12,6 +12,10 @@ export default {
                 target: 'http://localhost:8080',
                 changeOrigin: true,
                 rewrite: (path) => path.replace(/^\/tiles/, ''),
+            },
+            '/auth': {
+                target: 'http://localhost:8443',
+                changeOrigin: true,
             }
         }
     },

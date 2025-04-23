@@ -152,6 +152,22 @@ function reRoute() {
     }
 }
 
+function getCookie(cname) {
+  let name = cname + "=";
+  let decodedCookie = decodeURIComponent(document.cookie);
+  let ca = decodedCookie.split(';');
+  for(let i = 0; i <ca.length; i++) {
+    let c = ca[i];
+    while (c.charAt(0) == ' ') {
+      c = c.substring(1);
+    }
+    if (c.indexOf(name) == 0) {
+      return c.substring(name.length, c.length);
+    }
+  }
+  return "";
+}
+
 function geolocation_callback(pos) {
     start_at_geolocation = true;
     geolocation = pos.coords;
@@ -371,7 +387,7 @@ toggle_all_locations_button.onclick = function() {
 bookmark_checkbox.onclick = async function () {
     try {
         // Fetch existing bookmarks from server
-        const res = await fetch("https://34.133.14.10:8443/auth/bookmarks", {
+        const res = await fetch("/auth/bookmarks", {
             method: "GET",
             credentials: "include"
         });
@@ -403,7 +419,7 @@ async function saveBookmarksToServer() {
     params.append('bookmarks', JSON.stringify(bookmarkArray));
 	
     try {
-	    const res = await fetch(`https://34.133.14.10:8443/auth/bookmarks?${params.toString()}`, {
+	    const res = await fetch(`/auth/bookmarks?${params.toString()}`, {
 		    method: 'POST',
 		    credentials: 'include',
 	    });
@@ -530,58 +546,73 @@ function updateCaptcha() {
 
 document.addEventListener('DOMContentLoaded', () => {
     updateCaptcha();
-    document.querySelector("#login_popup #confirm_button").onclick = async  function() {
-       const captchaInput = document.getElementById('captcha-input').value;
+
+    fetch('/auth/login', {
+        method: "POST",
+        credentials: "include"
+    }).then((req) => {
+        if (req.ok) {
+            account_information_text.innerHTML = getCookie("username")
+            console.log("Logged in");
+            logged_in = true;
+            
+            load_bookmarks();
+	        load_recent_searches();
+        }
+    });
+    
+
+    confirm_button_login.onclick = async  function() {
+        const captchaInput = document.getElementById('captcha-input').value;
         if (captchaInput.toLowerCase() !== currentCaptcha.toLowerCase()) {
             alert('Incorrect captcha code');
             updateCaptcha();
             return;
         }
- 	const username = document.getElementById("input_username_login").value;
+ 	    const username = document.getElementById("input_username_login").value;
         const password = document.getElementById("input_password_login").value;
-	
-	if (!username || !password) {
-        alert("Please enter both username and password.");
-        return;
-    }
 
-    try {
-        const res = await fetch(`https://34.133.14.10:8443/auth/login?username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}`, {
-            method: "POST",
-            credentials: "include"
-        });
-
-
-
-        const data = await res.json();
-
-        if (res.ok) {
-            alert("Login successful");
-            // maybe redirect or hide lo let list = '';
-    
-            
-        } else {
-            alert("Login failed: " + data.error);
-	    return;
+        account_information_text.innerHTML = "None";
+	    
+	    if (!username || !password) {
+            alert("Please enter both username and password.");
+            return;
         }
-    } catch (err) {
-        console.error("Network error:", err);
-        alert("Failed to connect to the server");
-    }
+
+        try {
+            const res = await fetch(`/auth/login?username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}`, {
+                method: "POST",
+                credentials: "include"
+            });
+
+            const data = await res.json();
+
+            if (res.ok) {
+                account_information_text.innerHTML = username
+                alert("Login successful");
+                logged_in = true;
+            } else {
+                alert("Login failed: " + data.error);
+	            return;
+            }
+        } catch (err) {
+            console.error("Network error:", err);
+            alert("Failed to connect to the server");
+        }
 	    load_bookmarks();
 	    load_recent_searches();
 	    login_popup.hidePopover();
 	    const usertag = document.getElementById('account_information_text');
 	    usertag.textContent = username;
     };
-    document.querySelector("#signup_popup #confirm_button").onclick = async function() {
-     
-
+    
+    confirm_button_signup.onclick = async function() {
         const username = document.getElementById("input_username_signup").value;
         const password = document.getElementById("input_password_signup").value;
         const confirmpassword = document.getElementById('input-password').value;
-	let list = '';
+	    let list = '';
 
+        account_information_text.innerHTML = "None";
 
         if (password !== confirmpassword) {
             alert('Passwords do not match');
@@ -589,7 +620,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         try {
-            const res = await fetch(`https://34.133.14.10:8443/auth/signup?username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}`, {
+            const res = await fetch(`/auth/signup?username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}`, {
                 method: 'POST',
             });
 
@@ -597,6 +628,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (res.ok) {
                 alert('Sign-up successful');
+                signup_popup.hidePopover();
+                account_information_text.innerHTML = username;
+                logged_in = true;
                 // Maybe redirect or close modal here
             } else {
                 alert('Error: ' + data.error);
@@ -606,8 +640,8 @@ document.addEventListener('DOMContentLoaded', () => {
             alert('Network error');
         }
 
-        // Proceed with your logic here
-
+        load_bookmarks();
+	    load_recent_searches();
     };
 });
 const logout_button = document.getElementById('logout_button');
@@ -617,11 +651,7 @@ logout_button.onclick = async  function () {
         method: "POST",
         credentials: "include"
     });
+    logged_in = false;
 	const usertag = document.getElementById('account_information_text');
 	usertag.textContent = "None";
-	bookmarks = [];
-	recent_searches = [];
-	
-	logout_popup.hidePopover();
-	login_pop.hidePopover();
-  };
+};
