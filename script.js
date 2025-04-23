@@ -562,6 +562,7 @@ document.addEventListener('DOMContentLoaded', () => {
             
         } else {
             alert("Login failed: " + data.error);
+	    return;
         }
     } catch (err) {
         console.error("Network error:", err);
@@ -574,13 +575,7 @@ document.addEventListener('DOMContentLoaded', () => {
 	    usertag.textContent = username;
     };
     document.querySelector("#signup_popup #confirm_button").onclick = async function() {
-        // Validate CAPTCHA first
-        const captchaInput = document.getElementById('captcha-input').value;
-        if (captchaInput.toLowerCase() !== currentCaptcha.toLowerCase()) {
-            alert('Incorrect captcha code');
-            updateCaptcha();
-            return;
-        }
+     
 
         const username = document.getElementById("input_username_signup").value;
         const password = document.getElementById("input_password_signup").value;
