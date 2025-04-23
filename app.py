@@ -10,6 +10,7 @@ app.secret_key = 'supersecret'
 
 DB_PATH = 'users.db'
 
+#creates our database for storing user data
 def init_db():
     conn = sqlite3.connect(DB_PATH)
     c = conn.cursor()
@@ -26,6 +27,7 @@ def init_db():
 
 init_db()
 
+#helper function to ensure that the user's cookies are still valid and that their credentials are inputted
 def verify_user_from_cookie(req):
     username = req.cookies.get('username')
     password = req.cookies.get('password')
@@ -43,6 +45,7 @@ def verify_user_from_cookie(req):
         return None, None, 'Invalid credentials'
     return username, password, None
 
+#api endpoint for making a new account, adds a new entry into the db for the user
 @app.route('/auth/signup', methods=['POST'])
 def signup():
     username = request.args.get('username')
@@ -67,6 +70,7 @@ def signup():
     resp.set_cookie('password', password)
     return resp
 
+#api endpoint used for signing the user into the system
 @app.route('/auth/login', methods=['POST'])
 def login():
     username = request.args.get('username')
@@ -92,7 +96,7 @@ def login():
     resp.set_cookie('password', password)
     return resp
 
-
+#api endpoint used for storing the user's bookmarks in the database
 @app.route('/auth/bookmarks', methods=['GET', 'POST'])
 def handle_bookmarks():
     username, password, error = verify_user_from_cookie(request)
@@ -119,7 +123,7 @@ def handle_bookmarks():
             conn.close()
             return jsonify({'error': 'Invalid JSON'}), 400
 
-
+#api endpoint used for storing the user's recent searches in the db
 @app.route('/auth/recent_searches', methods=['GET', 'POST'])
 def handle_recent_searches():
     username, password, error = verify_user_from_cookie(request)
@@ -146,7 +150,7 @@ def handle_recent_searches():
             conn.close()
             return jsonify({'error': 'Invalid JSON'}), 400
 
-
+#api endpoint for signing out the user, invalidates their cookies
 @app.route('/auth/logout', methods=['POST'])
 def logout():
     resp = make_response(jsonify({'message': 'Logged out'}))
