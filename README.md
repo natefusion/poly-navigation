@@ -11,7 +11,7 @@ Shows various locations around Florida Poly and provides directions to get there
 - [node.js](https://nodejs.org/en)
   - For external javascript code and npm
 - [python3](https://python.org)
-  - For external javascript code and npm
+  - For the account server
 - [certbot (optional)](https://certbot.eff.org/)
   - For https cetification
   
