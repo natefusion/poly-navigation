@@ -368,15 +368,54 @@ toggle_all_locations_button.onclick = function() {
     }
 }
 
-bookmark_checkbox.onclick = function() {
-    if (bookmark_checkbox.checked) {
-        bookmarks.add(selected_item_idx);
-    } else {
-        bookmarks.delete(selected_item_idx);
-    }
+bookmark_checkbox.onclick = async function () {
+    try {
+        // Fetch existing bookmarks from server
+        const res = await fetch("https://34.133.14.10:8443/auth/bookmarks", {
+            method: "GET",
+            credentials: "include"
+        });
+        const data = await res.json();
 
-    load_bookmarks();
+        // ✅ Update the global bookmarks set
+        bookmarks = new Set(data.bookmarks || []);
+
+        // Add or remove the selected item
+        if (bookmark_checkbox.checked) {
+            bookmarks.add(selected_item_idx);
+        } else {
+            bookmarks.delete(selected_item_idx);
+        }
+
+        // Save updated bookmarks and refresh UI
+        await saveBookmarksToServer();
+        load_bookmarks();
+    } catch (err) {
+        console.error("Error updating bookmarks:", err);
+    }
+};
+
+
+
+async function saveBookmarksToServer() {
+    const bookmarkArray = Array.from(bookmarks);
+    const params = new URLSearchParams();
+    params.append('bookmarks', JSON.stringify(bookmarkArray));
+	
+    try {
+	    const res = await fetch(`https://34.133.14.10:8443/auth/bookmarks?${params.toString()}`, {
+		    method: 'POST',
+		    credentials: 'include',
+	    });
+        if (!res.ok) {
+            const errData = await res.json();
+            console.error('Failed to save bookmarks:', errData.error);
+        }
+    } catch (err) {
+        console.error('Network error saving bookmarks:', err);
+    }
 }
+
 
 update_location.onclick = function() {
     showme(geolocation_loader_container);
@@ -471,3 +510,123 @@ if (window.innerWidth <= 1000) {
         }
     });
 }
+
+// captcha generation
+function generateCaptcha() {
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let captcha = '';
+    for (let i = 0; i < 6; i++) {
+        captcha += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    return captcha;
+}
+
+let currentCaptcha = generateCaptcha();
+
+function updateCaptcha() {
+    currentCaptcha = generateCaptcha();
+    document.getElementById('captcha-text').textContent = currentCaptcha;
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    updateCaptcha();
+    document.querySelector("#login_popup #confirm_button").onclick = async  function() {
+       const captchaInput = document.getElementById('captcha-input').value;
+        if (captchaInput.toLowerCase() !== currentCaptcha.toLowerCase()) {
+            alert('Incorrect captcha code');
+            updateCaptcha();
+            return;
+        }
+ 	const username = document.getElementById("input_username_login").value;
+        const password = document.getElementById("input_password_login").value;
+	
+	if (!username || !password) {
+        alert("Please enter both username and password.");
+        return;
+    }
+
+    try {
+        const res = await fetch(`https://34.133.14.10:8443/auth/login?username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}`, {
+            method: "POST",
+            credentials: "include"
+        });
+
+
+
+        const data = await res.json();
+
+        if (res.ok) {
+            alert("Login successful");
+            // maybe redirect or hide lo let list = '';
+    
+            
+        } else {
+            alert("Login failed: " + data.error);
+        }
+    } catch (err) {
+        console.error("Network error:", err);
+        alert("Failed to connect to the server");
+    }
+	    load_bookmarks();
+	    load_recent_searches();
+	    login_popup.hidePopover();
+	    const usertag = document.getElementById('account_information_text');
+	    usertag.textContent = username;
+    };
+    document.querySelector("#signup_popup #confirm_button").onclick = async function() {
+        // Validate CAPTCHA first
+        const captchaInput = document.getElementById('captcha-input').value;
+        if (captchaInput.toLowerCase() !== currentCaptcha.toLowerCase()) {
+            alert('Incorrect captcha code');
+            updateCaptcha();
+            return;
+        }
+
+        const username = document.getElementById("input_username_signup").value;
+        const password = document.getElementById("input_password_signup").value;
+        const confirmpassword = document.getElementById('input-password').value;
+	let list = '';
+
+
+        if (password !== confirmpassword) {
+            alert('Passwords do not match');
+            return;
+        }
+
+        try {
+            const res = await fetch(`https://34.133.14.10:8443/auth/signup?username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}`, {
+                method: 'POST',
+            });
+
+            const data = await res.json();
+
+            if (res.ok) {
+                alert('Sign-up successful');
+                // Maybe redirect or close modal here
+            } else {
+                alert('Error: ' + data.error);
+            }
+        } catch (err) {
+            console.error('Request failed', err);
+            alert('Network error');
+        }
+
+        // Proceed with your logic here
+
+    };
+});
+const logout_button = document.getElementById('logout_button');
+
+logout_button.onclick = async  function () {
+	await fetch("/auth/logout", {
+        method: "POST",
+        credentials: "include"
+    });
+	const usertag = document.getElementById('account_information_text');
+	usertag.textContent = "None";
+	bookmarks = [];
+	recent_searches = [];
+	
+	logout_popup.hidePopover();
+	login_pop.hidePopover();
+  };
